@@ -1,0 +1,71 @@
+{
+
+  "failed": "Action failed",
+  "success": "Action was successful",
+  "Companies": "Companies",
+  "Documents": "Documents",
+  "Employees": "Employees",
+  "Search": "Search",
+  "Find": "Find",
+  "Mark": "Отметить",
+  "Marked": "Отмечено",
+  "Marked All": "Отмечено всё",
+  "MarkAll": "Все",
+  "MarkRemove": "Снять",
+  "MarkInvert": "Инвертировать",
+  "FilterSelected": "Отбираются",
+  "FilterSelect": "Отобрать",
+  "NavDrawer": {
+    "Title": "СОЙКА",
+    "Disk": "Документы",
+    "Incoming": "Входящие",
+    "Outgoing": "Исходящие",
+    "Tasks": "Задачи",
+    "OnMe": "Задачи на мне",
+    "FromMe": "Задачи от меня",
+    "Unallocated": "Разобрать",
+    "Business": "Business",
+    "Documents": "Documents",
+    "Nomenclature": "Nomenclature",
+    "Marking": "Marking",
+    "EmissionIC": "Emission",
+    "NomenclatureCatalog": "Каталог",
+    "Organization": "Организации",
+    "Settings": "Settings",
+    "Connector": "Connector",
+    "Profile": "Профиль",
+    "Logout": "Выход"
+
+  },
+  "TabsBrowser": {
+    "Tab": {
+      "OrderIC": "Заказы КМ",
+      "EmissionIC": "Эмиссия",
+      "List": "Список",
+      "Answers": "Ответы",
+      "Statistic": "Статистика"
+    }
+  },
+  "ActionButtons": {
+    "AddDocument": "+ Документ",
+    "CreateOrganization": "+ Организация",
+    "Import": "Импорт",
+    "Export": "Экспорт"
+  },
+  "$vuetify": {
+    "noDataText": "Ничего не найдено",
+    "dataIterator": {"loadingText": "loading"},
+    "dataTable": {
+      "itemsPerPageText": "Показать",
+      "ariaLabel": {
+        "sortNone": "Нет сортировки"
+      }
+    },
+    "dataFooter": {
+      "pageText": "",
+      "nextPage": "Предыдущая",
+      "prevPage": "Следующая",
+      "itemsPerPageAll": "Все"
+    }
+  }
+}
