@@ -31,8 +31,8 @@ export default {
         }
         throw error
       }
-      let navData = resp.data.data.items
-      let result = { items: navData, index: {}, default: resp.data.data.default }
+      let navData = resp.data.result.items
+      let result = { items: navData, index: {}, default: resp.data.result.default }
       navData.forEach((item, i) => {
         if (item.path) {
           result.index[item.path] = i

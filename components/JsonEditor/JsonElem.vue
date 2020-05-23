@@ -11,6 +11,9 @@ export default {
     JsonBoolean: () => import('./JsonBoolean'),
   },
   props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
+  data: () => ({
+    delimiter: "."
+  }),
   computed: {
     _inputListeners: function() {
       if (this.path === '') {

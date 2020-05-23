@@ -34,8 +34,8 @@
 </template>
 <script>
 
-import ActionMixin from '@/helpers/mixinTemplate/action'
-import SimpleChild from '@/helpers/mixinTemplate/simpleChild'
+import ActionMixin from '../../helpers/mixinTemplate/action'
+import SimpleChild from '../../helpers/mixinTemplate/simpleChild'
 
 export default {
   name: 'MassOperationBar',

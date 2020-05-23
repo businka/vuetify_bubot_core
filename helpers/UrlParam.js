@@ -15,7 +15,7 @@ export function getUrlParams() {
 
 export function getUrlParam(name, def) {
     let params = getUrlParams()
-    return params.hasOwnProperty(name) ? params[name] : def
+    return Object.prototype.hasOwnProperty.call(params, name) ? params[name] : def
 }
 
 export function addUrlParam(name, value) {
@@ -32,7 +32,7 @@ export function del_param(name) {
 function updateUrlParams(params) {
     let param = ''
     for (let key in params) {
-        if (params.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(params, key)) {
             param += param ? '&' : '?'
             param += key + '=' + params[key]
         }

@@ -13,23 +13,25 @@ export default {
     }
   },
   query: async (store, payload) => {
-    let resp
     let result = []
     let error = null
     try {
       let params = Object.assign(payload.store.mode.filter || {}, payload.filter || {})
-      resp = await axios.get(`/api/${payload.store.mode.objType}/${payload.store.mode.objName}/query`,
-        { params }
-      )
-      result = resp.data.result
+
+      // resp = await axios.get(`/api/${payload.store.mode.objType}/${payload.store.mode.objName}/query`,
+      //   { params }
+      // )
+      // result = resp.data.result
+
+      result = await store.dispatch(`LongOperations/run`, {
+        // operation: ,
+        name: `${payload.store.mode.objType}/${payload.store.mode.objName}/query`,
+        data: params,
+        params: payload.params
+      }, { root: true })
+
     } catch (err) {
-      switch (err.response.status) {
-        case 400:
-          error = { msg: err.response.data }
-          break
-        default:
-          error = { msg: `${err.response.status}: ${err.response.statusText}` }
-      }
+      error = err.message
     }
     store.commit('query', { uid: payload.store.uid, data: result, error })
     return []
@@ -88,8 +90,7 @@ export default {
       // let fieldId = payload.store.modeParams[payload.store.mode.fieldId || 'id']
       data = await axios.post(`/api/${payload.store.mode.objType}/${payload.store.mode.objName}/update`, payload.data)
       return data.data.result
-    }
-    catch
+    } catch
       (error) {
       console.error(error)
     }
@@ -100,11 +101,11 @@ export default {
     let error = null
     try {
       resp = await axios.post(`/api/${payload.store.mode.objType}/${payload.store.mode.objName}/action`,
-        { data: { name: payload.name, data: payload.data }}
+        { data: { name: payload.name, data: payload.data } }
       )
       result = resp.data.result
     } catch (err) {
-      if (err.response && err.response.status){
+      if (err.response && err.response.status) {
         switch (err.response.status) {
           case 400:
             error = { msg: err.response.data }

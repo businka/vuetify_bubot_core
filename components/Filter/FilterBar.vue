@@ -22,7 +22,7 @@
 <script>
 // import { createNamespacedHelpers } from 'vuex'
 // import { mapActions } from 'vuex'
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 // import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 
 export default {

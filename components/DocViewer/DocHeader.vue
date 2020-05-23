@@ -1,6 +1,6 @@
 <script>
 // import BaseTemplateMixin from '../../jay/mixinTemplate/baseForm'
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 // import Vue from 'vue'
 // import storage from './store'
 
@@ -22,7 +22,7 @@ export default {
   methods: {
     // onChange(action, path, value) {
     //   console.log('JsonEditor.onChange', action, path, value)
-    //   if (this.indexValue.hasOwnProperty(path)) {
+    //   if (Object.prototype.hasOwnProperty.call(this.indexValue, path)) {
     //     path
     //   } else {
     //     action = 'push'

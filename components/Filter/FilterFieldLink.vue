@@ -1,6 +1,6 @@
 <script>
-import ActionMixin from '@/helpers/mixinTemplate/action'
-// import { jsonClone } from '@/helpers/clone'
+import ActionMixin from '../../helpers/mixinTemplate/action'
+// import { jsonClone } from '../../helpers/clone'
 
 export default {
   name: 'FilterFieldLink',
@@ -40,7 +40,7 @@ export default {
       let result = this.value
       let i, len
       for (i = 0, len = this.path.length; i < len; i++) {
-        if (result.hasOwnProperty(this.path[i])) {
+        if (Object.prototype.hasOwnProperty.call(result, this.path[i])) {
           result = result[this.path[i]]
         }
       }
@@ -53,7 +53,7 @@ export default {
       let result = data
       let i, len
       for (i = 0, len = this.path.length; i < len - 1; i++) {
-        if (result.hasOwnProperty(this.path[i])) {
+        if (Object.prototype.hasOwnProperty.call(result, this.path[i])) {
           result = result[this.path[i]]
         }
       }
@@ -61,7 +61,7 @@ export default {
         result[this._name] = { _id: value.row._id }
         const fields = this.field['fields'] || []
         for (let i = 0, len = fields.length; i < len; ++i) {
-          if (value.row.hasOwnProperty(fields[i])) {
+          if (Object.prototype.hasOwnProperty.call(value.row, fields[i])) {
             result[this._name][fields[i]] = value.row[fields[i]]
           }
         }

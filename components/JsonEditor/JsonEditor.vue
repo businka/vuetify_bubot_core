@@ -34,13 +34,13 @@ export default {
   methods: {
     onChange(action, path, value) {
       console.log('JsonEditor.onChange', action, path, value)
-      let _path = path.split('/')
+      let _path = path.split(this.delimiter)
       let index
       let len = _path.length
       let _value = this.edit_value
       for (index = 1; index < len; ++index) {
         if (index === len - 1) {
-          if (_value.hasOwnProperty(_path[index])) {
+          if (Object.prototype.hasOwnProperty.call(_value, _path[index])) {
             _value[_path[index]] = value
           } else {
             this.$set(_value, _path[index], value)

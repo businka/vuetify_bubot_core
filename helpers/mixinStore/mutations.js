@@ -8,13 +8,13 @@ export function updateItemPropsArrayPath(state, { uid, path, value }) {
   let result = state[uid]
   let i
   for (i = 0; i < path.length - 1; i++) {
-    if (result.hasOwnProperty(path[i])) {
+    if (Object.prototype.hasOwnProperty.call(result, path[i])) {
       result = result[path[i]]
     } else {
       throw new Error(`props ${name} not found in state[${uid}] `)
     }
   }
-  // if (result.hasOwnProperty(path[i])) {
+  // if (Object.prototype.hasOwnProperty.call(result, path[i])) {
   //   result[path[i]] = value
   // } else {
   Vue.set(result, path[i], value)
@@ -23,10 +23,10 @@ export function updateItemPropsArrayPath(state, { uid, path, value }) {
 
 export function updateItemProps(state, { uid, action, path, value }) {
   let result = state[uid]
-  const _path = path.split('/')
+  const _path = path.split('.')
   let i
   for (i = 0; i < _path.length - 1; i++) {
-    if (result.hasOwnProperty(_path[i])) {
+    if (Object.prototype.hasOwnProperty.call(result, _path[i])) {
       result = result[_path[i]]
     } else {
       if (i === _path.length - 1){  // мы добавляем этот элемент
@@ -36,7 +36,7 @@ export function updateItemProps(state, { uid, action, path, value }) {
       throw new Error(`props "${_path[i]}" not found in state[${uid}] `)
     }
   }
-  // if (result.hasOwnProperty(path[i])) {
+  // if (Object.prototype.hasOwnProperty.call(result, path[i])) {
   //   result[path[i]] = value
   // } else {
   if (!action || action==='change'){

@@ -9,7 +9,7 @@ function get_data(store, payload, form) {
   let _path = ''
   for (let i = 0; i < path.length; i++) {
     _path += '.' + path[i]
-    if (result.hasOwnProperty(path[i])) {
+    if (Object.prototype.hasOwnProperty.call(result, path[i])) {
       result = result[path[i]]
     } else {
       throw new Error(`path local storage not found ${_path} ${payload.store.form}`)

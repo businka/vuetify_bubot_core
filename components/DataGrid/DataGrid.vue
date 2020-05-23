@@ -2,7 +2,7 @@
 import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 import DataGridMixin from './DataGrid.mixin'
 import storage from './store'
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 import { ObjectId } from 'bson'
 
 export default {
@@ -33,7 +33,7 @@ export default {
     this.init()
   },
   beforeMount() {
-    if (!this.$store.state.hasOwnProperty(this.$options.name)) {
+    if (!Object.prototype.hasOwnProperty.call(this.$store.state, this.$options.name)) {
       this.$store.registerModule(this.$options.name, storage)
     }
   },
@@ -54,7 +54,7 @@ export default {
     async actionMassDelete() {
       const selected = this.getSelected()
       for (let elem in selected) {
-        if (selected.hasOwnProperty(elem)) {
+        if (Object.prototype.hasOwnProperty.call(selected, elem)) {
           const index = this.data.rows.indexOf(selected[elem])
           // const index = this.getIndexRowByOid(selected[elem]._id['$oid'])
           await this.$store.dispatch(`${this.namespace}/delete`, {
@@ -193,7 +193,7 @@ export default {
               </th>
             </tr> <!-- FilterBar !-->
             <tr
-              v-if="!params.header"
+              v-if="!params['hideHeader']"
             >
               <!-- Header !-->
               <th

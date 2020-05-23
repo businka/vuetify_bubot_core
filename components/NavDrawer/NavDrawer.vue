@@ -47,19 +47,20 @@
         v-for="(item, i) in items"
         :key="i"
       >
+        <!-- не активный раздел без детей -->
         <v-list-item
           v-if="i!==current && !item.child"
           v-ripple
           clickable
+          class="px-1"
           :to="item.path"
         >
-          <!-- не активный раздел без детей -->
-          <v-list-item-icon>
+          <v-list-item-icon v-if="item.icon" class="mx-2">
             <v-icon v-text="item.icon"/>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>
-              {{ $t(`NavDrawer.${item.section}`) }}
+              {{ $t(`NavDrawer.${item.title}`) }}
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -106,7 +107,7 @@
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title>
-                 {{ $t(`NavDrawer.${item.title}`) }}
+                  {{ $t(`NavDrawer.${item.title}`) }}
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -135,17 +136,17 @@
 export default {
   computed: {
     activePath: {
-      get: function() {
+      get: function () {
         return this.$route.path
       }
     },
     items: {
-      get: function() {
+      get: function () {
         return this.$store.state.NavDrawer.items
       }
     },
     current: {
-      get: function() {
+      get: function () {
         let index = this.$store.state.NavDrawer.index[this.$route.path]
         if (index >= 0) {
           return index
@@ -154,15 +155,15 @@ export default {
       }
     },
     visible: {
-      get: function() {
+      get: function () {
         return this.$store.state.NavDrawer.visible
       },
-      set: function(val) {
+      set: function (val) {
         this.$store.commit('NavDrawerVisible', val)
       }
     }
   },
-  mounted() {
+  mounted () {
     this.$store.dispatch('Load', { path: this.$route.path, locale: this.$i18n.locale, router: this.$router })
   }
 }
@@ -178,15 +179,19 @@ export default {
     &v-list-item--active {
       /*background-color: green;*/
     }
+
     &:active {
       /*background-color: green;*/
     }
+
     &:hover {
       /*background-color: #465E73;*/
     }
+
     &:focus {
       /*background-color: darkorange;*/
     }
+
     &-active {
       /*background-color: #273748;*/
       /*border-left: 3px solid var(--v-error);*/
@@ -200,19 +205,21 @@ export default {
     &:active {
       /*background-color: green;*/
     }
+
     &:hover {
       /*background-color: yellow;*/
     }
+
     &:focus {
       /*background-color: blue;*/
     }
+
     &:focus, :active {
       /*border-left: 3px solid var(--v-primary-base);*/
       /*background-color: var(--v-nav1_bg-lighten1);*/
       /*color: var(--v-nav1-base);*/
     }
   }
-
   .passive-submenu {
     /*background-color: var(--v-nav1_bg-lighten1);*/
     /*&:hover, :focus {*/

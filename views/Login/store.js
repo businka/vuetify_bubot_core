@@ -38,6 +38,7 @@ export default {
 
         // console.log(resp.data)
       } catch (err) {
+        sessionSig = null
         throw err
       }
       try {
@@ -46,6 +47,8 @@ export default {
         store.commit('setCert', cert)
         Cookies.set('X-Session', store.state.session.session_id)
       } catch (err) {
+        store.commit('setSession', null)
+        store.commit('setCert', null)
         throw err
       }
     },

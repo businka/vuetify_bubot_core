@@ -24,7 +24,7 @@ export function clone1 (obj) {
   if (obj instanceof Object) {
     copy = {}
     for (let attr in obj) {
-      if (obj.hasOwnProperty(attr)) copy[attr] = clone1(obj[attr])
+      if (Object.prototype.hasOwnProperty.call(obj, attr)) copy[attr] = clone1(obj[attr])
     }
     return copy
   }

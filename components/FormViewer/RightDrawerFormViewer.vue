@@ -1,6 +1,6 @@
 <script>
 
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 
 export default {
   name: 'RightDrawerFormViewer',
@@ -8,54 +8,60 @@ export default {
   props: {
     params: {
       type: Object,
-      default: function() {
+      default: function () {
         return {}
       }
     }
   },
+  data: () => ({
+    loading: false,
+    error: ''
+  }),
   computed: {
-    item() {
+    item () {
       return this.params.item
     },
-    form() {
+    form () {
       return this.$store.getters['storeData']('Form', this.params.form)
+    },
+    width () {
+      return this.form ? this.form.width || 600 : 600
     }
   },
-  // data: () => ({
-  //   template: null
-  // }),
   watch: {
-    params() {
+    params () {
       this.init()
     }
   },
-  mounted() {
+  mounted () {
     this.init()
   },
   methods: {
-    init() {
+    async init () {
       if (!this.$store.getters['storeData']('Form', this.params.form)) {
-        this.$store.dispatch(`Form/load`, {
-          uid: this.params.form,
-          params: this.params
-        }, { root: true })
+        this.loading = true
+        this.error = ''
+        try {
+          await this.$store.dispatch(`Form/load`, {
+            uid: this.params.form,
+            params: this.params
+          }, { root: true })
+
+        } catch (err) {
+          this.error = err
+        }
+        this.loading = false
       }
     },
-    emitInternalAction(action){
+    emitInternalAction (action) {
       const context = this.$refs[this.params.form]
       context.emitAction(action)
     },
-    dispatchInternalAction(action){
+    dispatchInternalAction (action) {
       const context = this.$refs[this.params.form]
       context.dispatchAction(action)
     },
-    async defaultAction(){
-      await this.dispatchInternalAction({ name: this.form.components.defaultAction.name })
-      this.emitAction({ name: 'CloseForm', data: { name: this.name, result: true } })
-    },
-    onClose() {
-      this.emitAction({ name: 'CloseForm', data: { name: this.name, result: false } })
-    }
+
   }
 }
 </script>
@@ -63,6 +69,7 @@ export default {
   .v-btn--outlined {
     border: thin solid var(--v-default-base);
     background-color: var(--v-default-base) transparent;
+
     &:hover {
       background-color: var(--v-default-lighten5);
     }
@@ -71,81 +78,23 @@ export default {
 
 <template>
   <v-navigation-drawer
-    v-if="form"
     right
-    :width="form.width || 400"
+    :width="width"
     absolute
     class="elevation-6"
     permanent
     :value="params.visible"
   >
-    <v-toolbar
-      height="30"
-      flat
-      dense
-    >
-      <v-spacer />
-      <v-toolbar-items>
-        <v-menu
-          v-if="form.components && form.components.toolBar && form.components.toolBar.items"
-        >
-          <template v-slot:activator="{ on }">
-            <v-btn
-              icon
-              small
-              v-on="on"
-            >
-              <v-icon>
-                {{ 'mdi-dots-vertical' }}
-              </v-icon>
-            </v-btn>
-          </template>
-          <v-list
-            dense
-          >
-            <v-list-item
-              v-for="(tbItem, index) in form.components.toolBar.items"
-              :key="index"
-              @click="dispatchInternalAction({name: tbItem.name})"
-            >
-              <v-list-item-icon>
-                <v-icon v-if="tbItem.icon">
-                  {{ tbItem.icon }}
-                </v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>{{ tbItem.title }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-toolbar-items>
-      <v-btn
-        v-if="form.components.defaultAction"
-        outlined
-        dense
-        rounded
-        x-small
-        class="mr-2"
-        @click="defaultAction"
-      >
-        {{ form.components.defaultAction.title }}
-      </v-btn>
-      <v-toolbar-items>
-        <v-btn
-          icon
-          dense
-          small
-          @click="onClose"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-toolbar-items>
-    </v-toolbar>
+    <v-progress-linear
+      v-if="loading"
+      height="2"
+      indeterminate
+    />
     <component
       :is="form.template"
-      v-if="form"
+      v-if="form && !loading"
       :ref="params.form"
       :params="form"
-      class="px-2"
       :mode-params="params.item"
       :store-params="{
         form: params.form,
@@ -153,5 +102,29 @@ export default {
       }"
       @action="emitAction"
     />
+    <template
+      v-if="error && !loading"
+      class="pa-2"
+    >
+      <v-toolbar
+        height="30"
+        flat
+        dense
+        class="pl-2"
+      >
+        {{ error }}
+        <v-spacer />
+        <v-toolbar-items>
+          <v-btn
+            icon
+            dense
+            small
+            @click="$emit('action', { name: 'CloseEditForm' })"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+    </template>
   </v-navigation-drawer>
 </template>

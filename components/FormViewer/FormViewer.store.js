@@ -25,6 +25,21 @@ export default {
         store.commit('initStoreKey', { uid, data })
         return data
       } catch (err) {
+        console.error(err)
+        let error
+        if (err.response && err.response.status){
+          switch (err.response.status) {
+            case 400:
+            case 500:
+              error = err.response.data
+              break
+            default:
+              error = `${err.response.status}: ${err.response.statusText}`
+          }
+        }
+        if (error) {
+          throw error
+        }
         throw err
       }
     }

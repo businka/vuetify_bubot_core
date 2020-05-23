@@ -31,7 +31,7 @@
 
 
 <script>
-import '@/vendor/cadesplugin_api'
+import '../../vendor/cadesplugin_api'
 window.global_selectbox_container = new Array()
 export default {
     name: 'PageIndex',

@@ -1,6 +1,6 @@
 <script>
 // import BaseTemplateMixin from '../../jay/mixinTemplate/baseForm'
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 import Vue from 'vue'
 // import storage from './store'
 
@@ -37,7 +37,7 @@ export default {
   // },
   methods: {
     showGroup(name) {
-      if (this.groupShow.hasOwnProperty(name)) {
+      if (Object.prototype.hasOwnProperty.call(this.groupShow, name)) {
         this.groupShow[name] = !this.groupShow[name]
       } else {
         Vue.set(this.groupShow, name, true)
@@ -46,7 +46,7 @@ export default {
     },
     // onChange(action, path, value) {
     //   console.log('JsonEditor.onChange', action, path, value)
-    //   if (this.indexValue.hasOwnProperty(path)) {
+    //   if (Object.prototype.hasOwnProperty.call(this.indexValue, path)) {
     //     path
     //   } else {
     //     action = 'push'
@@ -107,7 +107,7 @@ export default {
               v-for="child in param.children"
               :key="child.name"
               :schema="child"
-              :value="paramsIndex.hasOwnProperty(child.name)?value[paramsIndex[child.name]]:{}"
+              :value="Object.prototype.hasOwnProperty.call(paramsIndex, child.name)?value[paramsIndex[child.name]]:{}"
               :read-only="false"
               @action="emitAction"
             />
@@ -119,7 +119,7 @@ export default {
         :is="param.template"
         v-else
         :schema="param"
-        :value="paramsIndex.hasOwnProperty(child.name)?value[paramsIndex[child.name]]:{}"
+        :value="Object.prototype.hasOwnProperty.call(paramsIndex, child.name)?value[paramsIndex[child.name]]:{}"
         :read-only="false"
         @action="emitAction"
       />

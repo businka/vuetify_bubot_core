@@ -33,7 +33,7 @@
 //         return result;
 //       },
 //       get: function (name, def) {
-//         return this.param.hasOwnProperty(name) ? this.param[name] : def;
+//         return Object.prototype.hasOwnProperty.call(this.param, name) ? this.param[name] : def;
 //       },
 //       add: function (name, value) {
 //         this.param[name] = value;
@@ -46,7 +46,7 @@
 //       updateUrl: function () {
 //         var param = '';
 //         for (var key in this.param)
-//           if (this.param.hasOwnProperty(key)) {
+//           if (Object.prototype.hasOwnProperty.call(this.param, key)) {
 //             param += param ? '&' : '?';
 //             param += key + '=' + this.param[key];
 //           }

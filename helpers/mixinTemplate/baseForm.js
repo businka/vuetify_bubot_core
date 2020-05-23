@@ -38,7 +38,7 @@ export default {
         try {
           data = this.$store.getters.storeData(this.store.namespace, this.store.uid, {})
         } catch (e) {
-          if (!this.$store.state.hasOwnProperty(this.store.namespace)) {
+          if (!Object.prototype.hasOwnProperty.call(this.$store.state, this.store.namespace)) {
             throw new Error(`namespace not found in store - ${this.store.namespace}`)
           } else {
             throw e

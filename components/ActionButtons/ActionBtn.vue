@@ -1,12 +1,15 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-tooltip bottom :disabled="!tooltipTitle">
+  <v-tooltip
+    bottom
+    :disabled="!tooltipTitle"
+  >
     <template v-slot:activator="{ on }">
       <v-btn
-        class="ma-0 jay-space-right"
+        class="ma-0 mr-1"
         icon
         dense
         small
-        @click.stop="emitAction({name: params.name})"
+        @click.stop="emitAction({name: params.name, data: params.data})"
         v-on="on"
       >
         <v-icon>{{ params.icon }}</v-icon>
@@ -16,7 +19,7 @@
   </v-tooltip>
 </template>
 <script>
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 
 export default {
   name: 'ActionButton',
@@ -24,7 +27,7 @@ export default {
   props: ['params'],
   computed: {
     tooltipTitle: function () {
-      return this.params[`title_${this.$i18n.locale}`] || null
+      return this.params[`title_${this.$i18n.locale}`] || this.$t(this.params.title)
     }
   }
 }

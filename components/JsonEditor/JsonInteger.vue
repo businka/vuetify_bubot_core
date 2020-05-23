@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-select
-      v-if="schema.hasOwnProperty('enum')"
+      v-if="Object.prototype.hasOwnProperty.call(schema, 'enum')"
       :label="elemName"
       :options="schema.enum"
       :placeholder="schema['description']"

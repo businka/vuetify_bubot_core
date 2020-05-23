@@ -64,7 +64,7 @@
 
 <script>
 import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 import storage from './store'
 
 export default {
@@ -75,7 +75,7 @@ export default {
     this.init()
   },
   beforeMount() {
-    if (!this.$store.state.hasOwnProperty(this.$options.name)) {
+    if (!Object.prototype.hasOwnProperty.call(this.$store.state, this.$options.name)) {
       this.$store.registerModule(this.$options.name, storage)
     }
   },

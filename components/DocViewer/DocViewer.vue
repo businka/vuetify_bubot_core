@@ -1,6 +1,6 @@
 <script>
 import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 import storage from './store'
 
 export default {
@@ -17,7 +17,7 @@ export default {
     }
   },
   beforeMount() {
-    if (!this.$store.state.hasOwnProperty(this.$options.name)) {
+    if (!Object.prototype.hasOwnProperty.call(this.$store.state, this.$options.name)) {
       this.$store.registerModule(this.$options.name, storage)
     }
   },
@@ -58,7 +58,7 @@ export default {
       if (!this.data.paramsIndex) {
         this.$store.commit(`${this.store.namespace}/indexParams`, { uid: this.store.uid }, { root: true })
       }
-      if (this.data.paramsIndex.hasOwnProperty(data.n)) {
+      if (IndexObject.prototype.hasOwnProperty.call(this.data.params, data.n)) {
         this.$store.commit(`${this.store.namespace}/updateItemProps`, {
           uid: this.store.uid,
           path: `item/params/${this.data.paramsIndex[data.n]}`,
@@ -135,14 +135,6 @@ export default {
 
   .activeTab {
     border-bottom: 3px solid #FF7033;
-  }
-
-  .btn_default_action {
-    border: thin solid #FF7033;
-    background-color: transparent;
-    &:hover {
-      background-color: #FDECD9;
-    }
   }
 
   .jay-tab {

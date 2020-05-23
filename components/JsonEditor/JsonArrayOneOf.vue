@@ -7,6 +7,7 @@ export default {
   props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
   data: () => ({
     show: false,
+    delimiter: "."
   }),
   computed: {
     title() {
@@ -46,7 +47,7 @@ export default {
     },
     getElemSchema(value) {
       for (let key in this.schema.items.oneOf){
-        if (this.schema.items.oneOf.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(this.schema.items.oneOf, key)) {
           if (this.schema.items.oneOf[key].uid === value.uid){
             return this.schema.items.oneOf[key]
           }
@@ -120,7 +121,7 @@ export default {
       >
         <span
           v-for="(_elemValue, index ) in elemValue"
-          :key="path + '/' +index"
+          :key="`${path}${delimiter}${index}`"
         >
           <v-hover v-slot:default="{ hover }">
             <v-row class="pa-0 ma-0">
@@ -132,7 +133,7 @@ export default {
                   :elem-value="_elemValue"
                   :elem-name="index+'.'"
                   :schema="getElemSchema(_elemValue)"
-                  :path="path + '/' +index"
+                  :path="`${path}${delimiter}${index}`"
                   :input-listeners="inputListeners"
                   :array-elem="true"
                   :level="level + 1"

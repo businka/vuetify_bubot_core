@@ -25,7 +25,7 @@
   </span>
 </template>
 <script>
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 
 export default {
   name: 'CellIcon',

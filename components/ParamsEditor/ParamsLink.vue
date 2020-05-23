@@ -8,7 +8,7 @@ export default {
         data = { n: this.schema.name, v: value.row._id['$oid'] }
         const fields = this.schema['fields'] || []
         for (let i = 0, len = fields.length; i <len; ++i) {
-          if(value.row.hasOwnProperty(fields[i])) {
+          if(Object.prototype.hasOwnProperty.call(value.row, fields[i])) {
             data[fields[i]] = value.row[fields[i]]
           }
         }

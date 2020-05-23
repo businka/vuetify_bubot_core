@@ -1,5 +1,4 @@
 {
-
   "failed": "Action failed",
   "success": "Action was successful",
   "Companies": "Companies",
@@ -15,43 +14,6 @@
   "MarkInvert": "Инвертировать",
   "FilterSelected": "Отбираются",
   "FilterSelect": "Отобрать",
-  "NavDrawer": {
-    "Title": "СОЙКА",
-    "Disk": "Документы",
-    "Incoming": "Входящие",
-    "Outgoing": "Исходящие",
-    "Tasks": "Задачи",
-    "OnMe": "Задачи на мне",
-    "FromMe": "Задачи от меня",
-    "Unallocated": "Разобрать",
-    "Business": "Business",
-    "Documents": "Documents",
-    "Nomenclature": "Nomenclature",
-    "Marking": "Marking",
-    "EmissionIC": "Emission",
-    "NomenclatureCatalog": "Каталог",
-    "Organization": "Организации",
-    "Settings": "Settings",
-    "Connector": "Connector",
-    "Profile": "Профиль",
-    "Logout": "Выход"
-
-  },
-  "TabsBrowser": {
-    "Tab": {
-      "OrderIC": "Заказы КМ",
-      "EmissionIC": "Эмиссия",
-      "List": "Список",
-      "Answers": "Ответы",
-      "Statistic": "Статистика"
-    }
-  },
-  "ActionButtons": {
-    "AddDocument": "+ Документ",
-    "CreateOrganization": "+ Организация",
-    "Import": "Импорт",
-    "Export": "Экспорт"
-  },
   "$vuetify": {
     "noDataText": "Ничего не найдено",
     "dataIterator": {"loadingText": "loading"},

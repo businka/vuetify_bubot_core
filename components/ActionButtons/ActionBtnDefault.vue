@@ -1,19 +1,20 @@
 <template>
   <v-btn
+    id="default-btn-action"
     rounded
     x-small
-    class="jay-space-right btn_default_action"
+    class="mr-1"
     outlined
     @click.stop="emitAction({name: params.name, data: params.data || {}})"
   >
-    {{ params[`title_${$i18n.locale}`] || '' }}
+    {{ params[`title_${$i18n.locale}`] || $t(params.title) }}
   </v-btn>
 </template>
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
 
 export default {
-  name: "ActionBtnDefault",
+  name: 'ActionBtnDefault',
   mixins: [ActionMixin],
   props: ['params'],
 }
@@ -21,12 +22,13 @@ export default {
 </script>
 
 <style lang="scss">
-  .btn_default_action {
+
+  #default-btn-action {
     border: thin solid #FF7033;
     background-color: transparent;
+
     &:hover {
       background-color: #FDECD9;
     }
   }
-
 </style>

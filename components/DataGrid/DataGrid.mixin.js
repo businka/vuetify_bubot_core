@@ -8,12 +8,15 @@ export default {
     },
     async query () {
       this.emitAction({ name: 'Loading', data: { value: true } })
-      await this.$store.dispatch(`${this.namespace}/query`, {
-        store: this.store,
-        params: this.params,
-        data: this.data
-      }, { root: true })
-      this.emitAction({ name: 'Loading', data: { value: false } })
+      try {
+        await this.$store.dispatch(`${this.namespace}/query`, {
+          store: this.store,
+          params: this.params,
+          data: this.data
+        }, { root: true })
+      } finally {
+        this.emitAction({ name: 'Loading', data: { value: false } })
+      }
 
     },
     async actionChangeFilter( data) {

@@ -1,6 +1,6 @@
 <script>
-import { jsonClone } from '@/helpers/clone'
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import { jsonClone } from '../../helpers/clone'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 
 
 export default {
@@ -37,7 +37,7 @@ export default {
     indexHeaders () {
       let res = {}
       for (let elem in this.headers) {
-        if (this.headers.hasOwnProperty(elem)){
+        if (Object.prototype.hasOwnProperty.call(this.headers, elem)){
           res[this.headers[elem].value] = this.headers[elem]
         }
       }

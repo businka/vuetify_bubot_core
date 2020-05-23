@@ -25,7 +25,7 @@
   </v-toolbar>
 </template>
 <script>
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 
 export default {
   name: 'ToolBar',
@@ -63,7 +63,7 @@ export default {
     //     try {
     //       data = this.$store.getters.storeData(this.storeParams.namespace, this.storeParams.uid, {})
     //     } catch (e) {
-    //       if (!this.$store.state.hasOwnProperty(this.storeParams.namespace)) {
+    //       if (!Object.prototype.hasOwnProperty.call(this.$store.state, this.storeParams.namespace)) {
     //         throw new Error(`namespace not found in store - ${this.storeParams.namespace}`)
     //       } else {
     //         throw e

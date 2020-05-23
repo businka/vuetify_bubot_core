@@ -1,10 +1,10 @@
 export async function processInDataSource (method, store, payload) {
   const mode = store.getters.mode(payload.store)
-  if (!mode.hasOwnProperty(method)){
+  if (!Object.prototype.hasOwnProperty.call(mode, method)){
     throw new Error(`method '${method}' not found in datasource ${payload.store.mode.name}`)
   }
 
-  let result = await mode[method](store, payload)
+  const result = await mode[method](store, payload)
   return result
 }
 
@@ -12,7 +12,7 @@ export async function processInDataSource (method, store, payload) {
  * @return {boolean}
  */
 export function DataAvailabilityCheck (data, prop) {
-  return data.hasOwnProperty(prop)
+  return Object.prototype.hasOwnProperty.call(data, prop)
 }
 
 export function hasMode (store, mode, storeKey) {

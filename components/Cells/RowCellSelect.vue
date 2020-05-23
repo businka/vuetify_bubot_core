@@ -1,5 +1,5 @@
 <script>
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 
 export default {
   name: 'CellSelect',
@@ -38,7 +38,7 @@ export default {
       let result = this.value
       let i, len
       for (i = 0, len = this.path.length; i < len - 1; i++) {
-        if (result.hasOwnProperty(this.path[i])) {
+        if (Object.prototype.hasOwnProperty.call(result, this.path[i])) {
           result = result[this.path[i]]
         }
       }
@@ -54,7 +54,7 @@ export default {
       let result = data
       let i, len
       for (i = 0, len=this.path.length; i < len-1; i++) {
-        if (result.hasOwnProperty(this.path[i])) {
+        if (Object.prototype.hasOwnProperty.call(result, this.path[i])) {
           result = result[this.path[i]]
         }
       }

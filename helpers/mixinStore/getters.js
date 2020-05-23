@@ -1,26 +1,28 @@
 import remote from '../datasources/remote'
 import store from '../datasources/store'
 import ie1c from '../datasources/ie1c'
+import websocket from '../datasources/websocket'
 
 
 export const modes = {
   remote,
   store,
-  ie1c
+  ie1c,
+  websocket
 }
 
 export function mode (state) {
   return function (payload) {
     let mode
-    if (payload && payload.hasOwnProperty('mode')) { // если указан режим - берем его
+    if (payload && Object.prototype.hasOwnProperty.call(payload, 'mode')) { // если указан режим - берем его
       mode = payload.mode
-    } else if (payload.hasOwnProperty('key')) { // иначе перем из сохраненного значения
+    } else if (Object.prototype.hasOwnProperty.call(payload, 'key')) { // иначе перем из сохраненного значения
       mode = state[payload.uid].mode
     }
     if (!mode) {
       throw new Error(`${payload.uid} not defined mode`)
     }
-    if (modes.hasOwnProperty(mode.name)) {
+    if (Object.prototype.hasOwnProperty.call(modes, mode.name)) {
       return modes[mode.name]
     }
     throw new Error(`${payload.uid} not supported mode "${mode.name}"`)
@@ -30,10 +32,10 @@ export function mode (state) {
 export function get (state) {
   return function (uid, name, value) {
     if (name) {
-      if (!state.hasOwnProperty(uid)) {
+      if (!Object.prototype.hasOwnProperty.call(state, uid)) {
         throw new Error(`not found key '${uid}' in state ${state.namespace}`)
       }
-      if (!state[uid].hasOwnProperty(name)) {
+      if (!Object.prototype.hasOwnProperty.call(state[uid], name)) {
         if (value) {
           return value
         }
@@ -52,12 +54,12 @@ export function get (state) {
 export function getProps (state) {
   return function (uid, path, value) {
     if (path) {
-      if (!state.hasOwnProperty(uid)) {
+      if (!Object.prototype.hasOwnProperty.call(state, uid)) {
         throw new Error(`not found key '${uid}' in state ${state.namespace}`)
       }
       let result = state[uid]
       for (let i = 0; i < path.length; i++) {
-        if (result.hasOwnProperty(path[i])) {
+        if (Object.prototype.hasOwnProperty.call(result, path[i])) {
           result = result[path[i]]
         } else {
           return value

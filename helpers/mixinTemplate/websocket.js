@@ -3,7 +3,7 @@ export default {
    onConnect: function() {
       console.log(`connect. refs: ${Object.keys(this.$refs).length}`)
       for (let ref in this.$refs) {
-        if (this.$refs.hasOwnProperty(ref)) {
+        if (Object.prototype.hasOwnProperty.call(this.$refs, ref)) {
           let item = this.$refs[ref]
           let ocf = item.getAttribute('ocf')
           let uri = item.getAttribute('uri')
@@ -27,7 +27,7 @@ export default {
       this.$socket.onmessage = (data) => {
         data = JSON.parse(data.data)
         let uri = `ocf://${data.to.di}${data.to.href}`
-        if (this.$refs.hasOwnProperty(uri)) {
+        if (Object.prototype.hasOwnProperty.call(this.$refs, uri)) {
           let elem = this.$refs[uri]
           let ocf = elem.getAttribute('ocf')
           switch (ocf) {

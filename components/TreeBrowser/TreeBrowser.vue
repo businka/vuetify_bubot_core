@@ -1,7 +1,7 @@
 <script>
 import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 import storage from './store'
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 // import DataGridMixin from '../DataGrid/DataGrid.mixin'
 import axios from 'axios'
 
@@ -22,7 +22,7 @@ export default {
     this.fetch(null)
   },
   beforeMount() {
-    if (!this.$store.state.hasOwnProperty(this.$options.name)) {
+    if (!Object.prototype.hasOwnProperty.call(this.$store.state, this.$options.name)) {
       this.$store.registerModule(this.$options.name, storage)
     }
   },
@@ -40,7 +40,7 @@ export default {
     async actionMassDelete() {
       const selected = this.getSelected()
       for (let elem in selected) {
-        if (selected.hasOwnProperty(elem)){
+        if (Object.prototype.hasOwnProperty.call(selected, elem)){
           await this.$store.dispatch(`${this.namespace}/delete`, {
             store: this.store,
             params: this.params,

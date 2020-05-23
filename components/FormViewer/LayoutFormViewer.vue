@@ -1,33 +1,19 @@
-<template>
-  <v-content>
-    <NavDrawer/>
-    <v-system-bar class="px-0">
-      <v-spacer></v-spacer>
-      <v-divider vertical></v-divider>
-      <LangSelector/>
-    </v-system-bar>
-    <component
-      :is="form.template"
-      v-if="form"
-      :params="form"
-      :store-params="{
-        form: uid,
-        uid: uid,
-      }"
-    />
-  </v-content>
-</template>
-
 <script>
 import NavDrawer from '../NavDrawer/NavDrawer'
+import LongOperations from '../LongOperations/LongOperations'
+import LangSelector from '../Simple/LangSelector'
+import LongOperationsBadge from '../LongOperations/LongOperationBadge'
 
 export default {
   name: 'LayoutFormViewer',
   components: {
-    NavDrawer
+    NavDrawer,
+    LangSelector,
+    LongOperations,
+    LongOperationsBadge
   },
   computed: {
-    uid() {
+    uid () {
       let r = this.$route.params
       if (r.objType && r.objName && r.objForm) {
         return `${r.objType}/${r.objName}/${r.objForm}`
@@ -36,7 +22,7 @@ export default {
       }
 
     },
-    form() {
+    form () {
       if (this.uid) {
         return this.$store.getters['storeData']('Form', this.uid)
       }
@@ -47,20 +33,20 @@ export default {
   //   template: null
   // }),
   watch: {
-    $route: function() {
+    $route: function () {
       this.loadForm()
     },
-    uid() {
+    uid () {
       if (this.uid && this.$route.path === '/') {
         this.$router.push({ path: this.uid })
       }
     }
   },
-  mounted() {
+  mounted () {
     this.loadForm()
   },
   methods: {
-    loadForm() {
+    loadForm () {
       if (this.uid && !this.$store.getters['storeData']('Form', this.uid)) {
         this.$store.dispatch(`Form/load`, {
           uid: this.uid
@@ -81,3 +67,25 @@ export default {
 
 <style>
 </style>
+
+<template>
+  <v-content>
+    <NavDrawer />
+    <v-system-bar class="px-0">
+      <v-spacer />
+      <LongOperationsBadge />
+      <v-divider vertical />
+      <LangSelector />
+    </v-system-bar>
+    <component
+      :is="form.template"
+      v-if="form"
+      :params="form"
+      :store-params="{
+        form: uid,
+        uid: uid,
+      }"
+    />
+    <LongOperations />
+  </v-content>
+</template>

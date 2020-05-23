@@ -3,7 +3,14 @@
 export default {
   props: {
     schema: Object,
-    elemValue: Object,
+    elemValue: {
+      validator: function (value) {
+        const result = (typeof value === 'object')
+        if (!result)
+          console.warn(value)
+        return result
+      }
+    },
     elemName: String,
     path: String,
     inputListeners: Object,
@@ -11,22 +18,23 @@ export default {
     level: Number,
     readOnly: Boolean
   },
-  data() {
+  data () {
     return {
       linkListData: null,
       options: null,
-      show: false
+      show: false,
+      delimiter: '.'
     }
   },
   computed: {
-    _elemName() {
+    _elemName () {
       let _value = this.elemValue
       if (this.arrayElem || this.path) { // если показываем объект являющийся элементом массива, показываем узел name или значения первого из схемы
-        if (this.elemValue.hasOwnProperty('title')) {
+        if (Object.prototype.hasOwnProperty.call(this.elemValue, 'title')) {
           return this.elemValue.name
         } else {
           for (let elem in this.schema.properties) {
-            if (this.schema.properties.hasOwnProperty(elem)) {
+            if (Object.prototype.hasOwnProperty.call(this.schema.properties, elem)) {
               return this.elemValue[elem]
             }
           }
@@ -37,29 +45,32 @@ export default {
       return _value
     },
     value: {
-      get() {
+      get () {
         return this.elemValue.title
       },
-      set(value) {
-        this.$emit('action', {name: 'UpdateProp', data:{ action:'change', path: this.path, value: this.linkListData[value]}})
+      set (value) {
+        this.$emit('action', {
+          name: 'UpdateProp',
+          data: { action: 'change', path: this.path, value: this.linkListData[value] }
+        })
       }
     }
   },
-  mounted() {
+  mounted () {
     if (this.schema && this.elemValue === undefined) {
 
-      this.$emit('action', {name: 'UpdateProp', data:{ action:'change', path: this.path, value: {}}})
+      this.$emit('action', { name: 'UpdateProp', data: { action: 'change', path: this.path, value: {} } })
     }
   },
-  beforeCreate: function() {
+  beforeCreate: function () {
     this.$options.components.JsonElem = require('./JsonElem.vue').default
   },
   methods: {
-    onChange(value) {
+    onChange (value) {
       console.log('oc2' + this.path + '-' + value)
-      this.$emit('action', {name: 'UpdateProp', data:{ action:'change', path: this.path, value}})
+      this.$emit('action', { name: 'UpdateProp', data: { action: 'change', path: this.path, value } })
     },
-    filterFn(val, update) {
+    filterFn (val, update) {
       if (this.options !== null) {
         update()
         return
@@ -68,7 +79,7 @@ export default {
         this.options = []
         this.linkListData = {}
         let self = this
-        response.data.items.forEach(function(item) {
+        response.data.items.forEach(function (item) {
           self.options.push(item.title)
           self.linkListData[item.title] = item
         })
@@ -127,14 +138,14 @@ export default {
           tile
         >
           <JsonElem
-            v-for="(_schema, _elemName ) in schema['properties']"
-            :key="path+'/'+_elemName"
-            :elem-name="_elemName"
-            :elem-value="elemValue[_elemName]"
-            :read-only="readOnly?readOnly:schema.readOnly"
+            v-for="(_schema, _propName ) in schema['properties']"
+            :key="`${path}${delimiter}${_propName}`"
+            :elem-name="_propName"
+            :elem-value="elemValue[_propName]"
             :schema="_schema"
-            :path="path+'/'+_elemName"
+            :path="`${path}${delimiter}${_propName}`"
             :input-listeners="inputListeners"
+            :read-only="readOnly?readOnly:schema.readOnly"
           />
         </v-card>
       </v-expand-transition>
@@ -142,12 +153,12 @@ export default {
     <!--Это корень-->
     <span v-else>
       <JsonElem
-        v-for="(_schema, _elemName ) in schema['properties']"
-        :key="path+'/'+_elemName"
-        :elem-name="_elemName"
-        :elem-value="elemValue[_elemName]"
+        v-for="(_schema, _propName ) in schema['properties']"
+        :key="`${path}${delimiter}${_propName}`"
+        :elem-name="_propName"
+        :elem-value="elemValue[_propName]"
         :schema="_schema"
-        :path="path+'/'+_elemName"
+        :path="`${path}${delimiter}${_propName}`"
         :input-listeners="inputListeners"
         :read-only="readOnly?readOnly:schema.readOnly"
       />

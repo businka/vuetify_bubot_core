@@ -7,6 +7,7 @@ export default {
   props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
   data: () => ({
     show: false,
+    delimiter: "."
   }),
   computed: {
     title() {
@@ -44,6 +45,7 @@ export default {
       class="pa-0 pb-1"
     >
       <v-btn
+        class="pt-3"
         icon
         dense
         @click="show = !show"
@@ -51,18 +53,18 @@ export default {
         <v-icon>{{ show ? 'mdi-minus-box-outline' : 'mdi-plus-box-outline' }}</v-icon>
       </v-btn>
       <v-text-field
-        :label="`${schema.title || elemName} (${elemValue.length})`"
+        :label="`${schema.title || elemName} [${elemValue.length}]`"
         :placeholder="schema['description']"
-        solo
         flat
         hide-details
         disabled
         :value="title"
       />
       <v-btn
-        v-if="show || !elemValue.length"
+        v-if="show"
         dense
         icon
+        :disabled="readOnly"
       >
         <v-icon>{{ 'mdi-plus-circle' }}</v-icon>
       </v-btn>
@@ -77,7 +79,7 @@ export default {
       >
         <span
           v-for="(_elemValue, index ) in elemValue"
-          :key="path + '/' +index"
+          :key="`${path}${delimiter}${index}`"
         >
           <v-hover v-slot:default="{ hover }">
             <v-row class="pa-0 ma-0">
@@ -89,7 +91,7 @@ export default {
                   :elem-value="_elemValue"
                   :elem-name="index+'.'"
                   :schema="schema.items"
-                  :path="path + '/' +index"
+                  :path="`${path}${delimiter}${index}`"
                   :input-listeners="inputListeners"
                   :array-elem="true"
                   :level="level + 1"
@@ -103,6 +105,7 @@ export default {
                 <v-btn
                   dense
                   icon
+                  :disabled="readOnly"
                 >
                   <v-icon v-if="hover">
                     {{ 'mdi-delete' }}

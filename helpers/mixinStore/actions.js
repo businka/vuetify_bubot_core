@@ -2,7 +2,7 @@ import { jsonClone } from '../clone'
 
 export async function error (store, { storeKey, error }) {
   // console.error(`${store.state.namespace}: ${error.message} (${error.detail})`)
-  if (store.state.hasOwnProperty(storeKey)) {
+  if (Object.prototype.hasOwnProperty.call(store.state, storeKey)) {
     store.commit('Error', error)
   }
 }

@@ -1,6 +1,6 @@
 // import Vue from 'vue'
 // import 'es6-promise/auto'
-import '@/vendor/cadesplugin'
+import '../../vendor/cadesplugin'
 
 export let dateFormatter = new Intl.DateTimeFormat('ru')
 
@@ -51,7 +51,7 @@ export async function find(store, filter) {
   for (i = 0, len = certs.length; i < len; ++i) {
     let found = true
     for (let elem in filter) {
-      if (!filter.hasOwnProperty(elem)) {
+      if (Object.prototype.hasOwnProperty.call(!filter, elem)) {
         continue
       }
       if (certs[i][elem] !== filter[elem]) {

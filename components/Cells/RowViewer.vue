@@ -1,6 +1,6 @@
 <script>
-import { jsonClone } from '@/helpers/clone'
-import ActionMixin from '@/helpers/mixinTemplate/action'
+import { jsonClone } from '../../helpers/clone'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 
 
 export default {

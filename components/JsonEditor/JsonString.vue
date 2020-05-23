@@ -1,12 +1,13 @@
 <template>
   <div class="pb-1">
     <v-select
-      v-if="schema.hasOwnProperty('enum')"
+      v-if="Object.prototype.hasOwnProperty.call(schema, 'enum')"
       :label="schema.title || elemName"
       :placeholder="schema.description || null"
       :items="schema.enum"
-      :readonly="schema.readOnly"
-      :single-line="arrayElem"
+      :disabled="(schema.readOnly || readOnly)"
+      :solo="arrayElem"
+      :flat="arrayElem"
       :dense="arrayElem"
       hide-details
       :value="elemValue"
@@ -17,8 +18,9 @@
       v-else
       :label="schema.title || elemName"
       :placeholder="schema.description || null"
-      :readonly="schema.readOnly"
-      :single-line="arrayElem"
+      :disabled="(schema.readOnly || readOnly)"
+      :solo="arrayElem"
+      :flat="arrayElem"
       :dense="arrayElem"
       hide-details
       :value="elemValue"
