@@ -55,7 +55,7 @@ export default {
 
 <style lang="scss">
   .LangSelectorFlag {
-    background: url("../../../assets/img/flags.png");
+    background: url("../../assets/flags.png");
     /*background-position: left center;*/
     background-repeat: no-repeat;
     width: 20px;
