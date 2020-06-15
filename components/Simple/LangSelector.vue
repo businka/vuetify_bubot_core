@@ -1,3 +1,21 @@
+<script>
+import { loadLanguageAsync } from '../../plugins/i18n'
+export default {
+  name: 'LangSelector',
+  data: function () {
+    return {
+      langs: ['ru', 'en', 'cn'],
+    }
+  },
+  methods: {
+    changeLang (lang) {
+      loadLanguageAsync(lang)
+      // this.$i18n.locale = lang
+    }
+  }
+}
+</script>
+
 <template>
   <v-menu>
     <template v-slot:activator="{ on }">
@@ -7,35 +25,59 @@
         x-small
         v-on="on"
       >
-        {{ $i18n.locale }}
+        <div :class="`LangSelectorFlag LangSelectorFlag-${$i18n.locale}`" />
+        <div class="pl-1 LangSelectorText">
+          {{ $i18n.locale }}
+        </div>
       </v-btn>
     </template>
+
     <v-list
-      dense
+      min-width="60px"
+      class="pa-0"
     >
       <v-list-item
         v-for="lang in langs"
         :key="lang"
+        max
+        class="d-flex flex-row"
         @click="changeLang(lang)"
       >
-        <v-list-item-title>{{ lang }}</v-list-item-title>
+        <div :class="`d-flex LangSelectorFlag LangSelectorFlag-${lang}`" />
+        <div class="pl-1 LangSelectorText">
+          {{ lang }}
+        </div>
       </v-list-item>
     </v-list>
   </v-menu>
 </template>
-<script>
 
-export default {
-  name: 'LangSelector',
-  data: function() {
-    return {
-      langs: ['ru', 'en', 'cn'],
-    }
-  },
-  methods: {
-    changeLang(lang) {
-      this.$i18n.locale = lang
-    }
+
+<style lang="scss">
+  .LangSelectorFlag {
+    background: url("../../../assets/img/flags.png");
+    /*background-position: left center;*/
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 14px;
   }
-}
-</script>
+
+  .LangSelectorFlag-ru {
+    background-position: 0 -563px;
+  }
+
+  .LangSelectorFlag-en {
+    background-position: 0 -763px;
+  }
+
+  .LangSelectorFlag-cn {
+    background-position: 0 -123px;
+  }
+
+  .LangSelectorText {
+    /*text-transform: uppercase;*/
+
+    /*height: 24px;*/
+  }
+
+</style>

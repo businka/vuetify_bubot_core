@@ -1,5 +1,5 @@
 import NavDrawer from '../components/NavDrawer/store'
-import User from '../views/Login/store'
+// import User from '../views/Login/store'
 import FormViewer from '../components/FormViewer/FormViewer.store'
 // import LongOperations from '../components/LongOperations/store'
 
@@ -7,7 +7,7 @@ import FormViewer from '../components/FormViewer/FormViewer.store'
 export const coreModules = {
   Form: FormViewer,
   NavDrawer,
-  User,
+  // User,
   // LongOperations
 }
 

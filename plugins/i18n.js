@@ -8,23 +8,23 @@ Vue.use(VueI18n)
 export const i18n = new VueI18n({
   locale: navigator.language.substr(0,2).toLowerCase(), // set locale
   fallbackLocale: 'en',
-  messages: loadLocaleMessages() // set locale messages
+  messages: undefined //loadLocaleMessages() // set locale messages
 })
 
-const loadedLanguages = ['en'] // our default language that is preloaded
+const loadedLanguages = [] // our default language that is preloaded
 
-function loadLocaleMessages () {
-  const locales = require.context('../i18n', true, /[A-Za-z0-9-_,\s]+\.json$/i)
-  const messages = {}
-  locales.keys().forEach(key => {
-    const matched = key.match(/([A-Za-z0-9-_]+)\./i)
-    if (matched && matched.length > 1) {
-      const locale = matched[1]
-      messages[locale] = locales(key)
-    }
-  })
-  return messages
-}
+// function loadLocaleMessages () {
+//   const locales = require.context('../../i18n', true, /[A-Za-z0-9-_,\s]+\.json$/i)
+//   const messages = {}
+//   locales.keys().forEach(key => {
+//     const matched = key.match(/([A-Za-z0-9-_]+)\./i)
+//     if (matched && matched.length > 1) {
+//       const locale = matched[1]
+//       messages[locale] = locales(key)
+//     }
+//   })
+//   return messages
+// }
 
 function setI18nLanguage (lang) {
   i18n.locale = lang
@@ -34,22 +34,27 @@ function setI18nLanguage (lang) {
 }
 
 export function loadLanguageAsync(lang) {
-  // If the same language
-  if (i18n.locale === lang) {
-    return Promise.resolve(setI18nLanguage(lang))
-  }
-
-  // If the language was already loaded
-  if (loadedLanguages.includes(lang)) {
+  if (!lang)
+    lang = navigator.language.substr(0,2).toLowerCase()
+  // If the same language and If the language was already loaded
+  if (i18n.locale === lang && loadedLanguages.includes(lang)) {
     return Promise.resolve(setI18nLanguage(lang))
   }
 
   // If the language hasn't been loaded yet
-  return import(/* webpackChunkName: "lang-[request]" */ `../i18n/${lang}.json`).then(
+  return axios.get(`/i18n/${lang}.json`).then(
     messages => {
-      i18n.setLocaleMessage(lang, messages.default)
+      i18n.setLocaleMessage(lang, messages.data)
       loadedLanguages.push(lang)
       return setI18nLanguage(lang)
     }
   )
+
+  // import(/* webpackChunkName: "lang-[request]" */ `../../i18n/${lang}.json`).then(
+  //   messages => {
+  //     i18n.setLocaleMessage(lang, messages.default)
+  //     loadedLanguages.push(lang)
+  //     return setI18nLanguage(lang)
+  //   }
+  // )
 }

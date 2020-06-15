@@ -1,43 +1,3 @@
-<template>
-  <div>
-    <v-autocomplete
-      :value="cert"
-      :items="certs"
-      :filter="customFilter"
-      outlined
-      hide-details
-      return-object
-      item-text="subjectCN"
-      placeholder="Выберите электронную подпись..."
-      @input="$emit('input', $event)"
-      @focus="init"
-    >
-      <template v-slot:no-data="">
-        <v-card
-          flat
-          class="mx-auto my-auto text-center"
-        >
-          <v-progress-circular
-            v-if="loading"
-            :indeterminate="(!progress)"
-            :value="progress"
-          />
-          <p
-            v-if="!loading"
-            class="caption"
-          >
-            Сертификаты не найдены
-          </p>
-        </v-card>
-      </template>
-      <template v-slot:item="{ item }">
-        <v-list-item-content>
-          <v-list-item-title>{{ item.subjectCN }}</v-list-item-title>
-        </v-list-item-content>
-      </template>
-    </v-autocomplete>
-  </div>
-</template>
 <script>
 import cades from './cades.mixin'
 
@@ -89,3 +49,43 @@ export default {
   }
 }
 </script>
+<template>
+  <div>
+    <v-autocomplete
+      :value="cert"
+      :items="certs"
+      :filter="customFilter"
+      outlined
+      hide-details
+      return-object
+      item-text="subjectCN"
+      placeholder="Выберите электронную подпись..."
+      @input="$emit('input', $event)"
+      @focus="init"
+    >
+      <template v-slot:no-data="">
+        <v-card
+          flat
+          class="mx-auto my-auto text-center"
+        >
+          <v-progress-circular
+            v-if="loading"
+            :indeterminate="(!progress)"
+            :value="progress"
+          />
+          <p
+            v-if="!loading"
+            class="caption"
+          >
+            Сертификаты не найдены
+          </p>
+        </v-card>
+      </template>
+      <template v-slot:item="{ item }">
+        <v-list-item-content>
+          <v-list-item-title>{{ item.subjectCN }}</v-list-item-title>
+        </v-list-item-content>
+      </template>
+    </v-autocomplete>
+  </div>
+</template>
