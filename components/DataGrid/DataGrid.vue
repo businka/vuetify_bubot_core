@@ -240,8 +240,9 @@ export default {
         >
           <v-container
             v-if="data.error"
+            class="error--text"
           >
-            {{ data.error.msg }}
+            {{ `${data.error.msg} ${data.error.detail || ''}` }}
           </v-container>
           <v-container
             v-else

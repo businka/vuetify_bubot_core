@@ -14,14 +14,14 @@ export default {
     }
   },
   actions: {
-    initForm: async (store) => {
-      let { data } = await axios.get('/api/Core/NavDrawer') //, { params: payload })
-      store.commit('NavDrawerItems', data)
-    },
+    // initForm: async (store) => {
+    //   let { data } = await axios.get('/api/Core/NavDrawer') //, { params: payload })
+    //   store.commit('NavDrawerItems', data)
+    // },
     load: async (store, payload) => {
       try {
         let uid = payload.uid
-        let { data } = await axios.get(`/form/${uid}`) //, { params: payload })
+        let { data } = await axios.get(`/form/${store.rootState.app}${uid}`) //, { params: payload })
         store.commit('initStoreKey', { uid, data })
         return data
       } catch (err) {

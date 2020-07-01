@@ -70,7 +70,7 @@ export default {
     error (state, payload) {
       let oper = state.operations[payload.uid]
       oper.status = 'error'
-      oper.message = `${payload.data.message} ${payload.data.detail}`
+      oper.message = `${payload.data.msg} ${payload.data.detail}`
     },
     success (state, payload) {
       let oper = state.operations[payload.uid]
@@ -130,6 +130,7 @@ export default {
         templateParams: {},
         title: '',
         result: null,
+        callback: null
       }, payload.operation, {
         progress: -1,
         status: 'pending',
@@ -142,13 +143,23 @@ export default {
     },
     on_complete: (store, payload) => {
       const uid = payload.uid
-      store.commit(payload.type, payload)
       const operation = store.state.operations[uid]
+      store.commit(payload.type, payload)
       if (operation['autoDelete'])
         store.commit('delete', uid)
+      if (operation.resolve){
+        operation.resolve(payload.data)
+      }
     },
     on_error: (store, payload) => {
-      store.dispatch('on_complete', payload)
+      const uid = payload.uid
+      const operation = store.state.operations[uid]
+      store.commit(payload.type, payload)
+      if (operation['autoDelete'])
+        store.commit('delete', uid)
+      if (operation.reject){
+        operation.reject(payload.data)
+      }
     },
     on_notify: (store, payload) => {
       store.commit('notify', payload)

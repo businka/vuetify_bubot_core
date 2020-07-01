@@ -4,16 +4,16 @@
     v-model="show"
     min-width="300"
   >
-    <template v-slot:activator="{ on }">
+    <template v-slot:activator="{ on: onMenu }">
       <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
+        <template v-slot:activator="{ on: onTooltip }">
           <v-btn
             :class="params.primary?'ma-0 jay-space-right btn_default_action':'ma-0 jay-space-right'"
             icon
             dense
             small
             :outlined="params.primary || false"
-            v-on="on"
+            v-on="{ ...onMenu, ...onTooltip }"
             @click="show=true"
           >
             <v-icon>{{ params.icon }}</v-icon>
@@ -36,7 +36,7 @@
           v-if="menuItem.icon"
           class="mr-2"
         >
-          <v-icon >
+          <v-icon>
             {{ menuItem.icon }}
           </v-icon>
         </v-list-item-icon>
@@ -49,10 +49,10 @@
 import ActionMixin from '../../helpers/mixinTemplate/action'
 
 export default {
-  name: "ActionBtnMenu",
+  name: 'ActionBtnMenu',
   mixins: [ActionMixin],
   props: ['params'],
-  data: function() {
+  data: function () {
     return {
       show: false
     }
@@ -64,6 +64,7 @@ export default {
   .btn_default_action {
     border: thin solid #FF7033;
     background-color: transparent;
+
     &:hover {
       background-color: #FDECD9;
     }

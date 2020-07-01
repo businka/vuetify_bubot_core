@@ -22,7 +22,7 @@ export default {
       let resp
       try {
         resp = await axios.get(
-          '/api/Catalog/User/navigation',
+          `/api/${store.rootState.app}navigation`,
           { headers: { 'Accept-Language': payload.locale } }
         ) //, { params: payload })
       } catch (error) {

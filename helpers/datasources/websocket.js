@@ -22,16 +22,24 @@ export default {
       //   { params }
       // )
       // result = resp.data.result
-
+      let result_resolve, result_reject
+      const callback = new Promise(function (resolve, reject) {
+        result_resolve = resolve
+        result_reject = reject
+      })
       result = await store.dispatch(`LongOperations/run`, {
         // operation: ,
-        name: `${payload.store.mode.objType}/${payload.store.mode.objName}/query`,
+        name: `${store.rootState.app}${payload.store.mode.objType}/${payload.store.mode.objName}/query`,
         data: params,
+        operation: {
+          resolve: result_resolve,
+          reject: result_reject
+        },
         params: payload.params
       }, { root: true })
-
+      result = await callback
     } catch (err) {
-      error = err.message
+      error = err
     }
     store.commit('query', { uid: payload.store.uid, data: result, error })
     return []

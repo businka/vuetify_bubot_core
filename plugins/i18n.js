@@ -6,7 +6,7 @@ import axios from 'axios'
 Vue.use(VueI18n)
 
 export const i18n = new VueI18n({
-  locale: navigator.language.substr(0,2).toLowerCase(), // set locale
+  locale: navigator.language.substr(0, 2).toLowerCase(), // set locale
   fallbackLocale: 'en',
   messages: undefined //loadLocaleMessages() // set locale messages
 })
@@ -33,9 +33,9 @@ function setI18nLanguage (lang) {
   return lang
 }
 
-export function loadLanguageAsync(lang) {
+export function loadLanguageAsync (lang) {
   if (!lang)
-    lang = navigator.language.substr(0,2).toLowerCase()
+    lang = navigator.language.substr(0, 2).toLowerCase()
   // If the same language and If the language was already loaded
   if (i18n.locale === lang && loadedLanguages.includes(lang)) {
     return Promise.resolve(setI18nLanguage(lang))
