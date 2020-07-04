@@ -1,6 +1,6 @@
 <script>
 import buxios from '../../helpers/buxios'
-import { get_session } from '../../router/index'
+import { get_user } from '../../router/index'
 
 export default {
   name: 'CurrentUserInToolbar',
@@ -11,12 +11,12 @@ export default {
     }
   },
   beforeMount () {
-    const cookies = get_session()
-    console.log(cookies)
-    if (cookies && cookies.session) {
-      this.getCurrentUser(cookies)
+    console.log(get_user())
+    if (get_user()) {
+      this.getCurrentUser()
     } else {
       this.setNoUser()
+      console.log('f1f')
     }
   },
   methods: {
@@ -32,6 +32,7 @@ export default {
         this.title = response.data.title
 
       } catch (e) {
+        console.error(e)
         this.setNoUser()
       } finally {
         this.loading = false
@@ -74,32 +75,5 @@ export default {
   </v-menu>
 </template>
 
-
 <style lang="scss">
-  .LangSelectorFlag {
-    background: url("../../assets/flags.png");
-    /*background-position: left center;*/
-    background-repeat: no-repeat;
-    width: 20px;
-    height: 14px;
-  }
-
-  .LangSelectorFlag-ru {
-    background-position: 0 -563px;
-  }
-
-  .LangSelectorFlag-en {
-    background-position: 0 -763px;
-  }
-
-  .LangSelectorFlag-cn {
-    background-position: 0 -123px;
-  }
-
-  .LangSelectorText {
-    /*text-transform: uppercase;*/
-
-    /*height: 24px;*/
-  }
-
 </style>

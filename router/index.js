@@ -20,8 +20,7 @@ export function redirectToAuth (to, from, next, whiteList) {
     next()
   } else {
     // other pages that do not have permission to access are redirected to the login page.
-    const cookies = get_session()
-    if (cookies && cookies.session) {// && sessionId !== 'deleted') {
+    if (get_user()) {
       next()
     } else {
       const current = window.location.href
