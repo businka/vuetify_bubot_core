@@ -32,19 +32,19 @@ export function redirectToAuth (to, from, next, whiteList) {
 }
 
 export function get_session() {
-  return Vue.$cookies.get('Session')
+  return Vue.$cookies.get('session')
 }
 
 export function get_user() {
   const session = get_session()
   if (session)
-    return session.User
+    return session.user
   return undefined
 }
 
 export function get_account() {
   const session = get_session()
   if (session)
-    return session.Account
+    return session.account
   return undefined
 }
