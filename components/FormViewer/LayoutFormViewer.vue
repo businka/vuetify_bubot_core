@@ -3,11 +3,13 @@ import NavDrawer from '../NavDrawer/NavDrawer'
 import LongOperations from '../LongOperations/LongOperations'
 import LangSelector from '../Simple/LangSelector'
 import LongOperationsBadge from '../LongOperations/LongOperationBadge'
+import CurrentUser from '../CurrentUser/CurrentUserInToolbar'
 
 export default {
   name: 'LayoutFormViewer',
   components: {
     NavDrawer,
+    CurrentUser,
     LangSelector,
     LongOperations,
     LongOperationsBadge
@@ -69,12 +71,14 @@ export default {
 </style>
 
 <template>
-  <v-content>
+  <v-main>
     <NavDrawer />
+
     <v-system-bar class="px-0">
       <v-spacer />
       <LongOperationsBadge />
       <v-divider vertical />
+      <CurrentUser />
       <LangSelector />
     </v-system-bar>
     <component
@@ -87,5 +91,5 @@ export default {
       }"
     />
     <LongOperations />
-  </v-content>
+  </v-main>
 </template>
