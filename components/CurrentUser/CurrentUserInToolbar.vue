@@ -24,11 +24,11 @@ export default {
       this.title = this.$t('auth.SignIn')
       this.loading = false
     },
-    getCurrentUser: async function () {
+    async getCurrentUser () {
       try {
         this.title = ''
         this.loading = true
-        const response = await buxios.get('/api/AuthService/Catalog/User/get_current_user')
+        const response = await buxios.get('/api/AuthService/Catalog/User/current_user')
         this.title = response.data.title
 
       } catch (e) {
