@@ -4,7 +4,7 @@
 // import { setToken } from './auth'
 import { get_session, redirect_to_sign_in } from './session'
 import buxios from '../../helpers/buxios'
-import { getUrlParam } from '../../helpers/UrlParam'
+// import { getUrlParam } from '../../helpers/UrlParam'
 
 export default {
   namespaced: true,
@@ -88,8 +88,7 @@ export default {
     signOut: async (store) => {
       await buxios.post('/api/AuthService/User/sign_out')
       store.commit('clear')
-      const redirect = getUrlParam('redirect')
-      if (redirect) redirect_to_sign_in(redirect)
+      redirect_to_sign_in(window.location.pathname + window.location.search)
     }
   }
 }

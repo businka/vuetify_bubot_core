@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { navigate } from '../../helpers/UrlParam'
 
 export function get_session() {
   return Vue.$cookies.get('session')
@@ -26,8 +27,5 @@ export function get_session() {
 // }
 
 export function redirect_to_sign_in (redirect) {
-  const current = window.location.href
-  const auth = current.substr(0, current.indexOf('/ui/')) + '/ui/AuthService/'
-  const dest_url = auth + redirect?`?redirect=${redirect}`:''
-  window.location.href = `${auth}${dest_url}`
+  navigate('/ui/AuthService/' + redirect?`?redirect=${redirect}`:'')
 }
