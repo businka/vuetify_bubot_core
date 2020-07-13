@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { get_user, redirect_to_sign_in } from '../components/Session/session'
 
 export const coreRoutes = [
   {
@@ -23,27 +23,8 @@ export function redirectToAuth (to, from, next, whiteList) {
     if (get_user()) {
       next()
     } else {
-      const current = window.location.href
-      const auth = current.substr(0, current.indexOf('/ui/')) + '/ui/AuthService/'
-      window.location.href = `${auth}?redirect=${window.location.pathname}`
+      redirect_to_sign_in(window.location.pathname)
     }
   }
 }
 
-export function get_session() {
-  return Vue.$cookies.get('session')
-}
-
-export function get_user() {
-  const session = get_session()
-  if (session)
-    return session.user
-  return undefined
-}
-
-export function get_account() {
-  const session = get_session()
-  if (session)
-    return session.account
-  return undefined
-}

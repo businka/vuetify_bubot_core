@@ -3,7 +3,7 @@ import NavDrawer from '../NavDrawer/NavDrawer'
 import LongOperations from '../LongOperations/LongOperations'
 import LangSelector from '../Simple/LangSelector'
 import LongOperationsBadge from '../LongOperations/LongOperationBadge'
-import CurrentUser from '../CurrentUser/CurrentUserInToolbar'
+import CurrentUser from '../Session/CurrentUserInToolbar'
 
 export default {
   name: 'LayoutFormViewer',
