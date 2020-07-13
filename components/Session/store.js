@@ -75,10 +75,12 @@ export default {
           _id: response.data.session,
           user: response.data.user
         })
+        return !!response.data.user;
 
       } catch (e) {
         console.error(e)
         store.commit('clear')
+        return false
       } finally {
         // this.loading = false
       }

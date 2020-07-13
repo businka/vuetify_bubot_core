@@ -39,10 +39,11 @@ export default {
     }
   },
   mounted () {
+    this.init()
   },
   methods: {
     init () {
-      if (!this.session) {  // инициализируем сессию в хранилище
+      if (!this.session._id) {  // инициализируем сессию в хранилище
         this.$store.dispatch('Session/signIn', null, { root: true })
       }
     },
