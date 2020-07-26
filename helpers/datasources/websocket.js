@@ -18,7 +18,7 @@ export default {
     try {
       let params = Object.assign(payload.store.mode.filter || {}, payload.filter || {})
 
-      // resp = await axios.get(`/api/${payload.store.mode.objType}/${payload.store.mode.objName}/query`,
+      // resp = await axios.get(`/api/${payload.store.mode.objName}/query`,
       //   { params }
       // )
       // result = resp.data.result
@@ -29,7 +29,7 @@ export default {
       })
       result = await store.dispatch(`LongOperations/run`, {
         // operation: ,
-        name: `${store.rootState.app}${payload.store.mode.objType}/${payload.store.mode.objName}/query`,
+        name: `${store.rootState.app}/${payload.store.mode.objName}/query`,
         data: params,
         operation: {
           resolve: result_resolve,
@@ -47,7 +47,7 @@ export default {
   create: async (store, payload) => {
     let resp
     try {
-      resp = await axios.post(`/api/${payload.store.mode.objType}/${payload.store.mode.objName}/create`, payload.data)
+      resp = await axios.post(`/api/${payload.store.mode.objName}/create`, payload.data)
       const form = resp.data.form || payload.params.rowActivateHandler.form
 
       let params = store.rootGetters['storeData']('Form', form)
@@ -77,7 +77,7 @@ export default {
   read: async (store, payload) => {
     let data
     try {
-      data = await axios.get(`/api/${payload.store.mode.objType}/${payload.store.mode.objName}/read?id=${payload.id}`)
+      data = await axios.get(`/api/${payload.store.mode.objName}/read?id=${payload.id}`)
       return data.data.result
     } catch (error) {
       console.error(error)
@@ -86,7 +86,7 @@ export default {
   delete: async (store, payload) => {
     let data
     try {
-      data = await axios.post(`/api/${payload.store.mode.objType}/${payload.store.mode.objName}/delete`, payload.value)
+      data = await axios.post(`/api/${payload.store.mode.objName}/delete`, payload.value)
       return data.data.result
     } catch (error) {
       console.error(error)
@@ -96,7 +96,7 @@ export default {
     let data
     try {
       // let fieldId = payload.store.modeParams[payload.store.mode.fieldId || 'id']
-      data = await axios.post(`/api/${payload.store.mode.objType}/${payload.store.mode.objName}/update`, payload.data)
+      data = await axios.post(`/api/${payload.store.mode.objName}/update`, payload.data)
       return data.data.result
     } catch
       (error) {
@@ -108,7 +108,7 @@ export default {
     let result
     let error = null
     try {
-      resp = await axios.post(`/api/${payload.store.mode.objType}/${payload.store.mode.objName}/action`,
+      resp = await axios.post(`/api/${payload.store.mode.objName}/action`,
         { data: { name: payload.name, data: payload.data } }
       )
       result = resp.data.result

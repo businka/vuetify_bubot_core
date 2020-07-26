@@ -1,137 +1,3 @@
-<template>
-  <v-navigation-drawer
-    v-model="visible"
-    class="nav1_bg"
-    app
-    dark
-    :width="200"
-    permanent
-  >
-    <!--<v-toolbar>{{$t('NavDrawer.Title')}}</v-toolbar>-->
-    <v-list
-      v-if="items"
-    >
-      <div
-        v-if="items && current>=0"
-      >
-        <v-list-item
-          :key="items[current].path"
-          :to="items[current].path"
-          active-class="active-section-active"
-          class="active-section"
-        >
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ $t(`NavDrawer.${items[current].title}`) }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item
-          v-for="item in items[current].child"
-          :key="item.path"
-          :to="item.path"
-          active-class="active-section-active"
-          class="active-section"
-          dense
-        >
-          <v-list-item-content>
-            <v-list-item-title
-              class="pl-5"
-            >
-              {{ $t(`NavDrawer.${item.title}`) }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </div>
-      <div
-        v-for="(item, i) in items"
-        :key="i"
-      >
-        <!-- не активный раздел без детей -->
-        <v-list-item
-          v-if="i!==current && !item.child"
-          v-ripple
-          clickable
-          class="px-1"
-          :to="item.path"
-        >
-          <v-list-item-icon v-if="item.icon" class="mx-2">
-            <v-icon v-text="item.icon"/>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ $t(`NavDrawer.${item.title}`) }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <!-- не активный раздел c детьми -->
-        <v-menu
-          v-if="i!==current && item.child"
-          dark
-          left
-          fixed
-          min-width="250px"
-          max-width="250px"
-          nudge-width="250px"
-        >
-          <template v-slot:activator="{ on }">
-            <v-list-item
-
-              :active="false"
-              class="px-1"
-              v-on="on"
-            >
-              <v-list-item-icon
-                class="mx-2"
-              >
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ $t(`NavDrawer.${item.title}`) }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </template>
-          <v-list
-            class="nav2_bg"
-          >
-            <v-list-item
-              :key="item.path"
-              :to="item.path"
-            >
-              <v-list-item-icon
-                class="mx-2"
-              >
-                <v-icon v-text="item.icon"/>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ $t(`NavDrawer.${item.title}`) }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item
-              v-for="subitem in item.child"
-              :key="subitem.path"
-              :to="subitem.path"
-              dense
-            >
-              <v-list-item-content>
-                <v-list-item-title
-                  class="pl-5"
-                >
-                  {{ $t(`NavDrawer.${subitem.title}`) }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </div>
-    </v-list>
-  </v-navigation-drawer>
-</template>
-<!--<i18n src="./locales/en.json"></i18n>-->
 <script>
 export default {
   computed: {
@@ -220,6 +86,7 @@ export default {
       /*color: var(--v-nav1-base);*/
     }
   }
+
   .passive-submenu {
     /*background-color: var(--v-nav1_bg-lighten1);*/
     /*&:hover, :focus {*/
@@ -232,3 +99,142 @@ export default {
 
 
 </style>
+
+<template>
+  <v-navigation-drawer
+    v-model="visible"
+    class="nav1_bg"
+    app
+    dark
+    :width="200"
+    permanent
+  >
+    <!--<v-toolbar>{{$t('NavDrawer.Title')}}</v-toolbar>-->
+    <v-system-bar class="px-0">
+      BuBot
+    </v-system-bar>
+    <v-list
+      v-if="items"
+      class="pa-0"
+    >
+      <div
+        v-if="items && current>=0"
+      >
+        <v-list-item
+          :key="items[current].path"
+          :to="items[current].path"
+          active-class="active-section-active"
+          class="active-section"
+        >
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t(`NavDrawer.${items[current].title}`) }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          v-for="item in items[current].child"
+          :key="item.path"
+          :to="item.path"
+          active-class="active-section-active"
+          class="active-section"
+          dense
+        >
+          <v-list-item-content>
+            <v-list-item-title
+              class="pl-5"
+            >
+              {{ $t(`NavDrawer.${item.title}`) }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </div>
+      <div
+        v-for="(item, i) in items"
+        :key="i"
+      >
+        <!-- не активный раздел без детей -->
+        <v-list-item
+          v-if="i!==current && !item.child"
+          v-ripple
+          clickable
+          class="px-1"
+          :to="item.path"
+        >
+          <v-list-item-icon v-if="item.icon" class="mx-2">
+            <v-icon v-text="item.icon" />
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t(`NavDrawer.${item.title}`) }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!-- не активный раздел c детьми -->
+        <v-menu
+          v-if="i!==current && item.child"
+          dark
+          left
+          fixed
+          min-width="250px"
+          max-width="250px"
+          nudge-width="250px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-list-item
+
+              :active="false"
+              class="px-1"
+              v-on="on"
+            >
+              <v-list-item-icon
+                class="mx-2"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ $t(`NavDrawer.${item.title}`) }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+          <v-list
+            class="nav2_bg"
+          >
+            <v-list-item
+              :key="item.path"
+              :to="item.path"
+            >
+              <v-list-item-icon
+                class="mx-2"
+              >
+                <v-icon v-text="item.icon" />
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ $t(`NavDrawer.${item.title}`) }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item
+              v-for="subitem in item.child"
+              :key="subitem.path"
+              :to="subitem.path"
+              dense
+            >
+              <v-list-item-content>
+                <v-list-item-title
+                  class="pl-5"
+                >
+                  {{ $t(`NavDrawer.${subitem.title}`) }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
+    </v-list>
+  </v-navigation-drawer>
+</template>
+<!--<i18n src="./locales/en.json"></i18n>-->

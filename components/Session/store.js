@@ -2,7 +2,7 @@
 // import Cookies from 'js-cookie'
 // import {Base64} from '../../components/Cert/base64'
 // import { setToken } from './auth'
-import { get_session, redirect_to_sign_in } from './session'
+import { getSession, redirectToSignIn } from './session'
 import buxios from '../../helpers/buxios'
 // import { getUrlParam } from '../../helpers/UrlParam'
 
@@ -68,8 +68,8 @@ export default {
         // this.visible = true
         // this.title = ''
         // this.loading = true
-        const session = get_session()
-        const response = await buxios.get('/api/AuthService/User/session_info')
+        const session = getSession()
+        const response = await buxios.get('/api/AuthService/User/read_session_info')
         if (session !== response.data.session) console.error('cookie != session_info')
         store.commit('set', {
           _id: response.data.session,
@@ -88,7 +88,7 @@ export default {
     signOut: async (store) => {
       await buxios.post('/api/AuthService/User/sign_out')
       store.commit('clear')
-      redirect_to_sign_in(window.location.pathname + window.location.search)
+      redirectToSignIn(window.location.pathname + window.location.search)
     }
   }
 }

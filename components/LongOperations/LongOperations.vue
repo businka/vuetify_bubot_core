@@ -40,7 +40,7 @@ export default {
     if (!Object.prototype.hasOwnProperty.call(this.$store.state, this.$options.name)) {
       this.$store.registerModule(this.$options.name, storage)
       this.$options.sockets.onopen = () => {
-        console.error('ws connect')
+        console.log('ws connect')
       }
       this.$options.sockets.onmessage = (message) => {
         if (message.type !== 'message') return

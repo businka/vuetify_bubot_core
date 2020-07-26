@@ -1,6 +1,6 @@
 <script>
 
-// import { get_session } from './session'
+// import { getSession } from './session'
 
 export default {
   name: 'CurrentUserInToolbar',

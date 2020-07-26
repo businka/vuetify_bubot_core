@@ -17,8 +17,8 @@ export default {
   computed: {
     uid () {
       let r = this.$route.params
-      if (r.objType && r.objName && r.objForm) {
-        return `${r.objType}/${r.objName}/${r.objForm}`
+      if (r.objName && r.objForm) {
+        return `${r.objName}/${r.objForm}`
       } else {
         return this.$store.state.NavDrawer.default
       }

@@ -2,7 +2,7 @@
 
 // import axios from 'axios/index'
 
-function get_data(store, payload, form) {
+function get_data (store, payload, form) {
   let data = store.rootGetters['storeData'](form.template, payload.store.form)
   let path = payload.store.mode.path.split('/')
   let result = data
@@ -23,7 +23,7 @@ export default {
   query: async (store, payload) => {
     let form = store.rootGetters['storeData']('Form', payload.store.form)
     let data = get_data(store, payload, form)
-    data = await { rows: data }
+    data = { rows: data }
     store.commit('query', { uid: payload.store.uid, data: data })
     return data
   },

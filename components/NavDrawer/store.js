@@ -1,4 +1,4 @@
-import axios from 'axios'
+import buxios from '../../helpers/buxios'
 
 export default {
   state: {
@@ -20,19 +20,12 @@ export default {
   actions: {
     Load: async (store, payload) => {
       let resp
-      try {
-        resp = await axios.get(
-          `/api/${store.rootState.app}navigation`,
-          { headers: { 'Accept-Language': payload.locale } }
-        ) //, { params: payload })
-      } catch (error) {
-        if (error.response.status === 401){
-          payload.router.push({ path: '/login', query: {redirect: payload.path }})
-        }
-        throw error
-      }
-      let navData = resp.data.result.items
-      let result = { items: navData, index: {}, default: resp.data.result.default }
+      resp = await buxios.get(
+        `/api/${store.rootState.app}/read_navigation`,
+        { headers: { 'Accept-Language': payload.locale } }
+      ) //, { params: payload })
+      let navData = resp.data.items
+      let result = { items: navData, index: {}, default: resp.data.default }
       navData.forEach((item, i) => {
         if (item.path) {
           result.index[item.path] = i
