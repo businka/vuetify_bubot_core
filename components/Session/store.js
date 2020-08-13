@@ -73,7 +73,9 @@ export default {
         if (session !== response.data.session) console.error('cookie != session_info')
         store.commit('set', {
           _id: response.data.session,
-          user: response.data.user
+          user: response.data.user,
+          account: response.data.account,
+          accounts: response.data.accounts
         })
         return !!response.data.user;
 

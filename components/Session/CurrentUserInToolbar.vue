@@ -57,6 +57,7 @@ export default {
 <template>
   <v-menu
     v-if="visible"
+    offset-y
   >
     <template v-slot:activator="{ on }">
       <v-btn
@@ -71,8 +72,29 @@ export default {
       </v-btn>
     </template>
 
+    <v-divider />
+    <v-list
+      subheader
+      min-width="60px"
+      dense
+      class="pa-0"
+    >
+      <v-subheader>{{$t('Аккаунты')}}</v-subheader>
+      <v-list-item
+        max
+        class="d-flex flex-row"
+        @click.stop="signOut()"
+      >
+        <div class="pl-1 LangSelectorText">
+          {{ $t('auth.SignOut') }}
+        </div>
+      </v-list-item>
+    </v-list>
+
+
     <v-list
       min-width="60px"
+      dense
       class="pa-0"
     >
       <v-divider />
