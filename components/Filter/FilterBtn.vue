@@ -112,7 +112,7 @@ export default {
             v-model="value"
             :editMode="true"
             :field="field"
-            @action="emitAction"
+            @action="onAction"
           />
         </v-container>
       </v-card>

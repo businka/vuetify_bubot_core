@@ -93,7 +93,7 @@ export default {
               :col="indexHeaders['item_title']"
               :edit-mode="true"
               :autofocus="true"
-              @action="emitAction"
+              @action="onAction"
             />
           </v-col>
           <v-col
@@ -104,7 +104,7 @@ export default {
               v-model="row"
               :col="indexHeaders['amount']"
               :edit-mode="true"
-              @action="emitAction"
+              @action="onAction"
             />
           </v-col>
         </v-row>

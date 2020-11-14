@@ -221,7 +221,7 @@ export default {
         elem-name=""
         :read-only="false"
         path=""
-        @action="emitAction"
+        @action="onAction"
       />
     </v-container>
   </v-container>

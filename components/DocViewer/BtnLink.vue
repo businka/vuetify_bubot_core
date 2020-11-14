@@ -70,7 +70,7 @@ export default {
       :is="params.handler || 'RightDrawerFormViewer'"
       v-if="params.form && selectionVisible"
       :params="{form: params.form, visible:selectionVisible}"
-      @action="emitAction"
+      @action="onAction"
     />
   </v-container>
 </template>

@@ -32,6 +32,7 @@ export default {
         name: `${store.rootState.app}/${payload.store.mode.objName}/query`,
         data: params,
         operation: {
+          autoDelete: true,
           resolve: result_resolve,
           reject: result_reject
         },

@@ -21,7 +21,7 @@ export default {
       resp = await axios.get(`/api/${store.rootState.app}/${payload.store.mode.objName}/query`,
         { params }
       )
-      result = resp.data.result
+      result = resp.data
     } catch (err) {
       switch (err.response.status) {
         case 400:

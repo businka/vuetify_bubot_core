@@ -39,14 +39,14 @@ export default {
     <BtnLink
       :value="data.item.org"
       path="item/org"
-      :params="{title: 'Организация', description: '', form:'/Catalog/Organization/Select'}"
-      @action="emitAction"
+      :params="{title: 'Организация', description: '', form:'/Organization/Select'}"
+      @action="onAction"
     />
     <BtnLink
       :value="data.item.org"
       path="item/org"
-      :params="{title: 'Подразделение', description: '', form:'/Catalog/Organization/Select'}"
-      @action="emitAction"
+      :params="{title: 'Подразделение', description: '', form:'/Organization/Select'}"
+      @action="onAction"
     />
   </div>
 </template>

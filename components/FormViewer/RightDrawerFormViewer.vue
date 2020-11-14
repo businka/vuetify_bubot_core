@@ -65,7 +65,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .v-btn--outlined {
     border: thin solid var(--v-default-base);
     background-color: var(--v-default-base) transparent;
@@ -100,7 +100,7 @@ export default {
         form: params.form,
         uid: params.form,
       }"
-      @action="emitAction"
+      @action="onAction"
     />
     <template
       v-if="error && !loading"

@@ -151,7 +151,7 @@ export default {
                   class="px-2"
                   :params="options.components.toolBar"
                   :store="options.data"
-                  @action="emitAction"
+                  @action="onAction"
                 />
               </th>
             </tr> <!-- ToolBar !-->
@@ -171,7 +171,7 @@ export default {
                     select: on['toggle-select-all']
                   }"
                   :store="options.store"
-                  @action="emitAction"
+                  @action="onAction"
                 />
               </th>
             </tr> <!-- MassOperationsBar !-->
@@ -188,7 +188,7 @@ export default {
                   :filter="options.data.filter"
                   :params="options.components.filterBar"
                   :store="headers[0].store"
-                  @action="emitAction"
+                  @action="onAction"
                 />
               </th>
             </tr> <!-- FilterBar !-->
@@ -218,7 +218,7 @@ export default {
             :index="index"
             :params="headers[0].params"
             :store="headers[0].store"
-            @action="emitAction"
+            @action="onAction"
           />
           <component
             :is="params.rowTemplate"
@@ -231,7 +231,7 @@ export default {
             :edit-mode="data.editForm && data.editForm.handler==='inline' && index===data.editForm.index"
             :params="headers[0].params"
             :store="headers[0].store"
-            @action="emitAction"
+            @action="onAction"
           />
         </template>
 
@@ -256,13 +256,13 @@ export default {
       :is="data.editForm.handler"
       v-if="data.editForm && data.editForm.visible && data.editForm.handler!=='inline'"
       :params="data.editForm"
-      @action="emitAction"
+      @action="onAction"
     />
     <component
       :is="data.actionForm.handler"
       v-if="data.actionForm && data.actionForm.visible"
       :params="data.actionForm"
-      @action="emitAction"
+      @action="onAction"
     />
 
 

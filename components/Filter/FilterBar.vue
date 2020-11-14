@@ -7,7 +7,7 @@
       :is="params.components.search.template"
       v-if="params.components.search"
       :params="params.components.search"
-      @action="emitAction"
+      @action="onAction"
     />
     <v-spacer />
     <component
@@ -15,7 +15,7 @@
       v-if="params.components.filter"
       :params="params.components.filter"
       :filter="filter"
-      @action="emitAction"
+      @action="onAction"
     />
   </v-toolbar>
 </template>

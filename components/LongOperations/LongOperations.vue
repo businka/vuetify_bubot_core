@@ -28,7 +28,7 @@ export default {
     },
     currentOperationTmplParam () {
       if (this.currentOperation) {
-        return Object.assign({} , this.currentOperation.templateParams, { item: this.currentOperation })
+        return Object.assign({}, this.currentOperation.templateParams, { item: this.currentOperation })
       }
       return {}
     }
@@ -46,11 +46,15 @@ export default {
         if (message.type !== 'message') return
         const data = JSON.parse(message.data)
         const type = data.type || 'unknown'
-        this.$store.dispatch(`LongOperations/on_${type}`, data, {root: true})
+        this.$store.dispatch(`LongOperations/on_${type}`, data, { root: true })
       }
     }
   },
-  methods: {}
+  methods: {
+    actionCloseEditForm: function () {
+      this.$store.commit('LongOperations/hideOperation', null, { root: true })
+    }
+  }
 
 }
 </script>
@@ -62,13 +66,13 @@ export default {
       :is="currentOperation.template"
       v-if="lo.showCurrent && currentOperation.template"
       :params="currentOperationTmplParam"
-      @action="emitAction"
+      @action="onAction"
     />
     <component
       :is="lo.listTemplate"
       v-if="lo.listTemplate && lo.showList"
       :lo="lo"
-      @action="emitAction"
+      @action="onAction"
     />
   </v-container>
 </template>

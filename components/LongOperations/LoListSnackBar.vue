@@ -61,66 +61,69 @@ export default {
   <v-snackbar
     :value="true"
     vertical
-    :timeout="0"
+    :timeout="-1"
+    outlined
     right
     color="white"
   >
-    <v-system-bar>
-      <span>Long operations</span>
-      <v-spacer></v-spacer>
-      <v-icon @click="$store.commit('LongOperations/hideList', null, {root: true})">mdi-chevron-down</v-icon>
-    </v-system-bar>
-    <v-list
-      style="max-height: 400px"
-      class="pa-0 overflow-y-auto"
-    >
-      <v-container
-        v-for="(value, uid) in lo.operations"
-        :key="uid"
-        class="d-flex pa-0"
+    <v-card>
+      <v-system-bar>
+        <span>Long operations</span>
+        <v-spacer></v-spacer>
+        <v-icon @click="$store.commit('LongOperations/hideList', null, {root: true})">mdi-chevron-down</v-icon>
+      </v-system-bar>
+      <v-list
+        style="max-height: 400px; min-width: 350px;"
+        class="pa-0 overflow-y-auto"
       >
-        <v-hover
-          v-if="value.show"
-          v-slot:default="{ hover }"
+        <v-container
+          v-for="(value, uid) in lo.operations"
+          :key="uid"
+          class="d-flex pa-0"
         >
-          <v-list-item
-            @click="onActivate(uid)"
+          <v-hover
+            v-if="value.show"
+            v-slot:default="{ hover }"
           >
-            <v-list-item-content>
-              <v-list-item-title
-                class="text-short"
-                v-text="value.title"
-              />
-              <v-list-item-subtitle
-                v-text="value.message"
-                class="text-short"
-              />
-            </v-list-item-content>
-            <v-list-item-avatar>
-              <v-progress-circular
-                v-if="value.status==='pending' || value.status==='run'"
-                :value="value.progress"
-                :indeterminate="value.progress === -1"
-                @click.stop="value.cancelable ? onCancel(uid): onActivate(uid)"
-              >
-                {{ (value.cancelable && hover) ? 'X' : (value.progress >=0 ? value.progress: '') }}
-              </v-progress-circular>
-              <v-icon
-                v-else-if="value.status==='success'"
-                @click.stop="onDelete(uid)"
-              >
-                {{ (hover) ? 'mdi-delete' : 'mdi-check' }}
-              </v-icon>
-              <v-icon
-                v-else-if="value.status==='error'"
-                @click.stop="onDelete(uid)"
-              >
-                {{ (hover) ? 'mdi-delete' : 'mdi-alert-octagon-outline' }}
-              </v-icon>
-            </v-list-item-avatar>
-          </v-list-item>
-        </v-hover>
-      </v-container>
-    </v-list>
+            <v-list-item
+              @click="onActivate(uid)"
+            >
+              <v-list-item-content>
+                <v-list-item-title
+                  class="text-short"
+                  v-text="value.title"
+                />
+                <v-list-item-subtitle
+                  v-text="value.message"
+                  class="text-short"
+                />
+              </v-list-item-content>
+              <v-list-item-avatar>
+                <v-progress-circular
+                  v-if="value.status==='pending' || value.status==='run'"
+                  :value="value.progress"
+                  :indeterminate="value.progress === -1"
+                  @click.stop="value.cancelable ? onCancel(uid): onActivate(uid)"
+                >
+                  {{ (value.cancelable && hover) ? 'X' : (value.progress >=0 ? value.progress: '') }}
+                </v-progress-circular>
+                <v-icon
+                  v-else-if="value.status==='success'"
+                  @click.stop="onDelete(uid)"
+                >
+                  {{ (hover) ? 'mdi-delete' : 'mdi-check' }}
+                </v-icon>
+                <v-icon
+                  v-else-if="value.status==='error'"
+                  @click.stop="onDelete(uid)"
+                >
+                  {{ (hover) ? 'mdi-delete' : 'mdi-alert-octagon-outline' }}
+                </v-icon>
+              </v-list-item-avatar>
+            </v-list-item>
+          </v-hover>
+        </v-container>
+      </v-list>
+    </v-card>
   </v-snackbar>
 </template>

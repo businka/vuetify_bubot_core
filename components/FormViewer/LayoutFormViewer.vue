@@ -84,11 +84,7 @@ export default {
     <component
       :is="form.template"
       v-if="form"
-      :params="form"
-      :store-params="{
-        form: uid,
-        uid: uid,
-      }"
+      v-bind="form"
     />
     <LongOperations />
   </v-main>

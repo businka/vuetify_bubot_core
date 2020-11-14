@@ -153,7 +153,7 @@ export default {
     <component
       :is="'RightDrawerFormViewer'"
       v-if="orgVisible"
-      :params="{form: 'Catalog/Organization/Select'}"
+      :params="{form: 'Organization/Select'}"
       @action="onOrgSelectEnd"
     />
 
@@ -252,7 +252,7 @@ export default {
           :params="params.components.tabs[0]"
           :data="data"
           :store="store"
-          @action="emitAction"
+          @action="onAction"
         />
       </v-container>
       <v-container
@@ -267,7 +267,7 @@ export default {
           :params="tab"
           :data="data"
           :store="store"
-          @action="emitAction"
+          @action="onAction"
         />
       </v-container>
     </v-container>

@@ -1,16 +1,16 @@
 export default {
   methods: {
-    emitAction (action) {
+    onAction (action) {
       console.log(`${this.$options.name} emit action ${action.name}`)
       let _action = `action${action.name}`
       if (Object.prototype.hasOwnProperty.call(this, _action)) {
         this[_action](action.data)
       } else {
-        this._emitAction(action)
+        this.emitAction(action.name, action.data)
       }
     },
-    _emitAction (action) {
-      this.$emit('action', action)
+    emitAction (name, data) {
+      this.$emit('action', { name, data })
     },
     async dispatchAction (action) {
       const data = action.data || {}

@@ -68,14 +68,23 @@ export default {
       Object.assign(state.operations[uid], data)
     },
     error (state, payload) {
-      let oper = state.operations[payload.uid]
-      oper.status = 'error'
-      oper.message = `${payload.data.msg} ${payload.data.detail}`
+      let operation = state.operations[payload.uid]
+      if (operation === undefined) {
+        console.warn('long operation not found')
+        return
+      }
+      operation.status = 'error'
+      operation.message = `${payload.data.msg} ${payload.data.detail}`
     },
     success (state, payload) {
-      let oper = state.operations[payload.uid]
-      Object.assign(oper, payload.data)
-      oper.status = 'success'
+      let operation = state.operations[payload.uid]
+      if (operation === undefined) {
+        console.warn('long operation not found')
+        return
+      }
+
+      Object.assign(operation, payload.data)
+      operation.status = 'success'
     },
     showList (state) {
       state.showList = true
@@ -90,27 +99,30 @@ export default {
     hideOperation (state) {
       state.showCurrent = false
     },
-    breaking (state, uid) {
-      state.operations[uid].status = 'breaking'
+    canceling (state, uid) {
+      state.operations[uid].status = 'canceling'
     },
-    break (state, uid) {
-      state.operations[uid].status = 'break'
+    cancel (state, uid) {
+      state.operations[uid].status = 'cancel'
     },
     delete (state, uid) {
       if (state.operations[uid].show)
         state.executed --;
       Vue.delete(state.operations, uid)
-      if (!state.executed)
+      if (!state.executed) {
+        state.currentUid = ''
+        state.showCurrent = false
         state.showList = false
+      }
     },
   },
   actions: {
-    break: ({ commit }, uid) => {
+    cancel: ({ commit }, uid) => {
       Vue.prototype.$socket.sendObj({
         uid,
-        type: 'break'
+        type: 'cancel'
       }, { root: true })
-      commit('breaking', uid)
+      commit('canceling', uid)
     },
     run: ({ commit, state }, payload) => {
       payload.operation = payload.operation || {}
@@ -138,12 +150,17 @@ export default {
       commit('run', { uid, operation })
       return uid
     },
-    on_break: (store, payload) => {
-      store.commit('break', payload)
+    on_cancel: (store, payload) => {
+      store.commit('cancel', payload)
     },
     on_complete: (store, payload) => {
       const uid = payload.uid
       const operation = store.state.operations[uid]
+      if (operation === undefined) {
+        console.warn('long operation not found')
+        return
+      }
+
       store.commit(payload.type, payload)
       if (operation['autoDelete'])
         store.commit('delete', uid)
@@ -154,6 +171,11 @@ export default {
     on_error: (store, payload) => {
       const uid = payload.uid
       const operation = store.state.operations[uid]
+      if (operation === undefined) {
+        console.warn('long operation not found')
+        return
+      }
+
       store.commit(payload.type, payload)
       if (operation['autoDelete'])
         store.commit('delete', uid)

@@ -78,7 +78,7 @@ export default {
         :col="col"
         :edit-mode="editMode"
         :autofocus="i===0"
-        @action="emitAction"
+        @action="onAction"
       />
     </td>
   </tr>

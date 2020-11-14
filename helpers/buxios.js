@@ -1,6 +1,7 @@
 import axios from 'axios'
-import {redirectToSignIn, getAppUrl} from '../components/Session/session'
+import { redirectToSignIn, getAppUrl } from '../components/Session/session'
 import { navigate } from './UrlParam'
+import ExtException from './ExtException'
 
 export default {
   post: async function (url, data, config) {
@@ -19,7 +20,7 @@ export default {
   }
 }
 
-function processError(err) {
+function processError (err) {
   const contentType = err.response.headers['content-type']
   let destPath
   let url = getAppUrl()
@@ -29,17 +30,17 @@ function processError(err) {
       break
     case 409:
       destPath = `${url.base}${url.app}Account/select`
-      if (destPath!==window.location.pathname)
+      if (destPath !== window.location.pathname)
         navigate(`${destPath}?redirect=${url.base}${url.app}${url.path}${window.location.search}`)
       break
     default:
       if (contentType && contentType.toLowerCase().indexOf('application/json') >= 0) {
-        throw(err.response.data)
+        throw  new ExtException(err.response.data)
       } else {
-        throw({
-          msg: `${err.response.status} ${err.response.statusText}`,
+        throw(new ExtException({
+          message: `${err.response.status} ${err.response.statusText}`,
           detail: err.response.data
-        })
+        }))
       }
   }
 }

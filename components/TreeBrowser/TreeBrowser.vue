@@ -138,7 +138,7 @@ export default {
       v-if="data.editForm && data.editForm.visible && data.editForm.handler==='RightDrawerFormViewer'"
       name="editForm"
       :params="data.editForm"
-      @action="emitAction"
+      @action="onAction"
     />
   </v-row>
 </template>

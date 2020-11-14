@@ -109,7 +109,7 @@ export default {
               :schema="child"
               :value="Object.prototype.hasOwnProperty.call(paramsIndex, child.name)?value[paramsIndex[child.name]]:{}"
               :read-only="false"
-              @action="emitAction"
+              @action="onAction"
             />
           </p>
         </v-expand-transition>
@@ -121,7 +121,7 @@ export default {
         :schema="param"
         :value="Object.prototype.hasOwnProperty.call(paramsIndex, child.name)?value[paramsIndex[child.name]]:{}"
         :read-only="false"
-        @action="emitAction"
+        @action="onAction"
       />
     </v-container>
   </div>

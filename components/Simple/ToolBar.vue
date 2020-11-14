@@ -12,7 +12,7 @@
       v-for="item in params.items"
       :key="item.name"
       :params="item"
-      @action="emitAction"
+      @action="onAction"
     />
     <v-btn
       icon

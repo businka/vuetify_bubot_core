@@ -8,6 +8,7 @@ Vue.use(VueI18n)
 export const i18n = new VueI18n({
   locale: navigator.language.substr(0, 2).toLowerCase(), // set locale
   fallbackLocale: 'en',
+  silentTranslationWarn: true,
   messages: undefined //loadLocaleMessages() // set locale messages
 })
 

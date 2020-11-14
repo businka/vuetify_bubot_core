@@ -129,7 +129,7 @@ export default {
         :params="params.components.tabs[activeTab]"
         :data="data"
         :store="store"
-        @action="emitAction"
+        @action="onAction"
       />
     </v-container>
   </v-container>

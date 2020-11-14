@@ -93,7 +93,7 @@ export default {
         :params="field"
         :value="_value"
         @input="onChange"
-        @action="emitAction"
+        @action="onAction"
       />
     </v-container>
     <v-container
