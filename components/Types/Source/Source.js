@@ -6,7 +6,8 @@ export default class Source {
   total = 0
   filter = {}
   props = {
-    rows: []
+    rows: [],
+    filter: {}
   }
   store
   keyProperty = 'id'
@@ -17,7 +18,7 @@ export default class Source {
     this.props = Object.assign(this.props, props)
     this.filterFields = filterFields
     this.keyProperty = this.props['keyProperty'] || 'id'
-    this.rawData = this.props.rows
+    this.rawData = this.props.rows || []
     this.store = store
   }
 

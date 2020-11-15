@@ -1,3 +1,5 @@
+import { initDataSource } from '../../Types/Source/DataSourceLoader'
+
 export default {
   data () {
     return {
@@ -11,7 +13,8 @@ export default {
       editForm: {},
       actionForm: {}
     }
-  }, methods: {
+  },
+  methods: {
     actionLoading (data) {
       this.$store.commit(`${this.namespace}/loading`, {
         uid: this.store.uid,
@@ -92,12 +95,10 @@ export default {
 
         this.editForm = {
           handler: this.rowActivateHandler.name,
-          uid: form,
+          formUid: form,
           // params,
           visible: true,
-          item: data.row,
-          index: data.index,
-          // name: 'EditForm'
+          formData: { item: data.row, index: data.index },
         }
       }
     },
@@ -106,9 +107,9 @@ export default {
         uid: this.store.uid,
         data: {
           handler: data.handler,
-          form: data.form,
+          formUid: data.form,
           visible: true,
-          item: data.item
+          formData: { item: data.item }
         }
       })
     },
@@ -130,11 +131,9 @@ export default {
         filter: this.modeParams.filter
       })
     },
-    // async init () {
-    //   this.initStore()
-    //   await this.initForm()
-    //   this.setDefaultFilter()
-    //   await this.query()
-    // }
+    init () {
+      this.source = initDataSource(this.dataSource.type, this.dataSource, this.filterFields, this.$store)
+      // this.source.query()
+    }
   }
 }

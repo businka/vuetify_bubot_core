@@ -1,71 +1,10 @@
 <script>
 
-import ActionMixin from '../../helpers/mixinTemplate/action'
+import FormLoader from './FormLoader.mixin'
 
 export default {
   name: 'RightDrawerFormViewer',
-  mixins: [ActionMixin],
-  props: {
-    uid: {
-      type: String,
-    },
-    visible: {
-      type: Boolean
-    },
-    item: {
-      type: Object,
-      default: function () {
-        return {}
-      }
-    },
-  },
-  data: () => ({
-    loading: false,
-    error: ''
-  }),
-  computed: {
-    form () {
-      return this.$store.getters['storeData']('Form', this.uid)
-    },
-    width () {
-      return this.form ? this.form.width || 600 : 600
-    }
-  },
-  watch: {
-    item () {
-      this.init()
-    }
-  },
-  mounted () {
-    this.init()
-  },
-  methods: {
-    async init () {
-      if (this.uid)
-      if (!this.$store.getters['storeData']('Form', this.uid)) {
-        this.loading = true
-        this.error = ''
-        try {
-          await this.$store.dispatch(`Form/load`, {
-            uid: this.uid,
-          }, { root: true })
-
-        } catch (err) {
-          this.error = err
-        }
-        this.loading = false
-      }
-    },
-    emitInternalAction (action) {
-      const context = this.$refs[this.form]
-      context.emitAction(action)
-    },
-    dispatchInternalAction (action) {
-      const context = this.$refs[this.form]
-      context.dispatchAction(action)
-    },
-
-  }
+  mixins: [FormLoader],
 }
 </script>
 <style lang="scss" scoped>
@@ -97,7 +36,6 @@ export default {
       :is="form.template"
       v-if="form && !loading"
       :ref="form"
-      :item="item"
       v-bind="form"
       @action="onAction"
     />

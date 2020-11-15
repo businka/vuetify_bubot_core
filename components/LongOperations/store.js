@@ -56,11 +56,17 @@ export default {
     currentTemplate: '',
     showCurrent: false
   },
+  getters: {
+    getRawDataSource: state => payload => {
+      return state.operations[payload.operation].result
+    }
+
+  },
   mutations: {
     run (state, { uid, operation }) {
       Vue.set(state.operations, uid, operation)
       if (state.operations[uid].show)
-        state.executed ++;
+        state.executed++;
       if (state.executed)
         state.showList = true
     },
@@ -107,7 +113,7 @@ export default {
     },
     delete (state, uid) {
       if (state.operations[uid].show)
-        state.executed --;
+        state.executed--;
       Vue.delete(state.operations, uid)
       if (!state.executed) {
         state.currentUid = ''
@@ -139,7 +145,7 @@ export default {
       operation = Object.assign({
         message: '',
         template: '',
-        templateParams: {},
+        templateProps: {},
         title: '',
         result: null,
         callback: null
@@ -164,7 +170,7 @@ export default {
       store.commit(payload.type, payload)
       if (operation['autoDelete'])
         store.commit('delete', uid)
-      if (operation.resolve){
+      if (operation.resolve) {
         operation.resolve(payload.data)
       }
     },
@@ -179,7 +185,7 @@ export default {
       store.commit(payload.type, payload)
       if (operation['autoDelete'])
         store.commit('delete', uid)
-      if (operation.reject){
+      if (operation.reject) {
         operation.reject(payload.data)
       }
     },
@@ -188,6 +194,6 @@ export default {
     },
     on_success: (store, payload) => {
       store.dispatch('on_complete', payload)
-    }
+    },
   }
 }

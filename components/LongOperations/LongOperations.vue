@@ -8,7 +8,7 @@ export default {
   name: 'LongOperations',
   components: {
     'LoListSnackBar': () => import('./LoListSnackBar'),
-    'Operation': () => import('./Operation')
+    'LoResult': () => import('./LongOperationResult')
   },
   mixins: [ActionMixin],
   data: function () {
@@ -26,9 +26,11 @@ export default {
         return ''
       }
     },
-    currentOperationTmplParam () {
+    currentOperationTmplProps () {
       if (this.currentOperation) {
-        return Object.assign({}, this.currentOperation.templateParams, { item: this.currentOperation })
+        return Object.assign({
+
+        }, this.currentOperation['templateProps'], { item: this.currentOperation })
       }
       return {}
     }
@@ -62,10 +64,10 @@ export default {
 
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-container>
-    <component
-      :is="currentOperation.template"
-      v-if="lo.showCurrent && currentOperation.template"
-      :params="currentOperationTmplParam"
+    <LoResult
+      v-if="lo.showCurrent"
+      :form-data="{dataSource: {type: 'Vuex', objName: 'LongOperations', filter: {operation: lo.currentUid}, keyProperty: 'id'}}"
+      v-bind="currentOperation"
       @action="onAction"
     />
     <component

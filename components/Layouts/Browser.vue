@@ -1,5 +1,4 @@
 <script>
-import { initDataSource } from '../Types/Source/DataSourceLoader'
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import BrowserActionMixin from './resources/BrowserActionMixin'
 
@@ -97,6 +96,9 @@ export default {
     }
   },
   watch: {
+    dataSource () {
+      this.init()
+    },
     options: {
       handler () {
         this.source.dataTableOptions = this.options
@@ -106,7 +108,7 @@ export default {
     },
   },
   beforeMount () {
-    this.source = initDataSource(this.dataSource.type, this.dataSource, this.filterFields)
+    this.init()
   },
   methods: {}
 }
@@ -118,6 +120,7 @@ export default {
 <template>
   <v-container class="pa-0 ma-0">
     <v-data-table
+      v-if="source"
       v-model="selected"
       :headers="columns"
       :items="source.rows"

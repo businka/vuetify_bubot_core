@@ -91,7 +91,7 @@ export default {
     </v-btn>
     <v-spacer />
     <FilterBtn
-      v-if="filterFields"
+      v-if="filterFields.length"
       :fields="filterFields"
       :filter="filter"
       @changeFilter="$emit('changeFilter', $event)"

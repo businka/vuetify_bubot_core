@@ -1,5 +1,5 @@
 import Source from './Source'
-import {isEmptyObject} from '../../../helpers/baseHelper'
+import { isEmptyObject } from '../../../helpers/baseHelper'
 
 const conditions = {
   'equals': function (filterField, filterValue, row) {
@@ -23,11 +23,11 @@ export default class Memory extends Source {
 
   query () {
     this.loading = true;
-    if (!isEmptyObject(this.filter)) {
-      this.filteredRawData = []
-      for (let i = 0; i < this.rawData.length; i++) {
-        const row = this.rawData[i]
-        let match = true
+    this.filteredRawData = []
+    for (let i = 0; i < this.rawData.length; i++) {
+      const row = this.rawData[i]
+      let match = true
+      if (!isEmptyObject(this.filter)) {
         for (let i = 0; i < this.filterFields.length; i++) {
           if (Object.prototype.hasOwnProperty.call(this.filter, this.fields[i]['name'])) {
             let condition = conditions[this.fields[i]['type'] || 'equals']
@@ -37,29 +37,27 @@ export default class Memory extends Source {
             }
           }
         }
-        if (!match)
-          continue
-        if (Object.prototype.hasOwnProperty.call(this.filter, 'searchString') && this.filter['searchString']) {
-          for (let elem in row) {
-            if (Object.prototype.hasOwnProperty.call(row, elem)) {
-              try {
-                if (row[elem].indexOf(this.filter['searchString']) >= 0) {
-                  match = true
-                  break;
-                }
-              } catch (e) {
-                // continue regardless of error
+      }
+      if (!match)
+        continue
+      if (Object.prototype.hasOwnProperty.call(this.filter, 'searchString') && this.filter['searchString']) {
+        match = false
+        for (let elem in row) {
+          if (Object.prototype.hasOwnProperty.call(row, elem)) {
+            try {
+              if (row[elem].indexOf(this.filter['searchString']) >= 0) {
+                match = true
+                break;
               }
+            } catch (e) {
+              // continue regardless of error
             }
           }
         }
-        if (match) {
-          this.filteredRawData.push(row)
-        }
       }
-
-    } else {
-      this.filteredRawData = this.rawData;
+      if (match) {
+        this.filteredRawData.push(row)
+      }
     }
     const limit = this.dataTableOptions.itemsPerPage
     const page = this.dataTableOptions.page
@@ -69,7 +67,6 @@ export default class Memory extends Source {
     this.total = this.filteredRawData.length
     this.loading = false;
   }
-
 
   async read (id) {
     console.log(id)

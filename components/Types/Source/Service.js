@@ -18,12 +18,9 @@ export default class Service extends Source {
       )
       this.rows = resp.data.rows
       this.total = (page - 1) * limit + this.rows.length + (this.rows.length < limit ? 0 : 1)
-    } catch (err) {
-      this.error = err
-      // let e = new ExtException({parent:err, action: 'Service.query'})
-      // throw e
+    } finally {
+      this.loading = false
     }
-    this.loading = false
   }
 
   async read (id) {
@@ -31,18 +28,12 @@ export default class Service extends Source {
     let resp
     try {
       resp = await buxios.get(`/api/${this.props.appName}/${this.props.objName}/read`,
-        { id: id }
+        { params: {id} }
       )
       this.loading = false
       return resp.data
-    } catch (err) {
+    } finally {
       this.loading = false
-      switch (err.response.status) {
-        case 400:
-          throw new Error(err.response.data)
-        default:
-          throw new Error(`${err.response.status}: ${err.response.statusText}`)
-      }
     }
   }
 }
