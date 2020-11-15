@@ -67,6 +67,7 @@ export default {
     <LoResult
       v-if="lo.showCurrent"
       :form-data="{dataSource: {type: 'Vuex', objName: 'LongOperations', filter: {operation: lo.currentUid}, keyProperty: 'id'}}"
+      :uid=lo.currentUid
       v-bind="currentOperation"
       @action="onAction"
     />
