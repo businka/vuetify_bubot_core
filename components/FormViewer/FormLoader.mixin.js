@@ -1,5 +1,5 @@
 import ActionMixin from '../../helpers/mixinTemplate/action'
-import { isEmptyObject } from '../../helpers/baseHelper';
+import { updateObject, isEmptyObject } from '../../helpers/baseHelper';
 
 export default {
   mixins: [ActionMixin],
@@ -30,7 +30,7 @@ export default {
   }),
   computed: {
     form () {
-      return Object.assign({}, this.$store.getters['storeData']('Form', this.formUid), this.formProps, this.formData)
+      return updateObject({}, this.$store.getters['storeData']('Form', this.formUid), this.formProps, this.formData)
     },
     width () {
       return this.form ? this.form.width || 600 : 600

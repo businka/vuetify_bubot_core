@@ -1,5 +1,5 @@
 import Source from './Source'
-import { isEmptyObject } from '../../../helpers/baseHelper'
+import { isEmptyObject, objHasOwnProperty } from '../../../helpers/baseHelper'
 
 const conditions = {
   'equals': function (filterField, filterValue, row) {
@@ -40,7 +40,7 @@ export default class Memory extends Source {
       }
       if (!match)
         continue
-      if (Object.prototype.hasOwnProperty.call(this.filter, 'searchString') && this.filter['searchString']) {
+      if (objHasOwnProperty(this.filter, 'searchString') && this.filter['searchString']) {
         match = false
         for (let elem in row) {
           if (Object.prototype.hasOwnProperty.call(row, elem)) {
@@ -59,8 +59,8 @@ export default class Memory extends Source {
         this.filteredRawData.push(row)
       }
     }
-    const limit = this.dataTableOptions.itemsPerPage
-    const page = this.dataTableOptions.page
+    const limit = this.props.itemsPerPage
+    const page = this.props.page
     const start = (page - 1) * limit;
     const end = start + limit;
     this.rows = this.filteredRawData.slice(start, end);

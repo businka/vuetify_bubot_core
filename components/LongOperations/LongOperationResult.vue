@@ -64,7 +64,7 @@ export default {
         outlined
         dense
         small
-        @click.stop="$store.commit('LongOperations/delete', uid, { root: true })"
+        @click.stop="$store.dispatch('LongOperations/delete', uid, { root: true })"
       >
         Delete
       </v-btn>

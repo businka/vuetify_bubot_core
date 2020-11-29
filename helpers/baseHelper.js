@@ -1,3 +1,9 @@
+export function objHasOwnProperty (obj, prop) {
+  if (!obj || !prop)
+    return false
+  return Object.prototype.hasOwnProperty.call(obj, prop)
+}
+
 export function isEmptyObject (obj) {
   for (let elem in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, elem)) {
@@ -32,12 +38,15 @@ function _updateObject (base, source) {
     let elemType = getType(source[elem])
     switch (elemType) {
       case 'object':
-        if (!Object.prototype.hasOwnProperty.call(base, elem)) {
+        if (!objHasOwnProperty(base, elem)) {
           base[elem] = {}
         }
         _updateObject(base[elem], source[elem])
         break;
       case 'array':
+        if (!objHasOwnProperty(base, elem)) {
+          base[elem] = []
+        }
         base[elem] = base[elem].concat(source[elem])
         break;
       default:

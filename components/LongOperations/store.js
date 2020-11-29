@@ -3,52 +3,13 @@
 // import { initStoreKey } from '../../helpers/mixinStore/mutations'
 // import { processInDataSource } from '../../helpers/mixinStore'
 import Vue from 'vue'
+import { updateObject, objHasOwnProperty } from '../../helpers/baseHelper'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
   namespaced: true,
   state: {
-    operations: {
-      // a1: {
-      //   title: 'test1',
-      //   status: 'run',
-      //   cancelable: true,
-      //   show: true,
-      //   progress: -1,
-      // },
-      // a2: {
-      //   title: 'test3',
-      //   status: 'run',
-      //   cancelable: false,
-      //   show: true,
-      //   message: 'processed',
-      //   progress: 70,
-      // },
-      // a23: {
-      //   title: 'test4',
-      //   status: 'run',
-      //   cancelable: false,
-      //   show: true,
-      //   progress: 50,
-      //
-      // },
-      // a223: {
-      //   title: 'test4',
-      //   status: 'error',
-      //   cancelable: false,
-      //   message: 'Какая то фигня',
-      //   show: true,
-      //   progress: 50,
-      //
-      // },
-      // a3: {
-      //   title: 'test1',
-      //   status: 'success',
-      //   cancelable: true,
-      //   show: true,
-      //   progress: 100
-      // },
-    },
+    operations: {},
     executed: 0,
     showList: false,
     listTemplate: 'LoListSnackBar',
@@ -88,8 +49,8 @@ export default {
         console.warn('long operation not found')
         return
       }
-
-      Object.assign(operation, payload.data)
+      operation.result = payload.data
+      // Object.assign(operation, payload)
       operation.status = 'success'
     },
     showList (state) {
@@ -104,6 +65,7 @@ export default {
     },
     hideOperation (state) {
       state.showCurrent = false
+      state.currentUid = ''
     },
     canceling (state, uid) {
       state.operations[uid].status = 'canceling'
@@ -138,19 +100,19 @@ export default {
         return uid
       Vue.prototype.$socket.sendObj({
         uid,
-        name: payload.name,
+        name: payload.actionName,
         type: 'call',
         data: payload.data
       })
-      operation = Object.assign({
+      operation = updateObject({
+        dataSource: payload.dataSource || { type: 'Vuex', storeName: 'LongOperations' },
         message: '',
-        template: '',
-        templateProps: {},
         title: '',
         result: null,
         callback: null
       }, payload.operation, {
         progress: -1,
+        dataSource: { filter: { operation: uid } },
         status: 'pending',
       })
       commit('run', { uid, operation })
@@ -195,5 +157,14 @@ export default {
     on_success: (store, payload) => {
       store.dispatch('on_complete', payload)
     },
+    delete: ({ state, commit }, uid) => {
+      if (state.currentUid === uid) {
+        commit('hideOperation')
+      }
+      if (objHasOwnProperty(state.operations, uid)) {
+        commit('delete', uid)
+      }
+
+    }
   }
 }

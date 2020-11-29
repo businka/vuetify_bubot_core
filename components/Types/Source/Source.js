@@ -1,33 +1,53 @@
+import { updateObject } from '../../../helpers/baseHelper'
+
 export default class Source {
   rawData = []
   filteredRawData = []
-  rows = []
-  dataTableOptions = {}
   total = 0
   filter = {}
+  rows = []
   props = {
     rows: [],
-    filter: {}
+    // filter: {},
+    page: 1,
+    itemsPerPage: 25,
+    appName: '',
+    objName: '',
+    dataTableOptions: {},
+    filterFields: [],
+    store: undefined
   }
   store
   keyProperty = 'id'
   loading = false
   filterFields = []
 
-  constructor (props, filterFields, store) {
-    this.props = Object.assign(this.props, props)
-    this.filterFields = filterFields
-    this.keyProperty = this.props['keyProperty'] || 'id'
-    this.rawData = this.props.rows || []
+  constructor (props, store) {
+    this.props.appName = store.state.app
     this.store = store
+    this.changeProps(props)
+    this.rawData = this.props.rows || []
+  }
+
+  changeProps (props) {
+    this.props = updateObject(this.props, props)
   }
 
   changeFilter (filter) {
-    this.filter = Object.assign(this.filter, filter)
-    this.dataTableOptions.page = 1
+    this.filter = updateObject(this.filter, filter)
+    this.props.dataTableOptions.page = 1
     this.query()
   }
 
   query () {
+    throw new Error('method query not implemented in source class')
+  }
+
+  call () {
+    throw new Error('method call not implemented in source class')
+  }
+
+  read () {
+    throw new Error('method read not implemented in source class')
   }
 }

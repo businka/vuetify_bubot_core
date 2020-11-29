@@ -2,6 +2,7 @@
 // import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 import storage from './store'
 import ActionMixin from '../../helpers/mixinTemplate/action'
+import { objHasOwnProperty } from '../../helpers/baseHelper'
 // import { ObjectId } from 'bson'
 
 export default {
@@ -28,9 +29,7 @@ export default {
     },
     currentOperationTmplProps () {
       if (this.currentOperation) {
-        return Object.assign({
-
-        }, this.currentOperation['templateProps'], { item: this.currentOperation })
+        return Object.assign({}, this.currentOperation['templateProps'], { item: this.currentOperation })
       }
       return {}
     }
@@ -39,7 +38,7 @@ export default {
     // this.init()
   },
   beforeMount () {
-    if (!Object.prototype.hasOwnProperty.call(this.$store.state, this.$options.name)) {
+    if (!objHasOwnProperty(this.$store.state, this.$options.name)) {
       this.$store.registerModule(this.$options.name, storage)
       this.$options.sockets.onopen = () => {
         console.log('ws connect')
@@ -66,7 +65,7 @@ export default {
   <v-container>
     <LoResult
       v-if="lo.showCurrent"
-      :form-data="{dataSource: {type: 'Vuex', objName: 'LongOperations', filter: {operation: lo.currentUid}, keyProperty: 'id'}}"
+      :form-data="{dataSource: currentOperation.dataSource}"
       :uid=lo.currentUid
       v-bind="currentOperation"
       @action="onAction"

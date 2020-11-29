@@ -1,3 +1,5 @@
+import { objHasOwnProperty } from '../../../helpers/baseHelper'
+
 import Memory from './Memory'
 import Service from './Service'
 import Vuex from './Vuex'
@@ -7,9 +9,12 @@ const availableSources = {
   Vuex
 }
 
-export function initDataSource(dataSourceName, props, filterFields, store) {
-  if (Object.prototype.hasOwnProperty.call(availableSources, dataSourceName)) {
-    return new availableSources[dataSourceName](props, filterFields, store)
+export function initDataSource(props, store) {
+  if (!objHasOwnProperty(props, 'type')) {
+    throw new Error(`dataSource type not defined`)
   }
-  throw new Error(`dataSource ${dataSourceName} not implemented`)
+  if (objHasOwnProperty(availableSources, props['type'])) {
+    return new availableSources[props['type']](props, store)
+  }
+  throw new Error(`dataSource ${props['type']} not implemented`)
 }

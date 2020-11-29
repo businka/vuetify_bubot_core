@@ -1,4 +1,5 @@
 import { initDataSource } from '../../Types/Source/DataSourceLoader'
+import { updateObject, objHasOwnProperty } from '../../../helpers/baseHelper'
 
 export default {
   data () {
@@ -15,6 +16,11 @@ export default {
     }
   },
   methods: {
+    init () {
+      this.selected = []
+      const dataSource = updateObject({}, { filterFields: this.filterFields }, this.dataSource, this.options)
+      this.source = initDataSource(dataSource, this.$store)
+    },
     actionLoading (data) {
       this.$store.commit(`${this.namespace}/loading`, {
         uid: this.store.uid,
@@ -45,41 +51,49 @@ export default {
     //   return this.$refs[this.store.uid].selection
     //   return
     // },
-    onChangeSelect (event) {
-      let find = this.selected.indexOf(event['item'])
-      if (event['value']) {
-        if (find < 0)
-          this.selected.push(event['item'])
+    // onChangeSelect (event) {
+    //   let find = this.selected.indexOf(event['item'])
+    //   if (event['value']) {
+    //     if (find < 0)
+    //       this.selected.push(event['item'])
+    //   } else {
+    //     this.selectAll = false;
+    //     if (find < 0)
+    //       return;
+    //     this.selected.splice(find, 1)
+    //   }
+    // },
+    // onChangeSelectAll (event) {
+    //   if (event['value']) {
+    //     this.selectAll = true
+    //     this.selected = event['items']
+    //   } else {
+    //     this.selectAll = false
+    //     this.selected = []
+    //   }
+    // },
+    // actionRemoteItemAction: function (actionData) {
+    //   // const payload = updateObject({}, actionData.data, {item: this.itemFull, })
+    //   const source = objHasOwnProperty(actionData, 'dataSource')? initDataSource(actionData.dataSource.type, this.dataSource): this.source
+    //   source.call(actionData.name, this.itemFull)
+    // },
+    actionDataSourceItemsOperation (actionData) {
+      let source
+      let payload = updateObject({ data: {} }, actionData)
+      if (objHasOwnProperty(actionData, 'dataSource')) {
+        source = initDataSource(actionData.dataSource, this.$store)
       } else {
-        this.selectAll = false;
-        if (find < 0)
-          return;
-        this.selected.splice(find, 1)
+        source = this.source
       }
-    },
-    onChangeSelectAll (event) {
-      if (event['value']) {
-        this.selectAll = true
-        this.selected = event['items']
-      } else {
-        this.selectAll = false
-        this.selected = []
-      }
-    },
-    actionRemoteLongMassOperation (actionData) {
-      const self = this
-      let payload = Object.assign({ data: {} }, actionData)
-      payload.name = `${this.$store.state.app}/${this.dataSource.objName}/${payload.name}`
+      payload.method = payload.name
       if (this.selectAll) {
         payload.data.items = null
         payload.data.filter = this.source.filter
       } else {
-        payload.data.items = this.selected.map(function (item) {
-          return item[self.dataSource.keyProperty]
-        })
+        payload.data.items = this.selected
         payload.data.filter = null
       }
-      this.$store.dispatch('LongOperations/run', payload, { root: true })
+      source.call(payload)
     },
 
     async actionRowActivate (data) {
@@ -131,9 +145,6 @@ export default {
         filter: this.modeParams.filter
       })
     },
-    init () {
-      this.source = initDataSource(this.dataSource.type, this.dataSource, this.filterFields, this.$store)
-      // this.source.query()
-    }
+
   }
 }

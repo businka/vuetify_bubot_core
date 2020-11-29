@@ -7,8 +7,8 @@ export default class Service extends Source {
     this.loading = true
     let resp
     try {
-      const limit = this.dataTableOptions.itemsPerPage
-      const page = this.dataTableOptions.page
+      const limit = this.props.itemsPerPage
+      const page = this.props.page
       let params = Object.assign({
         limit,
         page
@@ -28,12 +28,25 @@ export default class Service extends Source {
     let resp
     try {
       resp = await buxios.get(`/api/${this.props.appName}/${this.props.objName}/read`,
-        { params: {id} }
+        { params: { id } }
       )
       this.loading = false
       return resp.data
     } finally {
       this.loading = false
     }
+  }
+
+  async call (payload) {
+    this.loading = true
+    let resp
+    try {
+      resp = await buxios.post(`/api/${this.props.appName}/${this.props.objName}/${payload.method}`, payload.data)
+      this.loading = false
+      return resp.data
+    } finally {
+      this.loading = false
+    }
+
   }
 }

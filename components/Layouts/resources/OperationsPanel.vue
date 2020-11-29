@@ -42,7 +42,6 @@ export default {
       v-if="!hideSelectAll"
       hide-details
       :input-value="selectAll.everyItem"
-      :indeterminate="selectAll.someItems"
       class="jay-space-right"
       @change="selectAll.toggleSelectAll"
     />

@@ -75,7 +75,12 @@ export default {
       type: String,
       default: 'rowViewer'
     },
-    dataSource: {},
+    dataSource: {
+      type: Object,
+      default: function () {
+        return {}
+      }
+    },
     columns: {
       type: Array,
       default: function () {
@@ -90,21 +95,24 @@ export default {
       selected: [],
       loading: true,
       source: undefined,
-      options: {},
+      options: undefined,
       editForm: {},
       actionForm: {}
     }
   },
   watch: {
     dataSource () {
+      if (this.options) {
+        this.options.page = 1
+      }
       this.init()
-    },
-    options: {
-      handler () {
-        this.source.dataTableOptions = this.options
+      if (this.options) {
         this.source.query()
-      },
-      deep: true,
+      }
+    },
+    options() {
+      this.source.changeProps(this.options)
+      this.source.query()
     },
   },
   beforeMount () {
@@ -123,6 +131,7 @@ export default {
       v-if="source"
       v-model="selected"
       :headers="columns"
+      :page="source.page"
       :items="source.rows"
       :options.sync="options"
       :server-items-length="source.total"
@@ -130,10 +139,12 @@ export default {
       :show-select="showOperationsPanel"
       :hide-default-header="true"
       :loading="source.loading"
+      :footer-props="{
+        itemsPerPageOptions: [25, 50, 100, -1],
+        showCurrentPage: true,
+      }"
       dense
       disable-sort
-      @item-selected="onChangeSelect"
-      @toggle-select-all="onChangeSelectAll"
     >
       <template v-slot:top>
         <BrowserToolBar
@@ -150,7 +161,7 @@ export default {
       </template>
       <!--    v-slot:header="{ props: { headers, options },someItems, everyItem, on }"-->
       <template
-        v-slot:header="{ props: { headers}, someItems, everyItem, on }"
+        v-slot:header="{ props: { someItems, everyItem, headers},  on }"
       >
         <thead>
           <tr
