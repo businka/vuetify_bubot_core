@@ -1,6 +1,7 @@
 <script>
 
 // import { getSession } from './session'
+import { redirectToSignIn } from './session'
 
 export default {
   name: 'CurrentUserInToolbar',
@@ -47,68 +48,88 @@ export default {
         this.$store.dispatch('Session/signIn', null, { root: true })
       }
     },
-    signOut(){
+    signIn() {
+       redirectToSignIn()
+    },
+    signOut () {
       this.$store.dispatch('Session/signOut', null, { root: true })
     }
   }
 }
 </script>
-
+0
 <template>
-  <v-menu
+  <span
     v-if="visible"
-    offset-y
   >
-    <template v-slot:activator="{ on }">
-      <v-btn
-        text
+    <v-menu
+      v-if="user"
+      offset-y
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn
+          text
+          dense
+          x-small
+          v-on="on"
+        >
+          <div class="pl-1 LangSelectorText">
+            {{ title }}
+          </div>
+        </v-btn>
+      </template>
+
+<!--      <v-divider />-->
+<!--      <v-list-->
+<!--        v-if="session.accounts.length"-->
+<!--        subheader-->
+
+<!--        min-width="60px"-->
+<!--        dense-->
+<!--        class="pa-0"-->
+<!--      >-->
+<!--        <v-subheader>{{$t('Аккаунты')}}</v-subheader>-->
+<!--        <v-list-item-->
+<!--          v-for="account in session.accounts"-->
+<!--          max-->
+<!--          class="d-flex flex-row"-->
+<!--          @click.stop="signOut()"-->
+<!--        >-->
+<!--          <div class="pl-1 LangSelectorText">-->
+<!--            {{ $t('auth.SignOut') }}-->
+<!--          </div>-->
+<!--        </v-list-item>-->
+<!--      </v-list>-->
+
+
+      <v-list
+        min-width="60px"
         dense
-        x-small
-        v-on="on"
+        class="pa-0"
       >
-        <div class="pl-1 LangSelectorText">
-          {{ title }}
-        </div>
-      </v-btn>
-    </template>
-
-    <v-divider />
-    <v-list
-      subheader
-      min-width="60px"
+<!--        <v-divider />-->
+        <v-list-item
+          max
+          class="d-flex flex-row"
+          @click.stop="signOut()"
+        >
+          <div class="pl-1 LangSelectorText">
+            {{ $t('auth.SignOut') }}
+          </div>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <v-btn
+      v-else
+      text
       dense
-      class="pa-0"
+      x-small
+      @click.stop="signIn"
     >
-      <v-subheader>{{$t('Аккаунты')}}</v-subheader>
-      <v-list-item
-        max
-        class="d-flex flex-row"
-        @click.stop="signOut()"
-      >
-        <div class="pl-1 LangSelectorText">
-          {{ $t('auth.SignOut') }}
-        </div>
-      </v-list-item>
-    </v-list>
+        {{ $t('auth.SignIn') }}
+    </v-btn>
 
-
-    <v-list
-      min-width="60px"
-      dense
-      class="pa-0"
-    >
-      <v-divider />
-      <v-list-item
-        max
-        class="d-flex flex-row"
-        @click.stop="signOut()"
-      >
-        <div class="pl-1 LangSelectorText">
-          {{ $t('auth.SignOut') }}
-        </div>
-      </v-list-item>
-    </v-list>
-  </v-menu>
+  </span>
 </template>
 
 <style lang="scss">

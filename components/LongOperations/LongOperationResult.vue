@@ -1,5 +1,6 @@
 <script>
 import FormLoader from '../FormViewer/FormLoader.mixin'
+
 export default {
   name: 'LongOperationResult',
   mixins: [FormLoader],

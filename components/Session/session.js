@@ -28,6 +28,9 @@ export function getSession() {
 
 export function redirectToSignIn (redirect) {
   let url = getAppUrl()
+  if (redirect === undefined) {
+    redirect = window.location.pathname
+  }
   let destUrl = `${url.base}ui/AuthService/`
   if (destUrl !== window.location.pathname)
     navigate(redirect?`${destUrl}?redirect=${redirect}`:destUrl)
