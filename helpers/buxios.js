@@ -33,14 +33,13 @@ function processError (err) {
       if (destPath !== window.location.pathname)
         navigate(`${destPath}?redirect=${url.base}${url.app}${url.path}${window.location.search}`)
       break
-    default:
-      if (contentType && contentType.toLowerCase().indexOf('application/json') >= 0) {
-        throw  new ExtException(err.response.data)
-      } else {
-        throw(new ExtException({
-          message: `${err.response.status} ${err.response.statusText}`,
-          detail: err.response.data
-        }))
-      }
+  }
+  if (contentType && contentType.toLowerCase().indexOf('application/json') >= 0) {
+    throw  new ExtException(err.response.data)
+  } else {
+    throw(new ExtException({
+      message: `${err.response.status} ${err.response.statusText}`,
+      detail: err.response.data
+    }))
   }
 }

@@ -20,13 +20,13 @@ export default {
   /*margin-right: 0px;*/
   /*}*/
 
-</style>//
+</style>
 
 <template>
   <p
     v-if="typeof(error) === 'object' && error"
     :class="`error--text ${typography}`"
   >
-    {{ $t(`Error.${error.msg}`) }}
+    {{ $t(`Error.${error.message}`) }} {{ error.detail }}
   </p>
 </template>
