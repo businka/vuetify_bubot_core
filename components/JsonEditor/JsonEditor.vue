@@ -1,18 +1,3 @@
-<template>
-  <v-card
-    flat
-    class="pa-2"
-  >
-    <JsonElem
-      :schema="schema"
-      :elem-value="edit_value"
-      elem-name=""
-      :read-only="false"
-      path=""
-      @change-value="onChange"
-    />
-  </v-card>
-</template>
 <script>
 export default {
   //todo.чтение схем и данных
@@ -24,15 +9,15 @@ export default {
   //   }
   // },
   computed: {
-    edit_value: function() {
+    edit_value: function () {
       return Object.assign({}, this.value)
     }
   },
-  beforeCreate: function() {
+  beforeCreate: function () {
     this.$options.components.JsonElem = require('./JsonElem.vue').default
   },
   methods: {
-    onChange(action, path, value) {
+    onChange (action, path, value) {
       console.log('JsonEditor.onChange', action, path, value)
       let _path = path.split(this.delimiter)
       let index
@@ -54,3 +39,18 @@ export default {
   }
 }
 </script>
+<template>
+  <v-card
+    flat
+    class="pa-2"
+  >
+    <JsonElem
+      :schema="schema"
+      :elem-value="edit_value"
+      elem-name=""
+      :read-only="false"
+      path=""
+      @change-value="onChange"
+    ></JsonElem>
+  </v-card>
+</template>

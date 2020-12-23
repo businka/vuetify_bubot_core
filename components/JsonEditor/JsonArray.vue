@@ -7,10 +7,10 @@ export default {
   props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
   data: () => ({
     show: false,
-    delimiter: "."
+    delimiter: '.'
   }),
   computed: {
-    title() {
+    title () {
       let value = ''
       if (!this.elemValue) {
         return ''
@@ -34,7 +34,13 @@ export default {
 
 }
 </script>
+<style lang="scss" scoped>
+  .expand-btn {
+    margin: 6px 0 0 -6px;
+    padding: 12px 0 0;
+  }
 
+</style>
 <template>
   <v-card
     class="pa-0 ma-0"
@@ -44,14 +50,16 @@ export default {
     <v-card-actions
       class="pa-0 pb-1"
     >
-      <v-btn
-        class="pt-3"
-        icon
-        dense
-        @click="show = !show"
-      >
-        <v-icon>{{ show ? 'mdi-minus-box-outline' : 'mdi-plus-box-outline' }}</v-icon>
-      </v-btn>
+      <div class="expand-btn">
+
+        <v-btn
+          icon
+          dense
+          @click="show = !show"
+        >
+          <v-icon>{{ show ? 'mdi-minus-box-outline' : 'mdi-plus-box-outline' }}</v-icon>
+        </v-btn>
+      </div>
       <v-text-field
         :label="`${schema.title || elemName} [${elemValue.length}]`"
         :placeholder="schema['description']"

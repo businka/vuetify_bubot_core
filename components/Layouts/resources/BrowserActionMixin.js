@@ -77,7 +77,7 @@ export default {
     //   const source = objHasOwnProperty(actionData, 'dataSource')? initDataSource(actionData.dataSource.type, this.dataSource): this.source
     //   source.call(actionData.name, this.itemFull)
     // },
-    actionDataSourceItemsOperation (actionData) {
+    actionCallDataSourceForSelectedItems (actionData) {
       let source
       let payload = updateObject({ data: {} }, actionData)
       if (objHasOwnProperty(actionData, 'dataSource')) {
@@ -85,9 +85,8 @@ export default {
       } else {
         source = this.source
       }
-      payload.method = payload.name
       if (this.selectAll) {
-        payload.data.items = null
+        payload.data.items = this.source.queryAll()
         payload.data.filter = this.source.filter
       } else {
         payload.data.items = this.selected

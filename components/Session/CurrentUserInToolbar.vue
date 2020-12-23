@@ -48,8 +48,8 @@ export default {
         this.$store.dispatch('Session/signIn', null, { root: true })
       }
     },
-    signIn() {
-       redirectToSignIn()
+    signIn () {
+      redirectToSignIn()
     },
     signOut () {
       this.$store.dispatch('Session/signOut', null, { root: true })
@@ -78,36 +78,11 @@ export default {
           </div>
         </v-btn>
       </template>
-
-<!--      <v-divider />-->
-<!--      <v-list-->
-<!--        v-if="session.accounts.length"-->
-<!--        subheader-->
-
-<!--        min-width="60px"-->
-<!--        dense-->
-<!--        class="pa-0"-->
-<!--      >-->
-<!--        <v-subheader>{{$t('Аккаунты')}}</v-subheader>-->
-<!--        <v-list-item-->
-<!--          v-for="account in session.accounts"-->
-<!--          max-->
-<!--          class="d-flex flex-row"-->
-<!--          @click.stop="signOut()"-->
-<!--        >-->
-<!--          <div class="pl-1 LangSelectorText">-->
-<!--            {{ $t('auth.SignOut') }}-->
-<!--          </div>-->
-<!--        </v-list-item>-->
-<!--      </v-list>-->
-
-
       <v-list
         min-width="60px"
         dense
         class="pa-0"
       >
-<!--        <v-divider />-->
         <v-list-item
           max
           class="d-flex flex-row"
@@ -126,7 +101,7 @@ export default {
       x-small
       @click.stop="signIn"
     >
-        {{ $t('auth.SignIn') }}
+      {{ $t('auth.SignIn') }}
     </v-btn>
 
   </span>

@@ -135,7 +135,7 @@ export default {
       :items="source.rows"
       :options.sync="options"
       :server-items-length="source.total"
-      :item-key="dataSource['keyProperty'] || '_id.$oid'"
+      :item-key="source['keyProperty'] || '_id.$oid'"
       :show-select="showOperationsPanel"
       :hide-default-header="true"
       :loading="source.loading"
@@ -157,6 +157,7 @@ export default {
           :show-operations-panel="showOperationsPanel"
           @changeOperationPanelState="showOperationsPanel = !showOperationsPanel"
           @changeFilter="source.changeFilter($event)"
+          @action="onAction"
         />
       </template>
       <!--    v-slot:header="{ props: { headers, options },someItems, everyItem, on }"-->

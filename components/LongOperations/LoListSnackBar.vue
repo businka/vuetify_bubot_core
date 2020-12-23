@@ -54,9 +54,10 @@ export default {
     text-overflow: ellipsis; /* Многоточие */
   }
 
-  .text-short:hover {
-    white-space: normal; /* Обычный перенос текста */
-  }</style>
+  /*.text-short:hover {*/
+  /*  white-space: normal; !* Обычный перенос текста *!*/
+  /*}*/
+</style>
 <template>
   <v-snackbar
     :value="true"
@@ -94,8 +95,8 @@ export default {
                   v-text="value.title"
                 />
                 <v-list-item-subtitle
-                  v-text="value.message"
                   class="text-short"
+                  v-text="value.message"
                 />
               </v-list-item-content>
               <v-list-item-avatar>

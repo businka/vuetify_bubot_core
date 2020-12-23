@@ -64,3 +64,15 @@ export function updateObject (base) {
   }
   return base
 }
+
+export function sortArrayObject(arr, key) {
+  arr.sort(function (a,b) {
+    let keyA=a[key].toLowerCase()
+    let keyB=b[key].toLowerCase()
+    if (keyA < keyB) //сортируем строки по возрастанию
+      return -1
+    if (keyA > keyB)
+      return 1
+    return 0
+  })
+}

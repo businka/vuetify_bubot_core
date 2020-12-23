@@ -3,6 +3,14 @@ import buxios from '../../../helpers/buxios'
 // import ExtException from '../../../helpers/ExtException'
 
 export default class Service extends Source {
+  getAll() {
+    return null
+  }
+
+  queryAll() {
+    return null
+  }
+
   async query () {
     this.loading = true
     let resp

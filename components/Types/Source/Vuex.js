@@ -3,11 +3,10 @@ import Memory from './Memory'
 export default class Vuex extends Memory {
   data = []
 
-  query () {
-    this.rawData = this.store.getters[`${this.props['storeName']}/getRawDataSource`](this.props.filter || {}, { root: true }) || []
-    super.query()
+  queryAll () {
+    this.rawData = this.store.getters[`${this.props['storeName']}/getRawDataSource`](this.props.filter.operation || {}, { root: true }) || [];
+    return super.queryAll();
   }
-
 
   async read (id) {
     console.log(id)
@@ -21,9 +20,14 @@ export default class Vuex extends Memory {
     console.log(data)
   }
 
-  async call (payload) {
+  async call (data) {
     // payload.actionName = `${this.props.appName}/${this.props.objName}/${this.props.method}`
-    payload.actionName = `${this.props.appName}/${this.props.objName}/${payload.method}`
+    let payload = {
+      actionName: `${this.props.appName}/${this.props.objName}/${data.method}`,
+      dataSource: this.props,
+      'data': data.data,
+      resultForm: data.resultForm
+    }
     return await this.store.dispatch(`${this.props.storeName}/${this.props.dispatchName}`, payload, { root: true })
   }
 }

@@ -65,7 +65,7 @@ export default {
       v-for="item in itemsBeforeSearch"
       :key="item.name"
       v-bind="item"
-      @activate="onActivate"
+      @action="$emit('action', $event)"
     />
 
     <SearchField
@@ -78,7 +78,7 @@ export default {
       v-for="item in itemsBeforeFilter"
       :key="item.name"
       v-bind="item"
-      @activate="onActivate"
+      @action="$emit('action', $event)"
     />
     <v-btn
       v-if="showOperationsPanelBtn"

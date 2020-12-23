@@ -21,7 +21,7 @@ const conditions = {
 export default class Memory extends Source {
   data = []
 
-  query () {
+  queryAll() {
     this.loading = true;
     this.filteredRawData = []
     for (let i = 0; i < this.rawData.length; i++) {
@@ -59,6 +59,11 @@ export default class Memory extends Source {
         this.filteredRawData.push(row)
       }
     }
+    return this.filteredRawData
+  }
+
+  query () {
+    this.queryAll()
     const limit = this.props.itemsPerPage
     const page = this.props.page
     const start = (page - 1) * limit;

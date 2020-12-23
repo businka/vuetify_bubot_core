@@ -8,17 +8,16 @@ export default class Source {
   rows = []
   props = {
     rows: [],
-    // filter: {},
     page: 1,
     itemsPerPage: 25,
     appName: '',
     objName: '',
     dataTableOptions: {},
     filterFields: [],
-    store: undefined
+    keyProperty: 'id'
   }
   store
-  keyProperty = 'id'
+  keyProperty;
   loading = false
   filterFields = []
 
@@ -27,6 +26,7 @@ export default class Source {
     this.store = store
     this.changeProps(props)
     this.rawData = this.props.rows || []
+    this.keyProperty = this.props.keyProperty || 'id'
   }
 
   changeProps (props) {

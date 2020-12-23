@@ -111,13 +111,15 @@ export default {
       <v-card-actions
         class="pa-0 ma-0 pb-1"
       >
-        <v-btn
-          icon
-          dense
-          @click="show = !show"
-        >
-          <v-icon>{{ show ? 'mdi-minus-box-outline' : 'mdi-plus-box-outline' }}</v-icon>
-        </v-btn>
+        <div class="pa-0 ma-0 pt-4">
+          <v-btn
+            icon
+            dense
+            @click="show = !show"
+          >
+            <v-icon>{{ show ? 'mdi-minus-box-outline' : 'mdi-plus-box-outline' }}</v-icon>
+          </v-btn>
+        </div>
         <v-text-field
           :label="schema.title || elemName"
           :placeholder="schema.description || null"

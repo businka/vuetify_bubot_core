@@ -81,11 +81,23 @@ export default {
       <v-divider vertical />
       <LangSelector />
     </v-system-bar>
-    <component
-      :is="form.template"
+    <v-row
       v-if="form"
-      v-bind="form"
-    />
+      class="pa-0 ma-0"
+    >
+      <v-col
+        class="pa-0 ma-0"
+        :xl="form.col_xl || '12'"
+        :lg="form.col_lg || '12'"
+        :sm="form.col_sm || '12'"
+        :xs="form.col_xs || '12'"
+      >
+        <component
+          :is="form.template"
+          v-bind="form"
+        />
+      </v-col>
+    </v-row>
     <LongOperations />
   </v-main>
 </template>

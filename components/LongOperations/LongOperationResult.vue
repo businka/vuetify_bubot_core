@@ -1,8 +1,10 @@
 <script>
 import FormLoader from '../FormViewer/FormLoader.mixin'
+import ExtException from '../Simple/ExtException'
 
 export default {
   name: 'LongOperationResult',
+  components: { ExtException },
   mixins: [FormLoader],
   props: {
     uid: { type: String },
@@ -82,9 +84,13 @@ export default {
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
+    <ExtException
+      v-if="status==='error'"
+      :error="result"
+    ></ExtException>
     <component
       :is="form.template"
-      v-if="form.template"
+      v-else-if="form.template"
       v-bind="form"
       @action="onAction"
     />

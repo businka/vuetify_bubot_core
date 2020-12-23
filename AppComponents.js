@@ -27,6 +27,7 @@ Vue.component('ParamsEditor', () => import('./components/ParamsEditor/ParamsEdit
 
 
 Vue.component('RowCellDefault', () => import('./components/Cells/RowCellDefault'))
+Vue.component('RowCellTitle', () => import('./components/Cells/RowCellTitle'))
 Vue.component('RowCellNumber', () => import('./components/Cells/RowCellNumber'))
 Vue.component('RowCellFieldLink', () => import('./components/Cells/RowCellFieldLink'))
 Vue.component('RowCellIcon', () => import('./components/Cells/RowCellIcon'))

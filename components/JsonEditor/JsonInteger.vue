@@ -1,3 +1,15 @@
+<script>
+export default {
+  props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
+  methods: {
+    onChange (value) {
+      console.log('oc2' + this.path + '-' + value)
+      this.$emit('action', {name: 'UpdateProp', data:{ action:'change', path: this.path, value: Number(value)}})
+
+    }
+  }
+}
+</script>
 <template>
   <div>
     <v-select
@@ -26,16 +38,3 @@
     />
   </div>
 </template>
-<script>
-
-export default {
-  props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
-  methods: {
-    onChange (value) {
-      console.log('oc2' + this.path + '-' + value)
-      this.$emit('action', {name: 'UpdateProp', data:{ action:'change', path: this.path, value: Number(value)}})
-
-    }
-  }
-}
-</script>

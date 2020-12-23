@@ -18,8 +18,8 @@ export default {
     showCurrent: false
   },
   getters: {
-    getRawDataSource: state => payload => {
-      return state.operations[payload.operation].result
+    getRawDataSource: state => uid => {
+      return state.operations[uid].result
     }
 
   },
@@ -41,7 +41,8 @@ export default {
         return
       }
       operation.status = 'error'
-      operation.message = `${payload.data.msg} ${payload.data.detail}`
+      operation.result = payload.data
+      operation.message = `${payload.data.message} ${payload.data.detail}`
     },
     success (state, payload) {
       let operation = state.operations[payload.uid]
@@ -93,8 +94,8 @@ export default {
       commit('canceling', uid)
     },
     run: ({ commit, state }, payload) => {
-      payload.operation = payload.operation || {}
-      const uid = payload.operation.uid || uuidv4()
+      let new_operation = payload.resultForm.operation || {}
+      const uid = new_operation.uid || uuidv4()
       let operation = state.operations.uid
       if (operation && (operation.status === 'pending' || operation.status === 'run'))
         return uid
@@ -110,7 +111,7 @@ export default {
         title: '',
         result: null,
         callback: null
-      }, payload.operation, {
+      }, new_operation, {
         progress: -1,
         dataSource: { filter: { operation: uid } },
         status: 'pending',
