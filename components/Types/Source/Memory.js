@@ -1,3 +1,4 @@
+
 import Source from './Source'
 import { isEmptyObject, objHasOwnProperty } from '../../../helpers/baseHelper'
 
@@ -27,11 +28,11 @@ export default class Memory extends Source {
     for (let i = 0; i < this.rawData.length; i++) {
       const row = this.rawData[i]
       let match = true
-      if (!isEmptyObject(this.filter)) {
+      if (!isEmptyObject(this.props.filter)) {
         for (let i = 0; i < this.filterFields.length; i++) {
-          if (Object.prototype.hasOwnProperty.call(this.filter, this.fields[i]['name'])) {
+          if (Object.prototype.hasOwnProperty.call(this.props.filter, this.fields[i]['name'])) {
             let condition = conditions[this.fields[i]['type'] || 'equals']
-            if (!condition(this.fields[i], this.filter[this.fields[i]['name']], row)) {
+            if (!condition(this.fields[i], this.props.filter[this.fields[i]['name']], row)) {
               match = false
               break
             }
@@ -40,12 +41,12 @@ export default class Memory extends Source {
       }
       if (!match)
         continue
-      if (objHasOwnProperty(this.filter, 'searchString') && this.filter['searchString']) {
+      if (objHasOwnProperty(this.props.filter, 'searchString') && this.props.filter['searchString']) {
         match = false
         for (let elem in row) {
           if (Object.prototype.hasOwnProperty.call(row, elem)) {
             try {
-              if (row[elem].indexOf(this.filter['searchString']) >= 0) {
+              if (row[elem].indexOf(this.props.filter['searchString']) >= 0) {
                 match = true
                 break;
               }

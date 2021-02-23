@@ -2,7 +2,11 @@
 export default {
   name: 'ExtException',
   props: {
-    error: {},
+    value: {},
+    dialog: {
+      type: Boolean,
+      default: false
+    },
     typography: {
       type: String,
       default: 'caption'
@@ -23,10 +27,44 @@ export default {
 </style>
 
 <template>
-  <p
-    v-if="typeof(error) === 'object' && error"
-    :class="`error--text ${typography}`"
-  >
-    {{ $t(`Error.${error.message}`) }} {{ error.detail }}
-  </p>
+  <div v-if="value">
+    <v-snackbar
+      v-if="dialog"
+      multi-line
+      color="error"
+      top
+      absolute
+      timeout="-1"
+      :value="true"
+      class="pa-0 ma-0"
+    >
+      <v-row
+        class="body-2 pl-3"
+      >
+        {{ $t(`ErrorMsg.${value.message}`) }}
+      </v-row>
+      <v-row
+        class="caption pl-3 pt-1"
+      >
+        {{ value.detail }}
+      </v-row>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          dense
+          small
+          icon
+          v-bind="attrs"
+          @click="$emit('input', undefined)"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <p
+      v-else
+      :class="`error--text ${typography}`"
+    >
+      {{ $t(`Error.${value.message}`) }} {{ value.detail }}
+    </p>
+  </div>
 </template>

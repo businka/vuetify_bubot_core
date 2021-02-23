@@ -25,9 +25,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .bordered {
     border-bottom: thin solid #cccccc;
+  }
+  .selectAll {
+    margin-left: -7px;
   }
 </style>
 
@@ -42,7 +45,7 @@ export default {
       v-if="!hideSelectAll"
       hide-details
       :input-value="selectAll.everyItem"
-      class="jay-space-right"
+      class="selectAll"
       @change="selectAll.toggleSelectAll"
     />
     <component

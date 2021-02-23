@@ -1,22 +1,45 @@
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
+import {objHasOwnProperty} from '../../helpers/baseHelper'
 
 export default {
   name: 'FieldLink',
+  components: {
+    RightDrawerFormViewer3: () => import('../FormViewer/RightDrawerFormViewer3'),
+  },
   mixins: [ActionMixin],
   props: {
     value: {
       type: Object,
       default: () => ({})
     },
-    params: {
+    formHandler: {
+      type: String,
+      default: 'RightDrawerFormViewer3'
+    },
+    label: {
+      type: String,
+      default: ''
+    },
+    titleField: {
+      type: String,
+      default: 'title'
+    },
+    fields: {
+      type: Array,
+      default: () => ([])
+    },
+    formUid: {
+      type: String,
+      default: ''
+    },
+    formData: {
       type: Object,
-      default: () => ({
-        form: '',
-        handler: '',
-        title: '',
-        description: ''
-      })
+      default: () => ({})
+    },
+    multiSelect: {
+      type: Boolean,
+      default: false
     },
     readOnly: {
       type: Boolean,
@@ -29,16 +52,17 @@ export default {
   },
   data: function () {
     return {
-      selectionVisible: false
+      selectionFormVisible: false
     }
   },
   methods: {
     viewItem () {
     },
-    selectItem () {
-      // this.selectionVisible = true
-      const data = Object.assign(this.params, { visible: true, action: this.emitAction })
-      this.emitAction({ name: 'ShowSelectForm', data })
+    beginSelect () {
+      this.selectionFormVisible = true
+      // const data = Object.assign(this.params, { visible: true, action: this.onAction })
+      // this.emitAction('ShowSelectForm', data)
+
     },
     clearItem () {
       this.$emit('input', null)
@@ -48,54 +72,68 @@ export default {
       this.$emit('input', data)
       console.log('input link-field ' + data.row.title)
     },
-    actionCloseForm () {
-      // this.selectionVisible = false
-      this.emitAction({ name: 'ShowSelectForm', data: {} })
+    actionSelectItems (data) {
+      let _selectValue
+      let self = this
+      let _data
+      if (this.fields.length){
+        _data = data.items.map(function(item) {
+            let _item = {}
+            self.fields.map(function(key) {
+              if (objHasOwnProperty(item, key)){
+                _item[key] = item[key]
+              }
+            })
+            return _item
+        })
+      } else {
+        _data = data.items
+      }
+      if (this.multiSelect){
+        _selectValue = _data
+      } else {
+        _selectValue = _data[0]
+      }
+      this.$emit('input', _selectValue)
+      this.actionCloseForm()
+    },
+    // eslint-disable-next-line no-unused-vars
+    actionCloseForm (data, component) {
+      this.selectionFormVisible = false
     },
   }
 }
 </script>
-<style lang="scss">
-  /*.linkField .v-input__append-outer {*/
-  /*margin-left: 0px;*/
-  /*margin-right: 0px;*/
-  /*}*/
 
-</style>//
+<style lang="scss">
+</style>
 
 <template>
   <div>
-    <span
-      v-if="!readOnly"
-    >
-      <v-text-field
-        class="linkField pb-1"
-        :value="value?value.title:''"
-        :label="params.title"
-        append-icon="mdi-chevron-up"
-        clearable
-        hide-details
-        readonly
-        :autofocus="autofocus"
-        @keydown.enter.stop="emitAction({name:'Update'})"
-        @keydown.escape.stop="emitAction({name:'Cancel'})"
-        @keydown.up.stop="selectItem"
-        @click="viewItem"
-        @click:append="selectItem"
-        @click:clear="clearItem"
-      />
-      <component
-        :is="params.handler || 'RightDrawerFormViewer'"
-        v-if="params.form && selectionVisible"
-        :params="{form: params.form, visible:selectionVisible}"
-        @action="onAction"
-      />
-
-    </span>
-    <span
-      v-else
-    >
-      {{ value[col.value] }}
-    </span>
+    <v-text-field
+      class="linkField pb-1"
+      :value="value?value[titleField]:''"
+      :label="label"
+      append-icon="mdi-chevron-up"
+      clearable
+      hide-details
+      :disabled="readOnly"
+      flat
+      readonly
+      :autofocus="autofocus"
+      @keydown.enter.stop="emitAction({name:'Update'})"
+      @keydown.escape.stop="emitAction({name:'Cancel'})"
+      @keydown.up.stop="beginSelect"
+      @click="viewItem"
+      @click:append="beginSelect"
+      @click:clear="clearItem"
+    />
+    <component
+      :is="formHandler"
+      v-if="selectionFormVisible"
+      :form-uid="formUid"
+      :form-data="formData"
+      @action="onAction($event, 'selectForm')"
+    />
   </div>
 </template>

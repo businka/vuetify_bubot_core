@@ -3,7 +3,7 @@
 import FormLoader from './FormLoader.mixin'
 
 export default {
-  name: 'RightDrawerFormViewer2',
+  name: 'RightDrawerFormViewer3',
   mixins: [FormLoader],
 }
 </script>
@@ -22,7 +22,7 @@ export default {
   <v-navigation-drawer
     right
     :width="width"
-    absolute
+    fixed
     class="elevation-6"
     permanent
     :value="visible"

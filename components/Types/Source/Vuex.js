@@ -22,13 +22,9 @@ export default class Vuex extends Memory {
 
   async call (data) {
     // payload.actionName = `${this.props.appName}/${this.props.objName}/${this.props.method}`
-    let payload = {
-      actionName: `${this.props.appName}/${this.props.objName}/${data.method}`,
-      dataSource: this.props,
-      'data': data.data,
-      resultForm: data.resultForm
-    }
-    return await this.store.dispatch(`${this.props.storeName}/${this.props.dispatchName}`, payload, { root: true })
+    data.actionName =  `${this.props.appName}/${this.props.objName}/${data.method}`
+    data.dataSource = this.props
+    return await this.store.dispatch(`${this.props.storeName}/${this.props.dispatchName}`, data, { root: true })
   }
 }
 

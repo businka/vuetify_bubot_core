@@ -1,29 +1,3 @@
-<template>
-  <v-toolbar
-    v-if="params.items"
-    dense
-    flat
-    height="44"
-    class="bordered jay-toolbar"
-    style="border-color:#cccccc"
-  >
-    <component
-      :is="item.template || 'ActionBtn'"
-      v-for="item in params.items"
-      :key="item.name"
-      :params="item"
-      @action="onAction"
-    />
-    <v-btn
-      icon
-      dense
-      small
-      @click="emitAction({name: 'MassOperationsBarVisible', data: !store.massOperationsBarVisible})"
-    >
-      <v-icon>{{ massIcon }}</v-icon>
-    </v-btn>
-  </v-toolbar>
-</template>
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
 
@@ -104,3 +78,30 @@ export default {
     border-bottom: thin solid #cccccc;
   }
 </style>
+
+<template>
+  <v-toolbar
+    v-if="params.items"
+    dense
+    flat
+    height="44"
+    class="bordered jay-toolbar"
+    style="border-color:#cccccc"
+  >
+    <component
+      :is="item.template || 'ActionBtn'"
+      v-for="item in params.items"
+      :key="item.name"
+      :params="item"
+      @action="onAction"
+    />
+    <v-btn
+      icon
+      dense
+      small
+      @click="emitAction({name: 'MassOperationsBarVisible', data: !store.massOperationsBarVisible})"
+    >
+      <v-icon>{{ massIcon }}</v-icon>
+    </v-btn>
+  </v-toolbar>
+</template>

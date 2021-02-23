@@ -94,7 +94,7 @@ export default {
       commit('canceling', uid)
     },
     run: ({ commit, state }, payload) => {
-      let new_operation = payload.resultForm.operation || {}
+      let new_operation = payload.operation || {}
       const uid = new_operation.uid || uuidv4()
       let operation = state.operations.uid
       if (operation && (operation.status === 'pending' || operation.status === 'run'))

@@ -6,10 +6,21 @@ export default {
     JsonArray: () => import('./JsonArray'),
     JsonArrayOneOf: () => import('./JsonArrayOneOf'),
     JsonObject: () => import('./JsonObject'),
+    JsonObjectLink: () => import('./JsonObjectLink'),
     JsonInteger: () => import('./JsonInteger'),
     JsonBoolean: () => import('./JsonBoolean'),
   },
-  props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
+  props: {
+    schema: Object,
+    elemValue: null,
+    elemName: String,
+    path: String,
+    inputListeners: Object,
+    arrayElem: Boolean,
+    level: Number,
+    readOnly: Boolean,
+    hideReadOnly: Boolean
+  },
   data: () => ({
     delimiter: "."
   }),
@@ -39,7 +50,7 @@ export default {
 }
 </script>
 <template>
-  <div v-if="schema && !schema.hide && (elemValue || !schema.readOnly)">
+  <div v-if="schema && !schema.hidden && (!hideReadOnly || (hideReadOnly && !schema.readOnly))">
     <JsonString
       v-if="schema['type']==='string'"
       :elem-name="elemName"
@@ -48,6 +59,7 @@ export default {
       :path="path"
       :array-elem="arrayElem"
       :read-only="readOnly?readOnly:schema.readOnly"
+      :hide-read-only="hideReadOnly"
       v-on="_inputListeners"
     />
     <JsonInteger
@@ -58,6 +70,7 @@ export default {
       :path="path"
       :array-elem="arrayElem"
       :read-only="readOnly?readOnly:schema.readOnly"
+      :hide-read-only="hideReadOnly"
       v-on="_inputListeners"
     />
     <JsonBoolean
@@ -68,6 +81,7 @@ export default {
       :path="path"
       :array-elem="arrayElem"
       :read-only="readOnly?readOnly:schema.readOnly"
+      :hide-read-only="hideReadOnly"
       v-on="_inputListeners"
     />
     <JsonArray
@@ -78,6 +92,7 @@ export default {
       :path="path"
       :array-elem="arrayElem"
       :read-only="readOnly?readOnly:schema.readOnly"
+      :hide-read-only="hideReadOnly"
       :input-listeners="_inputListeners"
       v-on="_inputListeners"
     />
@@ -89,7 +104,20 @@ export default {
       :path="path"
       :array-elem="arrayElem"
       :read-only="readOnly?readOnly:schema.readOnly"
+      :hide-read-only="hideReadOnly"
       :input-listeners="_inputListeners"
+      v-on="_inputListeners"
+    />
+    <JsonObjectLink
+      v-else-if="schema['type']==='object' && schema['format'] === 'link'"
+      :elem-name="elemName"
+      :elem-value="elemValue"
+      :schema="schema"
+      :array-elem="arrayElem"
+      :input-listeners="_inputListeners"
+      :path="path"
+      :read-only="readOnly?readOnly:schema.readOnly"
+      :hide-read-only="hideReadOnly"
       v-on="_inputListeners"
     />
     <JsonObject
@@ -101,6 +129,7 @@ export default {
       :input-listeners="_inputListeners"
       :path="path"
       :read-only="readOnly?readOnly:schema.readOnly"
+      :hide-read-only="hideReadOnly"
       v-on="_inputListeners"
     />
   </div>

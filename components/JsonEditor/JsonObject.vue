@@ -1,6 +1,6 @@
 <script>
-
 export default {
+  name: 'JsonObject',
   props: {
     schema: Object,
     elemValue: {
@@ -16,7 +16,8 @@ export default {
     inputListeners: Object,
     arrayElem: Boolean,
     level: Number,
-    readOnly: Boolean
+    readOnly: Boolean,
+    hideReadOnly: Boolean
   },
   data () {
     return {
@@ -141,14 +142,15 @@ export default {
         >
           <JsonElem
             v-for="(_schema, _propName ) in schema['properties']"
-            :key="`${path}${delimiter}${_propName}`"
+            :key="(path?path+delimiter:'')+_propName"
             :elem-name="_propName"
             :elem-value="elemValue[_propName]"
             :schema="_schema"
-            :path="`${path}${delimiter}${_propName}`"
+            :path="(path?path+delimiter:'')+_propName"
             :input-listeners="inputListeners"
-            :read-only="readOnly?readOnly:schema.readOnly"
-          />
+            :read-only="readOnly ? readOnly : schema.readOnly"
+            :hide-read-only="hideReadOnly"
+          ></JsonElem>
         </v-card>
       </v-expand-transition>
     </v-card>
@@ -156,14 +158,15 @@ export default {
     <span v-else>
       <JsonElem
         v-for="(_schema, _propName ) in schema['properties']"
-        :key="`${path}${delimiter}${_propName}`"
+        :key="(path?path+delimiter:'')+_propName"
         :elem-name="_propName"
         :elem-value="elemValue[_propName]"
         :schema="_schema"
-        :path="`${path}${delimiter}${_propName}`"
+        :path="(path?path+delimiter:'')+_propName"
         :input-listeners="inputListeners"
-        :read-only="readOnly?readOnly:schema.readOnly"
-      />
+        :read-only="readOnly ? readOnly : schema.readOnly"
+        :hide-read-only="hideReadOnly"
+      ></JsonElem>
     </span>
   </span>
 </template>

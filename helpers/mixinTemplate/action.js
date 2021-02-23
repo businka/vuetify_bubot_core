@@ -1,10 +1,10 @@
 export default {
   methods: {
-    onAction (action) {
-      console.log(`${this.$options.name} emit action ${action.name}`)
+    onAction (action, component) {
+      console.log(`${this.$options.name} on action ${action.name}`)
       let _action = `action${action.name}`
       if (Object.prototype.hasOwnProperty.call(this, _action)) {
-        this[_action](action.data)
+        this[_action](action.data, component)
       } else {
         this.emitAction(action.name, action.data)
       }

@@ -1,6 +1,16 @@
 <script>
 export default {
-  props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
+  props: {
+    schema: Object,
+    elemValue: Number,
+    elemName: String,
+    path: String,
+    inputListeners: Object,
+    arrayElem: Boolean,
+    level: Number,
+    readOnly: Boolean,
+    hideReadOnly: Boolean
+  },
   methods: {
     onChange (value) {
       console.log('oc2' + this.path + '-' + value)
@@ -15,9 +25,9 @@ export default {
     <v-select
       v-if="Object.prototype.hasOwnProperty.call(schema, 'enum')"
       :label="elemName"
-      :options="schema.enum"
+      :items="schema.enum"
       :placeholder="schema['description']"
-      :readonly="schema.readOnly"
+      :disabled="readOnly || schema.readOnly"
       :single-line="arrayElem"
       :dense="arrayElem"
       hide-details
@@ -28,7 +38,7 @@ export default {
       v-else
       :label="elemName"
       :placeholder="schema['description']"
-      :readonly="schema.readOnly"
+      :disabled="readOnly ? readOnly : schema.readOnly"
       :single-line="arrayElem"
       :dense="arrayElem"
       hide-details

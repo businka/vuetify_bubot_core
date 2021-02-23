@@ -8,7 +8,8 @@ export default {
     BrowserToolBar: () => import('./resources/ToolBar'),
     OperationsPanel: () => import('./resources/OperationsPanel'),
     RowViewer: () => import('./resources/Cells/RowViewer'),
-    RowEditor: () => import('./resources/Cells/RowEditor')
+    RowEditor: () => import('./resources/Cells/RowEditor'),
+    ExtException: () => import('../Simple/ExtException')
     // Headers: () => import('./resources/Headers'),
     // FilterPanel: () => import('./resources/FilterPanel'),
   },
@@ -27,6 +28,16 @@ export default {
       default: function () {
         return []
       }
+    },
+    rowActions: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    rowActionsField: {
+      type: String,
+      default: 'rowViewer'
     },
     rowActivateHandler: {
       type: Object,
@@ -97,7 +108,12 @@ export default {
       source: undefined,
       options: undefined,
       editForm: {},
-      actionForm: {}
+      actionForm: {},
+    }
+  },
+  computed: {
+    actionColumn () {
+      return this.rowActions || this.rowActionsField ? 1 : 0
     }
   },
   watch: {
@@ -110,7 +126,7 @@ export default {
         this.source.query()
       }
     },
-    options() {
+    options () {
       this.source.changeProps(this.options)
       this.source.query()
     },
@@ -171,7 +187,7 @@ export default {
           >
             <th
               class="pa-0"
-              :colspan="headers.length"
+              :colspan="headers.length + actionColumn"
             >
               <OperationsPanel
                 :items="operationsPanelItems"
@@ -195,6 +211,7 @@ export default {
             >
               {{ col[`title_${$i18n.locale}`] || col.text }}
             </th>
+            <th v-if="actionColumn"></th>
           </tr>
         </thead>
       </template> <!-- Headers Bars !-->
@@ -213,6 +230,8 @@ export default {
           :is="rowTemplate"
           v-else
           :headers="headers"
+          :row-actions="rowActions"
+          :row-actions-field="rowActionsField"
           :item="item"
           :index="index"
           :is-selected="isSelected"
@@ -242,13 +261,18 @@ export default {
       :is="editForm.handler"
       v-if="editForm && editForm.visible && editForm.handler!=='inline'"
       v-bind="editForm"
-      @action="onAction"
+      @action="onAction($event, 'editForm')"
     />
     <component
       :is="actionForm.handler"
       v-if="actionForm && actionForm.visible"
       :params="actionForm"
-      @action="onAction"
+      @action="onAction($event, 'actionForm')"
     />
+    <ExtException
+      v-if="actionError"
+      v-model="actionError"
+      :dialog="true"
+    ></ExtException>
   </v-container>
 </template>

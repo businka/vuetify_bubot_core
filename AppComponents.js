@@ -10,7 +10,7 @@ Vue.component('MassOperationsBar', () => import('./components/Simple/MassOperati
 Vue.component('FilterBar', () => import('./components/Filter/FilterBar'))
 Vue.component('Browser', () => import('./components/Layouts/Browser'))
 Vue.component('DataGrid', () => import('./components/DataGrid/DataGrid'))
-Vue.component('SelectBrowser', () => import('./components/Dialog/SelectBrowser/SelectBrowser'))
+Vue.component('SelectBrowser', () => import('./components/Panel/SelectBrowser'))
 // Vue.component('TreeDataGrid', () => import('./components/DataGrid/TreeDataGrid'))
 // Vue.component('TabsBrowser', () => import('./components/TabsBrowser/TabsBrowser'))
 //

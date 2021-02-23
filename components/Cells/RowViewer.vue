@@ -59,14 +59,14 @@ export default {
   >
     <td
       v-for="(col, i) in headers"
-      class="px-2"
       :key="col.value"
+      class="px-2"
       :style="`text-align:${(col.align || 'left')}; vertical-align:${(col.vAlign || 'center')}`"
       @click="onClickRow(col)"
     >
       <v-checkbox
-        class="ma-0"
         v-if="col.value==='data-table-select'"
+        class="ma-0"
         :value="isSelected"
         dense
         hide-details
@@ -75,9 +75,9 @@ export default {
       <component
         :is="col.template||'RowCellDefault'"
         v-model="row"
-        :col="col"
         :edit-mode="editMode"
         :autofocus="i===0"
+        v-bind="col"
         @action="onAction"
       />
     </td>

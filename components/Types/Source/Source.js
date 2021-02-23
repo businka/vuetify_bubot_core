@@ -4,11 +4,12 @@ export default class Source {
   rawData = []
   filteredRawData = []
   total = 0
-  filter = {}
+
   rows = []
   props = {
     rows: [],
     page: 1,
+    filter: {},
     itemsPerPage: 25,
     appName: '',
     objName: '',
@@ -34,7 +35,7 @@ export default class Source {
   }
 
   changeFilter (filter) {
-    this.filter = updateObject(this.filter, filter)
+    this.props.filter = updateObject(this.props.filter, filter)
     this.props.dataTableOptions.page = 1
     this.query()
   }

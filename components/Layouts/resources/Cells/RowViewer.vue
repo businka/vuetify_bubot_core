@@ -1,40 +1,52 @@
 <script>
 import { jsonClone } from '../../../../helpers/clone'
 import ActionMixin from '../../../../helpers/mixinTemplate/action'
+import { updateObject } from '../../../../helpers/baseHelper'
 
 
 export default {
   name: 'RowViewer',
   components: {
+    'RowCellActions': () => import('./RowCellActions'),
+    'RowCellTitle': () => import('./RowCellTitle'),
+    'RowCellDefault': () => import('./RowCellDefault'),
 
   },
   mixins: [ActionMixin],
-  props: ['headers', 'item', 'index', 'editMode', 'isSelected', 'select', 'store'],
-  data: function() {
+  props: ['headers', 'item', 'index', 'editMode', 'isSelected', 'select', 'store', 'rowActions', 'rowActionsField'],
+  data: function () {
     return {
       row: {}
     }
   },
   watch: {
-    item() {
+    item () {
       this.init()
     }
   },
-  mounted() {
+  mounted () {
     this.init()
   },
   methods: {
-    init() {
+    init () {
       this.row = jsonClone(this.item)
     },
-    actionUpdateRow() {
+    actionSelectItems (actionData) {
+      const data = updateObject({ items: [this.item] }, actionData)
+      this.emitAction('SelectItems', data)
+    },
+    actionCallDataSourceForSelectedItems (actionData) {
+      const data = updateObject({ data: { items: [this.item] } }, actionData)
+      this.emitAction('CallDataSourceForSelectedItems', data)
+    },
+    actionUpdateRow () {
       this.$emit('action', { name: 'UpdateRow', data: { value: this.row, index: this.index } })
     },
-    actionCancelEdit() {
+    actionCancelEdit () {
       this.row = jsonClone(this.item)
       this.$emit('action', { name: 'RowActivate', data: { row: this.item, index: undefined } })
     },
-    onClickRow(col) {
+    onClickRow (col) {
       console.log('RowActivate')
       if (col.value === 'data-table-select') {
         return
@@ -49,7 +61,7 @@ export default {
 
 <style lang="scss">
   .v-input--selection-controls__input {
-    margin-right: 0px;
+    margin-right: 0;
   }
 </style>
 
@@ -73,9 +85,20 @@ export default {
       <component
         :is="col.template||'RowCellDefault'"
         v-model="row"
-        :col="col"
         :edit-mode="editMode"
         :autofocus="i===0"
+        v-bind="col"
+        @action="onAction"
+      />
+    </td>
+    <td
+      v-if="rowActions || rowActionsField"
+      class="pa-0"
+    >
+      <RowCellActions
+        :actions="rowActions"
+        :field="rowActionsField"
+        :value="row"
         @action="onAction"
       />
     </td>

@@ -1,5 +1,6 @@
 import { initDataSource } from '../../Types/Source/DataSourceLoader'
 import { updateObject, objHasOwnProperty } from '../../../helpers/baseHelper'
+// import Vue from 'vue'
 
 export default {
   data () {
@@ -12,13 +13,19 @@ export default {
       source: undefined,
       options: {},
       editForm: {},
-      actionForm: {}
+      actionForm: {},
+      actionError: undefined
     }
   },
   methods: {
     init () {
       this.selected = []
       const dataSource = updateObject({}, { filterFields: this.filterFields }, this.dataSource, this.options)
+      this.editForm = {}
+      this.actionForm = {}
+      this.actionError = undefined
+      this.selected = []
+      this.selectAll = false
       this.source = initDataSource(dataSource, this.$store)
     },
     actionLoading (data) {
@@ -73,26 +80,40 @@ export default {
     //   }
     // },
     // actionRemoteItemAction: function (actionData) {
-    //   // const payload = updateObject({}, actionData.data, {item: this.itemFull, })
+    //   // const payload = updateObject({}, actionData.data, {item: this.deviceLink, })
     //   const source = objHasOwnProperty(actionData, 'dataSource')? initDataSource(actionData.dataSource.type, this.dataSource): this.source
-    //   source.call(actionData.name, this.itemFull)
+    //   source.call(actionData.name, this.deviceLink)
     // },
-    actionCallDataSourceForSelectedItems (actionData) {
-      let source
-      let payload = updateObject({ data: {} }, actionData)
-      if (objHasOwnProperty(actionData, 'dataSource')) {
-        source = initDataSource(actionData.dataSource, this.$store)
-      } else {
-        source = this.source
+    actionReload () {
+      this.source.query()
+    },
+    async actionCallDataSourceForSelectedItems (actionData) {
+      try {
+        let source
+        let payload = updateObject({ data: {} }, actionData)
+        if (objHasOwnProperty(actionData, 'dataSource')) {
+          source = initDataSource(actionData.dataSource, this.$store)
+        } else {
+          source = this.source
+        }
+        if (objHasOwnProperty(payload.data, 'items')) {
+          payload.data.filter = null
+
+        } else {
+          if (this.selectAll) {
+            payload.data.items = this.source.queryAll()
+            payload.data.filter = this.source.filter
+          } else {
+            payload.data.items = this.selected
+            payload.data.filter = null
+          }
+        }
+        await source.call(payload)
+        this.source.query()
+      } catch (err) {
+        // Vue.set(this, error,err)
+        this.actionError = err
       }
-      if (this.selectAll) {
-        payload.data.items = this.source.queryAll()
-        payload.data.filter = this.source.filter
-      } else {
-        payload.data.items = this.selected
-        payload.data.filter = null
-      }
-      source.call(payload)
     },
 
     async actionRowActivate (data) {
@@ -109,6 +130,7 @@ export default {
         this.editForm = {
           handler: this.rowActivateHandler.name,
           formUid: form,
+          panelName: 'editForm',
           // params,
           visible: true,
           formData: { item: data.row, index: data.index },
@@ -126,15 +148,9 @@ export default {
         }
       })
     },
-    actionCloseEditForm (data) {
-      this.editForm.visible = false
-      if (data.result) {
-        this.source.query()
-      }
-    },
-    actionCloseActionForm (data) {
-      this.actionForm.visible = false
-      if (data.result) {
+    actionCloseForm(data, component) {
+      this[component].visible = false
+      if (data && data.reload) {
         this.source.query()
       }
     },

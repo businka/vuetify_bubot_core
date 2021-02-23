@@ -50,6 +50,7 @@ export default {
         :color="primary?'primary':''"
         dense
         small
+        :text="!icon"
         class="mr-2"
         @click.stop="emitAction(name, data)"
         v-on="on"

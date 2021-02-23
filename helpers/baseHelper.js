@@ -1,3 +1,4 @@
+
 export function objHasOwnProperty (obj, prop) {
   if (!obj || !prop)
     return false
@@ -44,9 +45,11 @@ function _updateObject (base, source) {
         _updateObject(base[elem], source[elem])
         break;
       case 'array':
-        if (!objHasOwnProperty(base, elem)) {
-          base[elem] = []
-        }
+        // if (!objHasOwnProperty(base, elem)) {
+        //   base[elem] = []
+        // }
+        // base[elem] = base[elem].concat(source[elem])
+        base[elem] = []
         base[elem] = base[elem].concat(source[elem])
         break;
       default:
@@ -65,6 +68,11 @@ export function updateObject (base) {
   return base
 }
 
+export function sortArrayNumber(arr) {
+  return arr.sort((a, b) => a - b)
+}
+
+
 export function sortArrayObject(arr, key) {
   arr.sort(function (a,b) {
     let keyA=a[key].toLowerCase()
@@ -75,4 +83,22 @@ export function sortArrayObject(arr, key) {
       return 1
     return 0
   })
+}
+
+export function getPropValueByPath (obj, path, def) {
+  try {
+    let _obj = obj
+    let _path = path.split('.')
+    let i
+    for (i = 0; i < _path.length; i++) {
+      if (Object.prototype.hasOwnProperty.call(_obj, _path[i])) {
+        _obj = _obj[_path[i]]
+      } else {
+        return def
+      }
+    }
+    return _obj
+  } catch (e) {
+    return def
+  }
 }

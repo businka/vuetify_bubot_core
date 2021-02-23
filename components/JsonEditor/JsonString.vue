@@ -1,3 +1,46 @@
+<script>
+// import Vue from 'vue'
+
+export default {
+  props: {
+    schema: Object,
+    elemValue: String,
+    elemName: String,
+    path: String,
+    inputListeners: Object,
+    arrayElem: Boolean,
+    level: Number,
+    readOnly: Boolean,
+    hideReadOnly: Boolean
+  },
+  data: function () {
+    return {
+      value: this.elemValue,
+      test: 0
+    }
+  },
+  watch: {
+    elemValue: function (value) {
+      this.value = value
+    }
+  },
+  methods: {
+    onChange (value) {
+      console.log('oc2' + this.path + '-' + value)
+      this.$emit('action', { name: 'UpdateProp', data: { action: 'change', path: this.path, value } })
+    },
+    onInput (value) {
+      this.value = value
+    },
+    cancelInput () {
+      this.test++
+      this.value = this.elemValue
+      // Vue.set(this, 'value', this.elemValue)
+    }
+  }
+}
+</script>
+
 <template>
   <div class="pb-1">
     <v-select
@@ -5,12 +48,13 @@
       :label="schema.title || elemName"
       :placeholder="schema.description || null"
       :items="schema.enum"
-      :disabled="(schema.readOnly || readOnly)"
-      :solo="arrayElem"
-      :flat="arrayElem"
+      :disabled="(readOnly ? readOnly : schema.readOnly)"
+      flat
       :dense="arrayElem"
       hide-details
-      :value="elemValue"
+      :ddd="test"
+      :value="value"
+      @input="onInput"
       @change="onChange"
     />
     <!--//todo.добавить выбор перечисляемых-->
@@ -18,25 +62,15 @@
       v-else
       :label="schema.title || elemName"
       :placeholder="schema.description || null"
-      :disabled="(schema.readOnly || readOnly)"
-      :solo="arrayElem"
-      :flat="arrayElem"
+      :disabled="(readOnly ? readOnly : schema.readOnly)"
+      flat
       :dense="arrayElem"
       hide-details
-      :value="elemValue"
+      :ddd="test"
+      :value="value"
+      @keydown.escape.stop="cancelInput"
+      @input="onInput"
       @change="onChange"
     />
   </div>
 </template>
-<script>
-
-export default {
-  props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
-  methods: {
-    onChange (value) {
-      console.log('oc2' + this.path + '-' + value)
-      this.$emit('action', {name: 'UpdateProp', data:{ action:'change', path: this.path, value}})
-    }
-  }
-}
-</script>

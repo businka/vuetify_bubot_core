@@ -1,18 +1,17 @@
-<template>
-  <div class="q-pt-0 q-pb-0">
-    <v-checkbox
-      :label="elemName"
-      :placeholder="schema['description']"
-      :readonly="schema.readOnly"
-      v-model="value"
-    >
-    </v-checkbox>
-  </div>
-</template>
 <script>
 
 export default {
-  props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
+  props: {
+    schema: Object,
+    elemValue: null,
+    elemName: String,
+    path: String,
+    inputListeners: Object,
+    arrayElem: Boolean,
+    level: Number,
+    readOnly: Boolean,
+    hideReadOnly: Boolean
+  },
   computed: {
     value: {
       get () {
@@ -25,3 +24,14 @@ export default {
   }
 }
 </script>
+
+<template>
+  <div class="q-pt-0 q-pb-0">
+    <v-checkbox
+      v-model="value"
+      :label="elemName"
+      :placeholder="schema['description']"
+      :disabled="readOnly || schema.readOnly"
+    />
+  </div>
+</template>
