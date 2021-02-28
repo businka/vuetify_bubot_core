@@ -1,6 +1,6 @@
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
-import {objHasOwnProperty} from '../../helpers/baseHelper'
+// import {objHasOwnProperty} from '../../helpers/baseHelper'
 
 export default {
   name: 'FieldLink',
@@ -73,26 +73,13 @@ export default {
       console.log('input link-field ' + data.row.title)
     },
     actionSelectItems (data) {
-      let _selectValue
-      let self = this
-      let _data
-      if (this.fields.length){
-        _data = data.items.map(function(item) {
-            let _item = {}
-            self.fields.map(function(key) {
-              if (objHasOwnProperty(item, key)){
-                _item[key] = item[key]
-              }
-            })
-            return _item
-        })
-      } else {
-        _data = data.items
-      }
-      if (this.multiSelect){
-        _selectValue = _data
-      } else {
-        _selectValue = _data[0]
+      let _selectValue = null
+      if (data.length) {
+        if (this.multiSelect){
+          _selectValue = data
+        } else {
+          _selectValue = data[0]
+        }
       }
       this.$emit('input', _selectValue)
       this.actionCloseForm()
@@ -112,7 +99,7 @@ export default {
   <div>
     <v-text-field
       class="linkField pb-1"
-      :value="value?value[titleField]:''"
+      :value="value?value[titleField||'title']:''"
       :label="label"
       append-icon="mdi-chevron-up"
       clearable

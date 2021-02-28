@@ -7,7 +7,11 @@ export default {
       type: Boolean,
       default: false
     },
-    typography: {
+    messageTypography: {
+      type: String,
+      default: 'h6'
+    },
+    detailTypography: {
       type: String,
       default: 'caption'
     },
@@ -60,11 +64,16 @@ export default {
         </v-btn>
       </template>
     </v-snackbar>
-    <p
+    <div
       v-else
-      :class="`error--text ${typography}`"
+      class="pa-0 ma-0"
     >
-      {{ $t(`Error.${value.message}`) }} {{ value.detail }}
-    </p>
+      <div :class="`error--text ${messageTypography}`">
+        {{ $t(`ErrorMsg.${value.message}`) }}
+      </div>
+      <div :class="`error--text ${detailTypography}`">
+        {{ value.detail }}
+      </div>
+    </div>
   </div>
 </template>

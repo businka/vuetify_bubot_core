@@ -35,7 +35,7 @@ export default {
             _value = this.elemValue[i]
             break
           case 'object':
-            _value = this.elemValue[i][this.schema.items['title_field'] || 'title']
+            _value = this.elemValue[i][this.schema.items['titleField'] || 'title']
             break
           default:
             return ''

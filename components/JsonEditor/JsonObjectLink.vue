@@ -67,6 +67,7 @@ export default {
   <FieldLink
     :value="elemValue"
     v-bind="schema"
+    :label="elemName"
     :read-only="readOnly"
     @input="onChange"
   />

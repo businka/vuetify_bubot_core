@@ -86,7 +86,8 @@ export default {
     </v-toolbar>
     <ExtException
       v-if="status==='error'"
-      :error="result"
+      class="pa-4"
+      :value="result"
     ></ExtException>
     <component
       :is="form.template"

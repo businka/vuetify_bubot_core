@@ -7,9 +7,9 @@ Vue.component('RightDrawerFormViewer2', () => import('./components/FormViewer/Ri
 // Vue.component('Tree', () => import('./components/TreeBrowser/TreeBrowser'))
 Vue.component('ToolBar', () => import('./components/Simple/ToolBar'))
 Vue.component('MassOperationsBar', () => import('./components/Simple/MassOperationsBar'))
-Vue.component('FilterBar', () => import('./components/Filter/FilterBar'))
+// Vue.component('FilterBar', () => import('./components/Filter/FilterBar'))
 Vue.component('Browser', () => import('./components/Layouts/Browser'))
-Vue.component('DataGrid', () => import('./components/DataGrid/DataGrid'))
+// Vue.component('DataGrid', () => import('./components/DataGrid/DataGrid'))
 Vue.component('SelectBrowser', () => import('./components/Panel/SelectBrowser'))
 // Vue.component('TreeDataGrid', () => import('./components/DataGrid/TreeDataGrid'))
 // Vue.component('TabsBrowser', () => import('./components/TabsBrowser/TabsBrowser'))
@@ -22,16 +22,16 @@ Vue.component('SelectBrowser', () => import('./components/Panel/SelectBrowser'))
 //
 Vue.component('JsonEditor', () => import('./components/JsonEditor/JsonEditor'))
 Vue.component('JsonForm', () => import('./components/JsonEditor/JsonForm'))
-Vue.component('ParamsEditor', () => import('./components/ParamsEditor/ParamsEditor'))
+// Vue.component('ParamsEditor', () => import('./components/ParamsEditor/ParamsEditor'))
 
 
 
-Vue.component('RowCellDefault', () => import('./components/Cells/RowCellDefault'))
-Vue.component('RowCellTitle', () => import('./components/Cells/RowCellTitle'))
-Vue.component('RowCellNumber', () => import('./components/Cells/RowCellNumber'))
-Vue.component('RowCellFieldLink', () => import('./components/Cells/RowCellFieldLink'))
-Vue.component('RowCellIcon', () => import('./components/Cells/RowCellIcon'))
-Vue.component('RowCellDateTime', () => import('./components/Cells/RowCellDateTime'))
+// Vue.component('RowCellDefault', () => import('./components/Cells/RowCellDefault'))
+// Vue.component('RowCellTitle', () => import('./components/Cells/RowCellTitle'))
+// Vue.component('RowCellNumber', () => import('./components/Cells/RowCellNumber'))
+// Vue.component('RowCellFieldLink', () => import('./components/Cells/RowCellFieldLink'))
+// Vue.component('RowCellIcon', () => import('./components/Cells/RowCellIcon'))
+// Vue.component('RowCellDateTime', () => import('./components/Cells/RowCellDateTime'))
 
 
 // Vue.component('ActionBtnDefault', () => import('./components/ActionButtons/ActionBtnDefault'))

@@ -66,7 +66,7 @@ export default {
     <LoResult
       v-if="lo.showCurrent"
       :form-data="{dataSource: currentOperation.dataSource}"
-      :uid=lo.currentUid
+      :uid="lo.currentUid"
       v-bind="currentOperation"
       @action="onAction"
     />

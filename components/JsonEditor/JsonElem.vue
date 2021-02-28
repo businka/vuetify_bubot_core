@@ -22,16 +22,16 @@ export default {
     hideReadOnly: Boolean
   },
   data: () => ({
-    delimiter: "."
+    delimiter: '.'
   }),
   computed: {
-    _inputListeners: function() {
+    _inputListeners: function () {
       if (this.path === '') {
         const vm = this
         return Object.assign({},
           this.$listeners,
           {
-            'action': function(action) {
+            'action': function (action) {
               // console.log('change-value ', action, path, value)
               vm.$emit('action', action)
             }
@@ -43,14 +43,35 @@ export default {
     }
   },
   methods: {
-    onChange(data) {
+    onChange (data) {
       console.log('elem' + data)
     }
   },
 }
 </script>
+
+<style lang="scss">
+  div .bubot-input {
+    .theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .theme--light.v-label--is-disabled {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    div .theme--light.v-select .v-select__selection--disabled {
+      color: rgba(0, 0, 0, 0.65);
+
+    }
+  }
+</style>
+
 <template>
-  <div v-if="schema && !schema.hidden && (!hideReadOnly || (hideReadOnly && !schema.readOnly))">
+  <div
+    v-if="schema && !schema.hidden && (!hideReadOnly || (hideReadOnly && !schema.readOnly))"
+    class="bubot-input"
+  >
     <JsonString
       v-if="schema['type']==='string'"
       :elem-name="elemName"

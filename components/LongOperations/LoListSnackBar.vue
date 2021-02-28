@@ -5,7 +5,7 @@ import ActionMixin from '../../helpers/mixinTemplate/action'
 // import { ObjectId } from 'bson'
 
 export default {
-  name: 'SnackBarLo',
+  name: 'LoListSnackBar',
   components: {
     // 'SnackBarLO': () => import('./SnackBarLO')
     // 'RowViewer': () => import('../Cells/RowViewer'),
@@ -96,8 +96,22 @@ export default {
                 />
                 <v-list-item-subtitle
                   class="text-short"
-                  v-text="value.message"
-                />
+                >
+                  <v-tooltip
+                    bottom
+                    :open-delay="600"
+                  >
+                    <template v-slot:activator="{ on,  attrs }">
+                      <div
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        {{ value.message }}
+                      </div>
+                    </template>
+                    <span> {{ value.message }} </span>
+                  </v-tooltip>
+                </v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-avatar>
                 <v-progress-circular
@@ -110,15 +124,30 @@ export default {
                 </v-progress-circular>
                 <v-icon
                   v-else-if="value.status==='success'"
+                  :color="hover ? '' : 'primary'"
                   @click.stop="onDelete(uid)"
                 >
-                  {{ (hover) ? 'mdi-delete' : 'mdi-check' }}
+                  {{ hover ? 'mdi-delete' : 'mdi-check' }}
                 </v-icon>
                 <v-icon
-                  v-else-if="value.status==='error'"
+                  v-else-if="value.status==='error' "
+                  :color="hover ? '' : 'error'"
                   @click.stop="onDelete(uid)"
                 >
                   {{ (hover) ? 'mdi-delete' : 'mdi-alert-octagon-outline' }}
+                </v-icon>
+                <v-icon
+                  v-else-if="value.status==='canceling' "
+                  @click.stop="onDelete(uid)"
+                >
+                  {{ (hover) ? 'mdi-delete' : 'mdi-close' }}
+                </v-icon>
+                <v-icon
+                  v-else-if="value.status==='cancel'"
+                  :color="hover ? '' : 'error'"
+                  @click.stop="onDelete(uid)"
+                >
+                  {{ (hover) ? 'mdi-delete' : 'mdi-cancel' }}
                 </v-icon>
               </v-list-item-avatar>
             </v-list-item>

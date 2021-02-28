@@ -73,6 +73,12 @@ export default {
         return []
       }
     },
+    selectedItemFields: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
     hideSelectAll: {
       type: Boolean,
       default: false
@@ -136,44 +142,27 @@ export default {
   // }
   // },
   methods: {
-    // async init () {
-    // this.initStore()
-    // await this.initForm()
-    // await this.$store.dispatch(`${this.namespace}/read`, {
-    //   store: this.store,
-    //   params: this.params,
-    //   id: this.modeParams.id
-    //
-    // }, { root: true })
-    // },
-    // actionUpdateProp ({ path, action, value }) {
-    // this.$store.commit(`${this.store.namespace}/updateItemProps`, {
-    //   uid: this.store.uid,
-    //   path: 'item.links.' + path,
-    //   action,
-    //   value
-    // }, { root: true })
-    // },
-    // viewItem () {
-    //   this.visible = true
-    // },
-    // close () {
-    //   this.visible = false
-    // },
-    // actionRemoteItemAction: function (action) {
-    // this.$store.dispatch('LongOperations/run', {
-    //   operation: action,
-    //   name: `${this.$store.state.app}/${action.objName || this.store.mode.objName}/${action.name}`,
-    //   data: { item: this.data.item }
-    // }, { root: true })
-    // },
-    // async defaultAction () {
-    // await this.dispatchAction({ name: 'AddDevice' })
-    // this.$emit('action', { name: 'CloseEditForm', data: { name: this.name, result: false } })
-    // },
-    // onClose () {
-    //   this.$emit('action', { name: 'CloseEditForm', data: { name: this.name, result: false } })
-    // },
+    actionSelectItems (data) {
+      let result = [];
+      let key = this.dataSource.keyProperty
+      let fields = this.selectedItemFields || []
+      for (let i = 0; i < data.items.length; i++) {
+
+        let item = {
+          // title: data.items[i].title
+        }
+        item[key] = data.items[i][key]
+        for (let j = 0; j < fields.length; j++) {
+          let value = data.items[i][fields[j]]
+          if (value) {
+            item[fields[j]] = value
+          }
+
+        }
+        result.push(item)
+      }
+      this.emitAction('SelectItems', result)
+    }
   }
 }
 </script>

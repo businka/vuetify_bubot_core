@@ -1,5 +1,5 @@
 <script>
-import ActionMixin from '../../helpers/mixinTemplate/action'
+import ActionMixin from '../../../../helpers/mixinTemplate/action'
 
 export default {
   name: 'RowCellTitle',
@@ -22,7 +22,15 @@ export default {
       default: () => {
       }
     },
-  },
+    editMode: {
+      type: Boolean,
+      default: false
+    },
+    autofocus: {
+      type: Boolean,
+      default: false
+    }
+  }
 }
 </script>
 
@@ -31,18 +39,18 @@ export default {
     <v-row class="d-flex align-baseline  pa-0 ma-0">
       <div
         class="text-body-1 pa-0 ma-0"
-        v-text="value[titleField]"
+        v-text="value.title"
       ></div>
       <div
-        v-if="value[subtitleField]"
-        class="text-caption  pa-0 ma-0 ml-1"
-        v-text="value[subtitleField]"
+        v-if="value.subtitle"
+        class="text-caption  pa-0 ma-0 ml-1 text--secondary"
+        v-text="value.subtitle"
       ></div>
     </v-row>
     <v-row
-      v-if="value[infoField]"
+      v-if="value.info"
       class="text-caption pa-0 ma-0 text--secondary"
-      v-text="value[infoField]"
+      v-text="value.info"
     ></v-row>
   </div>
 </template>

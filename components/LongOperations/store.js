@@ -120,7 +120,7 @@ export default {
       return uid
     },
     on_cancel: (store, payload) => {
-      store.commit('cancel', payload)
+      store.commit('cancel', payload.uid)
     },
     on_complete: (store, payload) => {
       const uid = payload.uid

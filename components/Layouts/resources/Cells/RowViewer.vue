@@ -9,6 +9,7 @@ export default {
   components: {
     'RowCellActions': () => import('./RowCellActions'),
     'RowCellTitle': () => import('./RowCellTitle'),
+    'RowCellTitleSimple': () => import('./RowCellTitleSimple'),
     'RowCellDefault': () => import('./RowCellDefault'),
 
   },
