@@ -40,15 +40,15 @@ export default class Source {
     this.query()
   }
 
-  query () {
+  async query () {
     throw new Error('method query not implemented in source class')
   }
 
-  call () {
+  async call () {
     throw new Error('method call not implemented in source class')
   }
 
-  read () {
+  async read () {
     throw new Error('method read not implemented in source class')
   }
 }

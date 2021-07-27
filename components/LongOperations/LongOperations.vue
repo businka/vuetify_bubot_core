@@ -1,6 +1,6 @@
 <script>
 // import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
-import storage from './store'
+import storage from './LongOperations.store'
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import { objHasOwnProperty } from '../../helpers/baseHelper'
 // import { ObjectId } from 'bson'

@@ -3,9 +3,9 @@ import Memory from './Memory'
 export default class Vuex extends Memory {
   data = []
 
-  queryAll () {
+  _query () {
     this.rawData = this.store.getters[`${this.props['storeName']}/getRawDataSource`](this.props.filter.operation || {}, { root: true }) || [];
-    return super.queryAll();
+    return super._query();
   }
 
   async read (id) {

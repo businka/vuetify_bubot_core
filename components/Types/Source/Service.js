@@ -8,7 +8,7 @@ export default class Service extends Source {
     return null
   }
 
-  queryAll() {
+  async _query() {
     return null
   }
 
@@ -23,7 +23,9 @@ export default class Service extends Source {
         page
       }, this.props.filter)
       // params = this.props.filter
-      resp = await buxios.get(`/api/${this.props.appName}/${this.props.objName}/query`,
+      let actionName = `${this.props.appName}/${this.props.objName}/${this.props.query||'query'}`
+
+      resp = await buxios.get(`/api/${actionName}`,
         { params }
       )
       this.rows = resp.data.rows

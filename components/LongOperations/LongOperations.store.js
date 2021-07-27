@@ -3,7 +3,7 @@
 // import { initStoreKey } from '../../helpers/mixinStore/mutations'
 // import { processInDataSource } from '../../helpers/mixinStore'
 import Vue from 'vue'
-import { updateObject, objHasOwnProperty } from '../../helpers/baseHelper'
+import { objHasOwnProperty } from '../../helpers/baseHelper'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -19,6 +19,9 @@ export default {
   },
   getters: {
     getRawDataSource: state => uid => {
+      if (!state.operations[uid]) {
+        throw new Error(`for long operation ${uid} datasource not found`)
+      }
       return state.operations[uid].result
     }
 
@@ -101,21 +104,14 @@ export default {
         return uid
       Vue.prototype.$socket.sendObj({
         uid,
-        name: payload.actionName,
         type: 'call',
-        data: payload.data
+        name: payload.actionName,
+        data: payload.actionData
       })
-      operation = updateObject({
-        dataSource: payload.dataSource || { type: 'Vuex', storeName: 'LongOperations' },
-        message: '',
-        title: '',
-        result: null,
-        callback: null
-      }, new_operation, {
-        progress: -1,
-        dataSource: { filter: { operation: uid } },
-        status: 'pending',
-      })
+      operation = new_operation
+      operation.result = null
+      operation.progress = -1
+      operation.status = 'pending'
       commit('run', { uid, operation })
       return uid
     },
