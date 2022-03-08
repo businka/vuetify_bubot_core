@@ -38,6 +38,8 @@ export default {
         // this.loading = true
         const session = getSession()
         const response = await buxios.get('/api/AuthService/User/read_session_info')
+        if (!response.data.session)
+          redirectToSignIn(window.location.pathname + window.location.search)
         if (session !== response.data.session) console.error('cookie != session_info')
         store.commit('set', {
           _id: response.data.session,

@@ -1,4 +1,4 @@
-import { objHasOwnProperty, isEmptyObject } from '../../../helpers/baseHelper'
+import { objHasOwnProperty, isEmptyObject } from '../../helpers/baseHelper'
 
 import Memory from './Memory'
 import Service from './Service'

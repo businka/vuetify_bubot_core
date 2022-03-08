@@ -1,11 +1,20 @@
+module.exports = {
+  objHasOwnProperty,
+  isEmptyObject,
+  getType,
+  updateObject,
+  sortArrayNumber,
+  sortArrayObject,
+  getPropValueByPath
+}
 
-export function objHasOwnProperty (obj, prop) {
+function objHasOwnProperty (obj, prop) {
   if (!obj || !prop)
     return false
   return Object.prototype.hasOwnProperty.call(obj, prop)
 }
 
-export function isEmptyObject (obj) {
+function isEmptyObject (obj) {
   for (let elem in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, elem)) {
       return false
@@ -14,7 +23,7 @@ export function isEmptyObject (obj) {
   return true
 }
 
-export function getType (value) {
+function getType (value) {
   let baseType = typeof value
   switch (typeof value) {
     case 'object':
@@ -59,7 +68,7 @@ function _updateObject (base, source) {
   return base
 }
 
-export function updateObject (base) {
+function updateObject (base) {
   if (arguments.length < 2)
     return base
   for (let i = 1; i < arguments.length; i++) {
@@ -68,15 +77,14 @@ export function updateObject (base) {
   return base
 }
 
-export function sortArrayNumber(arr) {
+function sortArrayNumber (arr) {
   return arr.sort((a, b) => a - b)
 }
 
-
-export function sortArrayObject(arr, key) {
-  arr.sort(function (a,b) {
-    let keyA=a[key].toLowerCase()
-    let keyB=b[key].toLowerCase()
+function sortArrayObject (arr, key) {
+  arr.sort(function (a, b) {
+    let keyA = a[key].toLowerCase()
+    let keyB = b[key].toLowerCase()
     if (keyA < keyB) //сортируем строки по возрастанию
       return -1
     if (keyA > keyB)
@@ -85,7 +93,7 @@ export function sortArrayObject(arr, key) {
   })
 }
 
-export function getPropValueByPath (obj, path, def) {
+function getPropValueByPath (obj, path, def) {
   try {
     let _obj = obj
     let _path = path.split('.')
@@ -102,3 +110,4 @@ export function getPropValueByPath (obj, path, def) {
     return def
   }
 }
+

@@ -34,10 +34,10 @@ export default {
     //     }
     //   )
     // },
-    items() {
+    items () {
       return this.props
     },
-    selected() {
+    selected () {
       if (!this.active.length) return undefined
 
       const id = this.active[0]
@@ -47,7 +47,7 @@ export default {
   },
   watch: {
     selected: 'randomAvatar',
-    view: function(val) {
+    view: function (val) {
       console.log('action ' + val.name + ' view', val.id)
       this.loading = true
 
@@ -62,16 +62,16 @@ export default {
       })
     }
   },
-  mounted() {
+  mounted () {
     this.init()
   },
-  beforeCreate() {
+  beforeCreate () {
     if (!Object.prototype.hasOwnProperty.call(this.$store.state, this.$options.name)) {
       this.$store.registerModule(this.$options.name, storage)
     }
   },
   methods: {
-    async init() {
+    async init () {
       this.initStore()
       await this.initForm()
       await this.$store.dispatch(`${this.namespace}/read`, {
@@ -81,7 +81,7 @@ export default {
 
       }, { root: true })
     },
-    async actionUpdate() {
+    async actionUpdate () {
       await this.$store.dispatch(
         `${this.store.namespace}/update`,
         {
@@ -91,7 +91,7 @@ export default {
         { root: true })
       this.emitAction({ name: '' })
     },
-    actionUpdateProp({ path, action, value }) {
+    actionUpdateProp ({ path, action, value }) {
       this.$store.commit(`${this.store.namespace}/updateItemProps`, {
         uid: this.store.uid,
         path: 'item' + path,
@@ -108,23 +108,23 @@ export default {
     //   }, { root: true })
     //   console.log('ress' + event)
     // },
-    viewItem() {
+    viewItem () {
       this.visible = true
     },
-    close() {
+    close () {
       this.visible = false
     },
-    emitInternalAction(action) {
+    emitInternalAction (action) {
       const context = this.$refs[this.store.uid]
       context.emitAction(action)
     },
-    async defaultAction() {
+    async defaultAction () {
       // await this.dispatchInternalAction({ name: this.form.components.defaultAction.name })
       // this.emitAction({ name: 'CloseForm', data: { name: this.name, result: true } })
       await this.dispatchAction({ name: 'update' })
       this.$emit('action', { name: 'CloseEditForm', data: { name: this.name, result: false } })
     },
-    onClose() {
+    onClose () {
       this.$emit('action', { name: 'CloseEditForm', data: { name: this.name, result: false } })
     },
   }
@@ -150,7 +150,7 @@ export default {
       dense
       class="header1_bg pa-0"
     >
-      <v-spacer/>
+      <v-spacer />
       <v-toolbar-items
         v-if="params.components.toolBar"
         class="pa-0"
@@ -196,19 +196,22 @@ export default {
         </v-btn>
       </v-toolbar-items>
 
-      <v-spacer/>
+      <v-spacer />
 
       <v-toolbar-items>
-        <v-btn
+        <v-container
           v-for="(tab, index) in params.components.tabs"
-          v-if="index>0"
           :key="index"
-          text
-          :class="activeTab===index ? 'activeTab text-none' : 'text-none'"
-          @click="activeTab=index"
         >
-          {{ tab[`title_${$i18n.locale}`] || tab.title }}
-        </v-btn>
+          <v-btn
+            v-if="index>0"
+            text
+            :class="activeTab===index ? 'activeTab text-none' : 'text-none'"
+            @click="activeTab=index"
+          >
+            {{ tab[`title_${$i18n.locale}`] || tab.title }}
+          </v-btn>
+        </v-container>
       </v-toolbar-items>
     </v-toolbar>
     <v-container

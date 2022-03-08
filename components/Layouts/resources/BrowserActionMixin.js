@@ -1,4 +1,4 @@
-import { initDataSource } from '../../Types/Source/DataSourceLoader'
+import { initDataSource } from '../../DataSource/DataSourceLoader'
 import { updateObject, objHasOwnProperty } from '../../../helpers/baseHelper'
 // import Vue from 'vue'
 
@@ -20,12 +20,12 @@ export default {
   methods: {
     init () {
       this.selected = []
-      const dataSource = updateObject({}, { filterFields: this.filterFields }, this.dataSource, this.options)
       this.editForm = {}
       this.actionForm = {}
       this.actionError = undefined
       this.selected = []
       this.selectAll = false
+      const dataSource = updateObject({}, { filterFields: this.filterFields }, this.dataSource, this.options)
       this.source = initDataSource(dataSource, this.$store)
     },
     actionLoading (data) {
@@ -84,8 +84,8 @@ export default {
     //   const source = objHasOwnProperty(actionData, 'dataSource')? initDataSource(actionData.dataSource.type, this.dataSource): this.source
     //   source.call(actionData.name, this.deviceLink)
     // },
-    actionReload () {
-      this.source.query()
+    actionReload: async function () {
+      await this.source.fetchRows()
     },
     async actionCallDataSourceForSelectedItems (actionData) {
       try {
@@ -109,13 +109,20 @@ export default {
           }
         }
         await source.call(payload)
-        this.source.query()
+        await this.source.fetchRows()
       } catch (err) {
         // Vue.set(this, error,err)
         this.actionError = err
       }
     },
-
+    actionUpdateTag: async function(data) {
+      await this.source.call({method: 'update_tag', data})
+      await this.source.fetchRow([data.id])
+    },
+    actionDeleteTag: async function(data) {
+      await this.source.call({method: 'delete_tag', data})
+      await this.source.fetchRow([data.id])
+    },
     async actionRowActivate (data) {
       if (!data.row) {
         console.error('rowActivate - "row" not found')
@@ -148,18 +155,20 @@ export default {
         }
       })
     },
-    actionCloseForm(data, component) {
+    actionCloseForm: async function (data, component) {
       this[component].visible = false
       if (data && data.reload) {
-        this.source.query()
+        await this.source.fetchRows()
       }
     },
-    setDefaultFilter () {
+    onDrop: async function (event) {
+      console.log(event)
+    },
+    setDefaultFilter: function () {
       this.$store.commit(`${this.store.namespace}/setDefaultFilter`, {
         uid: this.store.uid,
         filter: this.modeParams.filter
       })
     },
-
   }
 }

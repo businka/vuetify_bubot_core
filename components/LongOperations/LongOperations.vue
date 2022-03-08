@@ -40,14 +40,17 @@ export default {
   beforeMount () {
     if (!objHasOwnProperty(this.$store.state, this.$options.name)) {
       this.$store.registerModule(this.$options.name, storage)
-      this.$options.sockets.onopen = () => {
-        console.log('ws connect')
-      }
-      this.$options.sockets.onmessage = (message) => {
-        if (message.type !== 'message') return
-        const data = JSON.parse(message.data)
-        const type = data.type || 'unknown'
-        this.$store.dispatch(`LongOperations/on_${type}`, data, { root: true })
+      if (this.$options.sockets) {
+        this.$options.sockets.onopen = () => {
+          console.log('ws connect')
+        }
+        this.$options.sockets.onmessage = (message) => {
+          if (message.type !== 'message') return
+          const data = JSON.parse(message.data)
+          const type = data.type || 'unknown'
+          this.$store.dispatch(`LongOperations/on_${type}`, data, { root: true })
+        }
+
       }
     }
   },

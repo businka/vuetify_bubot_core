@@ -117,18 +117,18 @@ export default {
     }
   },
   watch: {
-    dataSource () {
+    dataSource: async function() {
       if (this.options) {
         this.options.page = 1
       }
       this.init()
       if (this.options) {
-        this.source.query()
+        await this.source.fetchRows()
       }
     },
-    options () {
+    options: async function() {
       this.source.changeProps(this.options)
-      this.source.query()
+      await this.source.fetchRows()
     },
   },
   beforeMount () {
