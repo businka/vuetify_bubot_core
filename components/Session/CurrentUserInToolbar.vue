@@ -57,10 +57,9 @@ export default {
   }
 }
 </script>
-0
 <template>
   <span
-    v-if="visible"
+    v-if="session.available"
   >
     <v-menu
       v-if="user"

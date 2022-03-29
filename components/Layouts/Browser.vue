@@ -66,6 +66,12 @@ export default {
         return []
       }
     },
+    filterConst: {
+      type: Object,
+      default: function () {
+        return {}
+      }
+    },
     hideSelectAll: {
       type: Boolean,
       default: false
@@ -97,19 +103,8 @@ export default {
       default: function () {
         return []
       }
-    }
-  },
-  data () {
-    return {
-      singleSelect: false,
-      showOperationsPanel: this.alwaysShowOperationsPanel,
-      selected: [],
-      loading: true,
-      source: undefined,
-      options: undefined,
-      editForm: {},
-      actionForm: {},
-    }
+    },
+    height: {type:String}
   },
   computed: {
     actionColumn () {
@@ -122,11 +117,16 @@ export default {
         this.options.page = 1
       }
       this.init()
-      if (this.options) {
-        await this.source.fetchRows()
-      }
+    },
+    filterConst: async function(value) {
+      if (value === this.filterConst) return
+      console.log('watch filterConst')
+      this.source.changeProps({filterConst: this.filterConst})
+      await this.source.fetchRows()
+
     },
     options: async function() {
+      console.log('watch options')
       this.source.changeProps(this.options)
       await this.source.fetchRows()
     },
@@ -138,7 +138,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+  .height100 {
+    height: 100%;
+  }
+  .browser {
+    /*height: 100%;*/
+    .v-data-table__wrapper {
+      height: calc(100vh - 160px);
+    }
+  }
 </style>
 
 <template>
@@ -161,6 +170,9 @@ export default {
       }"
       dense
       disable-sort
+      fixed-header
+      class="browser"
+      :height="height"
     >
       <template v-slot:top>
         <BrowserToolBar
@@ -219,8 +231,8 @@ export default {
         v-slot:item="{ item, headers, index, isSelected, select }"
       >
         <component
-          :is="editForm.params.template"
-          v-if="editForm && editForm.handler==='inline' && index===editForm.index"
+          :is="editForm.handler"
+          v-if="editForm && editForm.inline && index===editForm.index"
           :headers="headers"
           :item="item"
           :index="index"
@@ -236,7 +248,7 @@ export default {
           :index="index"
           :is-selected="isSelected"
           :select="select"
-          :edit-mode="editForm && editForm.handler==='inline' && index===editForm.index"
+          :edit-mode="editForm && editForm.handler==='inline' && index===editForm.formData.index"
           @action="onAction"
         />
       </template> <!-- item !-->
@@ -248,7 +260,8 @@ export default {
           v-if="source.error"
           class="error--text"
         >
-          {{ `${source.error.message}: ${source.error.detail}` }}
+          {{ source.error.message }}
+          <span v-if="source.error.detail">: {{ source.error.detail }}</span>
         </v-container>
         <v-container
           v-else
@@ -260,7 +273,9 @@ export default {
     <component
       :is="editForm.handler"
       v-if="editForm && editForm.visible && editForm.handler!=='inline'"
-      v-bind="editForm"
+      :formUid="editForm.formUid"
+      :visible="editForm.visible"
+      :formData="editForm.formData"
       @action="onAction($event, 'editForm')"
     />
     <component

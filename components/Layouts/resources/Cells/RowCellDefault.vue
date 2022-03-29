@@ -1,56 +1,9 @@
 <script>
-import ActionMixin from '../../../../helpers/mixinTemplate/action'
-import { getPropValueByPath } from '../../../../helpers/baseHelper'
+import RowCellMixin from './RowCell.mixin'
 
 export default {
   name: 'CellDefault',
-  mixins: [ActionMixin],
-  props: {
-    value: {
-      type: Object,
-      default: () => {
-      }
-    },
-    field: {
-      type: String
-    },
-    editMode: {
-      type: Boolean,
-      default: false
-    },
-    autofocus: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data: function () {
-    return {
-      name2: ''
-    }
-  },
-  computed: {
-    _value () {
-      return getPropValueByPath(this.value, this.field, '')
-    }
-  },
-  methods: {
-    onChange (value) {
-      let data = Object.assign({}, this.value)
-      let result = data
-      let i, len
-      for (i = 0, len = this.path.length; i < len - 1; i++) {
-        if (Object.prototype.hasOwnProperty.call(result, this.path[i])) {
-          result = result[this.path[i]]
-        }
-      }
-      if (this.col.type && this.col.type === 'number') {
-        result[this._name] = parseFloat(value)
-      } else {
-        result[this._name] = value
-      }
-      this.$emit('input', data)
-    }
-  }
+  mixins: [RowCellMixin]
 }
 </script>
 
@@ -60,12 +13,12 @@ export default {
       v-if="editMode"
     >
       <v-text-field
-        :value="_value[_name]"
-        :label="col[`title_${$i18n.locale}`] || col.text "
+        :value="_value"
+        :label="title"
         hide-details
-        :placeholder="col.text"
+        :placeholder="title"
         :autofocus="autofocus"
-        :type="col.type||'text'"
+        :type="type"
         @input="onChange"
         @keydown.enter="emitAction({name:'UpdateRow'})"
         @keydown.escape="emitAction({name:'CancelEdit'})"

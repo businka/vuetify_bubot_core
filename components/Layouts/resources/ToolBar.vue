@@ -62,8 +62,8 @@ export default {
   >
     <component
       :is="item.template || 'ActionBtn'"
-      v-for="item in itemsBeforeSearch"
-      :key="item.name"
+      v-for="(item, i) in itemsBeforeSearch"
+      :key="i"
       v-bind="item"
       @action="$emit('action', $event)"
     />
@@ -75,8 +75,8 @@ export default {
     />
     <component
       :is="item.template || 'ActionBtn'"
-      v-for="item in itemsBeforeFilter"
-      :key="item.name"
+      v-for="(item, i) in itemsBeforeFilter"
+      :key="i"
       v-bind="item"
       @action="$emit('action', $event)"
     />

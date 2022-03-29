@@ -78,7 +78,7 @@ export default {
           dense
           small
           class="ml-2"
-          @click="$emit('action', { name: 'CloseEditForm' })"
+          @click="$emit('action', { name: 'CloseForm' })"
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>

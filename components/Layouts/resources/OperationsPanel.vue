@@ -50,8 +50,8 @@ export default {
     />
     <component
       :is="item.template || 'ActionBtn'"
-      v-for="item in items"
-      :key="item.name"
+      v-for="(item, i) in items"
+      :key="i"
       v-bind="item"
       @action="$emit('action', $event)"
     />

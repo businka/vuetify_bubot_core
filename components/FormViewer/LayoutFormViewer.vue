@@ -67,13 +67,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+  .height100 {
+    height: 100%;
+  }
 </style>
 
 <template>
-  <v-main>
-    <NavDrawer />
-
+  <v-main class="height100">
+    <NavDrawer class="height100"/>
     <v-system-bar class="px-0">
       <v-spacer />
       <LongOperationsBadge />
@@ -83,7 +85,7 @@ export default {
     </v-system-bar>
     <v-row
       v-if="form"
-      class="pa-0 ma-0"
+      class="pa-0 ma-0 "
     >
       <v-col
         class="pa-0 ma-0"

@@ -30,7 +30,9 @@ export default {
     <v-checkbox
       v-model="value"
       :label="elemName"
-      :placeholder="schema['description']"
+      dense
+      hide-details
+      :placeholder="schema.description ||''"
       :disabled="readOnly || schema.readOnly"
     />
   </div>

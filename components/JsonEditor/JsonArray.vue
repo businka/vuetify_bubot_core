@@ -6,7 +6,12 @@ export default {
   },
   props: {
     schema: Object,
-    elemValue: Array,
+    elemValue: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
     elemName: String,
     path: String,
     inputListeners: Object,
@@ -52,9 +57,28 @@ export default {
       }
       return value
 
-    }
+    },
   },
   methods: {
+    getDefault() {
+      if (this.schema.default) {
+        return this.schema.default
+      }
+      switch (this.schema.items.type) {
+        case 'string':
+          return ''
+        case 'object':
+          return {}
+        case 'integer':
+          return 0
+        default:
+          return ''
+      }
+
+    },
+    addItem () {
+      this.$emit('action', { name: 'UpdateProp', data: { action: 'push', path: this.path, value: this.getDefault() } })
+    },
     deleteItem (index) {
       this.$emit('action', { name: 'UpdateProp', data: { action: 'delete', path: this.path, value: index } })
     }
@@ -63,7 +87,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .expand-btn {
+  .expand-btn1 {
     margin: 6px 0 0 -6px;
     padding: 12px 0 0;
   }
@@ -103,6 +127,7 @@ export default {
           dense
           icon
           :disabled="readOnly"
+          @click="addItem()"
         >
           <v-icon>{{ 'mdi-plus-circle' }}</v-icon>
         </v-btn>

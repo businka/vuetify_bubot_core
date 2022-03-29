@@ -102,10 +102,10 @@ export default {
       // await this.dispatchInternalAction({ name: this.form.components.defaultAction.name })
       // this.emitAction({ name: 'CloseForm', data: { name: this.name, result: true } })
       await this.dispatchAction({ name: 'update' })
-      this.$emit('action', { name: 'CloseEditForm', data: { name: this.name, result: false } })
+      this.$emit('action', { name: 'CloseForm', data: { name: this.name, result: false } })
     },
     onClose() {
-      this.$emit('action', { name: 'CloseEditForm', data: { name: this.name, result: false } })
+      this.$emit('action', { name: 'CloseForm', data: { name: this.name, result: false } })
     },
   }
 }
@@ -172,7 +172,7 @@ export default {
         class="text-none link--text caption"
         @click.stop="onOrgSelectBegin"
       >
-        {{ data.item.org && data.item.org.title ? data.item.org.title : 'Выберите организацию' }}
+        {{ data.itemFull.org && data.itemFull.org.title ? data.itemFull.org.title : 'Выберите организацию' }}
       </v-btn>
       <v-toolbar-items
         v-if="params.components.toolBar"

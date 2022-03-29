@@ -55,7 +55,7 @@ export default {
     }
   },
   methods: {
-    actionCloseEditForm: function () {
+    actionCloseForm: function () {
       this.$store.commit('LongOperations/hideOperation', null, { root: true })
     }
   }

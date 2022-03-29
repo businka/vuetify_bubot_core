@@ -1,4 +1,4 @@
-// let DataSource = require('./DataSource')
+let Source = require('./Source')
 const uuid = require('uuid')
 const { getType, objHasOwnProperty, updateObject, getPropValueByPath } = require('../../helpers/baseHelper')
 
@@ -52,7 +52,7 @@ const conditions = {
 }
 
 // module.exports = class Memory extends DataSource {
-module.exports = class Memory {
+module.exports = class Memory extends Source{
   data = []
   rawData = []
 
@@ -62,12 +62,12 @@ module.exports = class Memory {
   keyProperty;
   loading = false
 
-  constructor (props) {
-    this.props = props
-    this.keyProperty = this.props.keyProperty || 'id'
-  }
+  // constructor (props) {
+  //   this.props = props
+  //   this.keyProperty = this.props.keyProperty || 'id'
+  // }
 
-  async query (filter, nav) {
+  async query (filter) {
     let filteredRawData = []
     let _filter = updateObject({}, this.props.filterConst, filter)
     for (let i = 0; i < this.rawData.length; i++) {
@@ -109,7 +109,7 @@ module.exports = class Memory {
     }
     const limit = this.props.itemsPerPage
     if (limit) {
-      const page = nav.page || 1
+      const page = filter? filter.page || 1 : 1
       const start = (page - 1) * limit;
       const end = start + limit;
       return filteredRawData.slice(start, end);

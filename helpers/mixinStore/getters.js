@@ -2,6 +2,8 @@ import remote from '../datasources/remote'
 import store from '../datasources/store'
 import ie1c from '../datasources/ie1c'
 import websocket from '../datasources/websocket'
+import {objHasOwnProperty} from '../baseHelper'
+// import '../ExtException'
 
 
 export const modes = {
@@ -14,15 +16,15 @@ export const modes = {
 export function mode (state) {
   return function (payload) {
     let mode
-    if (payload && Object.prototype.hasOwnProperty.call(payload, 'mode')) { // если указан режим - берем его
+    if (payload && objHasOwnProperty(payload, 'mode')) { // если указан режим - берем его
       mode = payload.mode
-    } else if (Object.prototype.hasOwnProperty.call(payload, 'key')) { // иначе перем из сохраненного значения
+    } else if (objHasOwnProperty(payload, 'key')) { // иначе перем из сохраненного значения
       mode = state[payload.uid].mode
     }
     if (!mode) {
       throw new Error(`${payload.uid} not defined mode`)
     }
-    if (Object.prototype.hasOwnProperty.call(modes, mode.name)) {
+    if (objHasOwnProperty(modes, mode.name)) {
       return modes[mode.name]
     }
     throw new Error(`${payload.uid} not supported mode "${mode.name}"`)
@@ -32,10 +34,10 @@ export function mode (state) {
 export function get (state) {
   return function (uid, name, value) {
     if (name) {
-      if (!Object.prototype.hasOwnProperty.call(state, uid)) {
+      if (!objHasOwnProperty(state, uid)) {
         throw new Error(`not found key '${uid}' in state ${state.namespace}`)
       }
-      if (!Object.prototype.hasOwnProperty.call(state[uid], name)) {
+      if (!objHasOwnProperty(state[uid], name)) {
         if (value) {
           return value
         }
@@ -54,12 +56,12 @@ export function get (state) {
 export function getProps (state) {
   return function (uid, path, value) {
     if (path) {
-      if (!Object.prototype.hasOwnProperty.call(state, uid)) {
+      if (!objHasOwnProperty(state, uid)) {
         throw new Error(`not found key '${uid}' in state ${state.namespace}`)
       }
       let result = state[uid]
       for (let i = 0; i < path.length; i++) {
-        if (Object.prototype.hasOwnProperty.call(result, path[i])) {
+        if (objHasOwnProperty(result, path[i])) {
           result = result[path[i]]
         } else {
           return value

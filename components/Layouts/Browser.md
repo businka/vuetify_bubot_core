@@ -20,7 +20,10 @@ default: 'rowViewer'
 #### rowActivateHandler
 type: Object
 
-default: {name: '', form: ''}
+default:
+* name - имя formViewer который будет использоваться для открытия формы или "inline" для редактирования по месту
+* form 
+
 #### toolbarItemsBeforeSearch
 type: Array
 

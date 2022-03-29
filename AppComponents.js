@@ -2,6 +2,9 @@ import Vue from 'vue'
 
 Vue.component('RightDrawerFormViewer', () => import('./components/FormViewer/RightDrawerFormViewer'))
 Vue.component('RightDrawerFormViewer2', () => import('./components/FormViewer/RightDrawerFormViewer2'))
+Vue.component('RightDrawerFormViewer3', () => import('./components/FormViewer/RightDrawerFormViewer3'))
+Vue.component('TestForm', () => import('./components/FormViewer/TestForm'))
+Vue.component('SimpleForm', () => import('./components/JsonEditor/SimpleForm'))
 // Vue.component('DocViewer', () => import('./components/DocViewer/DocViewer'))
 //
 // Vue.component('Tree', () => import('./components/TreeBrowser/TreeBrowser'))

@@ -6,6 +6,10 @@ export const coreRoutes = [
     component: () => import('../components/FormViewer/LayoutFormViewer')
   },
   {
+    path: '/ui/:appName/:objName/:objForm',
+    component: () => import('../components/FormViewer/LayoutFormViewer')
+  },
+  {
     path: '/:objName/:objForm',
     component: () => import('../components/FormViewer/LayoutFormViewer')
   }

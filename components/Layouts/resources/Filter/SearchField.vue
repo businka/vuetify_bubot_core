@@ -28,13 +28,13 @@ export default {
   },
   methods: {
     onSearch () {
-      this.$emit('changeFilter', { searchString: this.text })
+      this.$emit('changeFilter', { _search: this.text })
     },
     onChange (value) {
-      this.$emit('changeFilter', { searchString: value })
+      this.$emit('changeFilter', { _search: value })
     },
     onClear () {
-      this.$emit('changeFilter', { searchString: '' })
+      this.$emit('changeFilter', { _search: '' })
     }
   }
 }

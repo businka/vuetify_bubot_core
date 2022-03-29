@@ -136,7 +136,7 @@ export default {
         <v-card
           v-show="show"
           class="ml-4 pl-2"
-          style="border-left: 1px solid var(--v-delimiter-base)"
+          style="border-left: 1px solid"
           flat
           tile
         >

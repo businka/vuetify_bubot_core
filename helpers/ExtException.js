@@ -20,6 +20,9 @@ export default class ExtException extends Error {
     this.dump = {};
     this.stack2 = []; // todo добавить trace через new Error.stack
     this.new_msg = false;
+    if (typeof param != 'object') {
+      this.message = `Bad init ExtException (${param})`
+    }
     const parent = param.parent;
     if (parent) {
       if (parent instanceof Error && !(parent instanceof ExtException)) {

@@ -119,7 +119,7 @@ export default {
             icon
             dense
             small
-            @click="$emit('action', { name: 'CloseEditForm' })"
+            @click="$emit('action', { name: 'CloseForm' })"
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>

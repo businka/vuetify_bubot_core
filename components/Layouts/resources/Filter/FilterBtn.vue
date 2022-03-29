@@ -3,6 +3,7 @@
 export default {
   name: 'FilterBtn',
   components: {
+    'FilterCheckBox': () => import('./FilterCheckBox'),
     'FilterFieldLink': () => import('./FilterFieldLink'),
     'FilterDateInterval': () => import('./FilterDateInterval')
   },
@@ -49,14 +50,14 @@ export default {
     },
   },
   watch: {
-    value (value) {
-      this.$emit('changeFilter', value)
+    // value (value) {
+      // this.$emit('changeFilter', value)
       // this.$emit('input', value)
-    }
+    // }
   },
   methods: {
     onFilterSelected () {
-      this.$emit('ChangeFilter', this.value)
+      this.$emit('changeFilter', this.value)
       this.visible = false
     },
     openSelectBrowser () {

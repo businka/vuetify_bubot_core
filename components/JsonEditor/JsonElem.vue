@@ -94,6 +94,17 @@ export default {
       :hide-read-only="hideReadOnly"
       v-on="_inputListeners"
     />
+    <JsonInteger
+        v-else-if="schema['type']==='number'"
+        :elem-name="elemName"
+        :elem-value="elemValue"
+        :schema="schema"
+        :path="path"
+        :array-elem="arrayElem"
+        :read-only="readOnly?readOnly:schema.readOnly"
+        :hide-read-only="hideReadOnly"
+        v-on="_inputListeners"
+    />
     <JsonBoolean
       v-else-if="schema['type']==='boolean'"
       :elem-name="elemName"

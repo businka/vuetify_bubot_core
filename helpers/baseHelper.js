@@ -15,6 +15,8 @@ function objHasOwnProperty (obj, prop) {
 }
 
 function isEmptyObject (obj) {
+  if (!obj) return true
+
   for (let elem in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, elem)) {
       return false
