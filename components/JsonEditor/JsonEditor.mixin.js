@@ -96,7 +96,7 @@ export default {
             if (!objHasOwnProperty(actionData, 'data')) {
                 actionData.data = {}
             }
-            actionData.data.items = [this.item]
+            actionData.data.items = [this.itemFull]
             actionData.data.filter = null
             return await this.source.call(actionData)
         }
