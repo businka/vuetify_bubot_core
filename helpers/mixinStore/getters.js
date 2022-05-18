@@ -2,7 +2,7 @@ import remote from '../datasources/remote'
 import store from '../datasources/store'
 import ie1c from '../datasources/ie1c'
 import websocket from '../datasources/websocket'
-import {objHasOwnProperty} from '../baseHelper'
+import {objHasOwnProperty} from '../../../Helpers/BaseHelper'
 // import '../ExtException'
 
 

@@ -3,7 +3,7 @@
 // import {Base64} from '../../components/Cert/base64'
 // import { setToken } from './auth'
 import {getSession, redirectToSignIn} from './session'
-import buxios from '../../helpers/buxios'
+import buxios from '../../../Helpers/buxios'
 // import { getUrlParam } from '../../helpers/UrlParam'
 
 export default {

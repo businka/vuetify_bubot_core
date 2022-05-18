@@ -3,7 +3,7 @@
 // import { initStoreKey } from '../../helpers/mixinStore/mutations'
 // import { processInDataSource } from '../../helpers/mixinStore'
 import Vue from 'vue'
-import { objHasOwnProperty } from '../../helpers/baseHelper'
+import { objHasOwnProperty } from '../../../Helpers/BaseHelper'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {

@@ -1,6 +1,6 @@
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
-import {isEmptyObject} from '../../helpers/baseHelper'
+import {isEmptyObject} from '../../../Helpers/BaseHelper'
 
 export default {
     name: 'FieldLink',

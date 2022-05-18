@@ -6,8 +6,8 @@ import { initDataSource } from '../DataSource/DataSourceLoader'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
 
-const { objHasOwnProperty } = require('../../helpers/baseHelper')
-const { findIndexInArrayObj } = require('../../helpers/ArrayHelper')
+const { objHasOwnProperty } = require('../../../Helpers/BaseHelper')
+const { findIndexInArrayObj } = require('../../../Helpers/ArrayHelper')
 
 export default {
   name: 'TagBrowser',

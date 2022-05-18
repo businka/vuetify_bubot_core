@@ -1,4 +1,4 @@
-import { jsonClone } from '../clone'
+import { jsonClone } from '../../../Helpers/clone'
 
 export async function error (store, { storeKey, error }) {
   // console.error(`${store.state.namespace}: ${error.message} (${error.detail})`)

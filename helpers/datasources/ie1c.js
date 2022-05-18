@@ -1,6 +1,6 @@
 import axios from 'axios/index'
 import { commandTo1C } from '../c1/connector1C'
-import { getUrlParam } from '../UrlParam'
+import UrlParam from '../../../Helpers/UrlParam'
 
 async function query_ie(store, payload, method, config) {
 
@@ -11,7 +11,7 @@ async function query_ie(store, payload, method, config) {
 
   let form = ''
 
-  if (getUrlParam('test')) {
+  if (new UrlParam().get('test')) {
     form = payload.store.modeParams.connector
     method = payload.store.modeParams.config
   }

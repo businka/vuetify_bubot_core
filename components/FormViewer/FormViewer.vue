@@ -1,5 +1,5 @@
 <script>
-import { updateObject } from '../../helpers/baseHelper'
+import { updateObject } from '../../../Helpers/BaseHelper'
 
 export default {
     name: 'FormViewer',

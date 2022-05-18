@@ -1,5 +1,5 @@
 import ActionMixin from '../../../../helpers/mixinTemplate/action'
-import { getPropValueByPath } from '../../../../helpers/baseHelper'
+import { getPropValueByPath } from '../../../../../Helpers/BaseHelper'
 
 export default {
     mixins: [ActionMixin],

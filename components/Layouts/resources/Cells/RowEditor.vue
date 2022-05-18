@@ -1,5 +1,5 @@
 <script>
-import { jsonClone } from '../../../../helpers/clone'
+import { jsonClone } from '../../../../../Helpers/clone'
 import ActionMixin from '../../../../helpers/mixinTemplate/action'
 
 

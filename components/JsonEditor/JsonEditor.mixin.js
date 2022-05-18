@@ -1,4 +1,4 @@
-import {objHasOwnProperty, updateObject} from '../../helpers/baseHelper'
+import {objHasOwnProperty, updateObject} from '../../../Helpers/BaseHelper'
 import {updateProp } from './JsonHelper'
 // import Vue from 'vue'
 
@@ -26,6 +26,12 @@ export default {
             }
         },
         filterConst: {
+            type: Object,
+            default: function () {
+                return {}
+            }
+        },
+        filterFields: {
             type: Object,
             default: function () {
                 return {}
@@ -63,18 +69,20 @@ export default {
     methods: {
         async init() {
             this.loading = true
-            const dataSource = updateObject({}, { filterFields: this.filterFields, filterConst: this.filterConst }, this.dataSource)
-
-            this.source = initDataSource(dataSource, this.$store)
             try {
+                const dataSource = updateObject({}, { filterFields: this.filterFields, filterConst: this.filterConst }, this.dataSource)
+                this.source = initDataSource(dataSource, this.$store)
                 await Promise.all([
                     this.loadItem(),
                     this.loadSchema()
                 ])
             } catch (err) {
+                console.error(err.toString())
                 this.error = err
+            } finally {
+                this.loading = false
+
             }
-            this.loading = false
         },
         async loadSchema() {
             if (this.dataSource.objName)

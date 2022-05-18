@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 // import messages from '@/lang/en'
 import axios from 'axios'
-import { updateObject} from '../helpers/baseHelper'
+import { updateObject} from '../../Helpers/BaseHelper'
 
 Vue.use(VueI18n)
 
