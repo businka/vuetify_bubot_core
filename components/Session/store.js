@@ -41,7 +41,7 @@ export default {
                 // this.title = ''
                 // this.loading = true
                 const session = getSession()
-                const response = await buxios.get('/api/AuthService/User/read_session_info', {params: session})
+                const response = await buxios.get('/public_api/AuthService/User/read_session_info', {params: session})
                 store.commit('set', {
                     _id: response.data.session,
                     user: response.data.user,

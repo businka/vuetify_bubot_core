@@ -1,5 +1,5 @@
 <script>
-// import buxios from '../../BubotCore/helpers/buxios'
+// import buxios from '../../Helpers/buxios'
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import BrowserActionMixin from '../Layouts/resources/BrowserActionMixin'
 import { initDataSource } from '../DataSource/DataSourceLoader'
