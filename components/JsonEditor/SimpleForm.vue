@@ -31,7 +31,7 @@ export default {
     methods: {
         emitInternalAction(action) {
             const content = this.$refs['content']
-            content.emitAction(action.name, action.data)
+            content.onAction(action)
         },
         async actionUpdate() {
             this.itemFull = await this.source.update(this.itemFull)

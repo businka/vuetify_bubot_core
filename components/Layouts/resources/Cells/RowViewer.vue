@@ -11,8 +11,9 @@ export default {
     'RowCellTitle': () => import('./RowCellTitle'),
     'RowCellIcon': () => import('./RowCellIcon'),
     'RowCellTitleSimple': () => import('./RowCellTitleSimple'),
+    'RowCellDateTime': () => import('./RowCellDateTime'),
     'RowCellDefault': () => import('./RowCellDefault'),
-
+    'RowColorProgress': () => import('./RowColorProgress'),
   },
   mixins: [ActionMixin],
   props: ['headers', 'item', 'index', 'editMode', 'isSelected', 'select', 'store', 'rowActions', 'rowActionsField'],

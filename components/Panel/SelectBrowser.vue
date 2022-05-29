@@ -10,6 +10,10 @@ export default {
   },
   mixins: [ActionMixin],
   props: {
+    title: {
+      type: String,
+      default: ''
+    },
     toolBar: {
       type: Object,
       default: function () {
@@ -179,7 +183,7 @@ export default {
     />
     <PanelToolBar
       :tool-bar="toolBar"
-      header-value="title"
+      :header-value="title"
       :edit-header="false"
       :loading="loading"
       @action="onAction"

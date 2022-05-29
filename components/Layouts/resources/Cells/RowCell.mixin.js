@@ -4,10 +4,18 @@ import { getPropValueByPath } from '../../../../../Helpers/BaseHelper'
 export default {
     mixins: [ActionMixin],
     props: {
+        items: {
+            type: Array,
+            default: () => [{
+            }]
+        },
         value: {
             type: Object,
             default: () => {
             }
+        },
+        index: {
+            type: Number
         },
         field: {
             type: String
@@ -39,6 +47,13 @@ export default {
         },
     },
     methods: {
+        getPreviousValue() {
+            let previousIndex = this.index - 1
+            if (previousIndex < 0)
+                return undefined
+            let previous = this.items[this.index - 1]
+            return getPropValueByPath(previous, this.field, '')
+        },
         onChange (value) {
             let data = Object.assign({}, this.value)
             let path = this.field.split(".")

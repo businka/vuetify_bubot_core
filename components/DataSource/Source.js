@@ -1,10 +1,11 @@
 const {updateObject} = require('../../../Helpers/BaseHelper')
 const {findIndexInArrayObj} = require('../../../Helpers/ArrayHelper')
+const {ExtException} = require('../../../Helpers/ExtException')
 const Vue = require('vue').default
 
 module.exports = class Source {
     props = {
-        // rows: [],
+        rows: [],
         page: 1,
         filter: {},
         filterConst: {},
@@ -16,6 +17,7 @@ module.exports = class Source {
         keyProperty: 'id'
     }
     total = 0
+    rawData = []
     rows = []
     store = {}
     keyProperty = ""
@@ -27,8 +29,8 @@ module.exports = class Source {
             this.props.appName = store.state.app
         }
         this.store = store
+        this.rawData = props.rows || []
         this.changeProps(props)
-        // this.rawData = this.props.rows || []
         this.keyProperty = this.props.keyProperty || 'id'
     }
 
@@ -63,8 +65,8 @@ module.exports = class Source {
             this.total = (page - 1) * limit + this.rows.length + (this.rows.length < limit ? 0 : 1)
             this.error = undefined
         } catch (err) {
-            console.log(err)
-            this.error = err.toDict()
+            let err1 = new ExtException({parent: err})
+            this.error = err1.toDict()
             this.rows = []
         }
         this.loading = false

@@ -46,7 +46,7 @@ export default {
 <template>
   <div class="pb-1">
     <v-select
-      v-if="Object.prototype.hasOwnProperty.call(schema, 'enum')"
+      v-if="schema && Object.prototype.hasOwnProperty.call(schema, 'enum')"
       :label="schema.title || elemName"
       :placeholder="schema.description || null"
       :items="schema.enum"

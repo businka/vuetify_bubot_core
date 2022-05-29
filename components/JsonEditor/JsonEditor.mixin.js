@@ -100,6 +100,14 @@ export default {
             updateProp(this.itemFull, {action, path, value})
             this.$emit('change-value', this.itemFull)
         },
+
+        actionOpenLinkInNewTab(actionData) {
+            // actionData = {name: 'routeName', query: {data: "someData"}}
+            let routeData = this.$router.resolve(actionData);
+            window.open(routeData.href, '_blank');
+            this.$router.go(actionData)
+        },
+
         async actionCallDataSourceForSelectedItems (actionData) {
             if (!objHasOwnProperty(actionData, 'data')) {
                 actionData.data = {}

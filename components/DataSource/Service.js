@@ -16,7 +16,13 @@ export default class Service extends Source {
         this.loading = true
         let params = updateObject(nav, this.props.filterConst, filter)
         // params = this.props.filter
-        let actionName = `${this.props.appName}/${this.props.objName}/${this.props.query || 'query'}`
+        let actionName
+        if (this.props.subtype) {
+            actionName = `${this.props.appName}/${this.props.objName}/${this.props.subtype}/${this.props.query || 'query'}`
+
+        } else {
+            actionName = `${this.props.appName}/${this.props.objName}/${this.props.query || 'query'}`
+        }
         try {
             let resp = await buxios.get(`/api/${actionName}`,
                 {params}

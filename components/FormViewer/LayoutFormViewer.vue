@@ -18,7 +18,12 @@ export default {
     uid () {
       let r = this.$route.params
       if (r.objName && r.objForm) {
-        return `${r.objName}/${r.objForm}`
+        if (r.subtype) {
+          return `${r.objName}/${r.subtype}/${r.objForm}`
+        } else {
+          return `${r.objName}/${r.objForm}`
+        }
+
       } else {
         return this.$store.state.NavDrawer.default
       }
