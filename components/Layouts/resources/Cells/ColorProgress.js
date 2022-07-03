@@ -25,7 +25,7 @@ export default function (data, fields) {
         }
     });
 
-    let totalMin = total * (100 - minPercent) / 100
+    let totalMin = total * (100 + minPercent) / 100
     let j = 0
     let cells = []
     cells.length = 10

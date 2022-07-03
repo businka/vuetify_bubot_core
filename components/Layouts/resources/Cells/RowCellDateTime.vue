@@ -44,10 +44,13 @@ export default {
 
 <template>
     <v-container class="pa-0">
-        <div v-if="showDate">
+        <div v-if="date && showDate">
             {{date}}
         </div>
-        <div class="grey--text caption text-right" v-if="showTime" style="margin-top: -6px">
+        <div
+            v-if="date && showTime"
+            class="grey--text caption text-right"
+            style="margin-top: -6px">
             {{time}}
         </div>
     </v-container>

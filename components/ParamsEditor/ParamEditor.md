@@ -2,6 +2,9 @@
 
 ##props
 * schema - json-schema объекта
+  * name
+  * template
+  * children
 * value - данные объекта
 * paramsIndex - индекс параметров по названию ключа
 * path - имя поля содержащего массив параметров

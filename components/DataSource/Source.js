@@ -20,7 +20,7 @@ module.exports = class Source {
     rawData = []
     rows = []
     store = {}
-    keyProperty = ""
+    // keyProperty = ""
     loading = false
     error = {}
 

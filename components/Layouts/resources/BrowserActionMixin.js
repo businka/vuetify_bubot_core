@@ -14,7 +14,8 @@ export default {
             options: {},
             editForm: {},
             actionForm: {},
-            actionError: undefined
+            actionError: undefined,
+            needUpdate: false
         }
     },
     methods: {
@@ -23,6 +24,7 @@ export default {
             this.editForm = {}
             this.actionForm = {}
             this.actionError = undefined
+            this.needUpdate = true
             this.selectAll = false
             let dataSource = updateObject({}, {
                 filterFields: this.filterFields,
