@@ -21,7 +21,7 @@ export default {
     Load: async (store, payload) => {
       let resp
       resp = await buxios.get(
-        `/api/${store.rootState.app}/read_navigation`,
+        `/api/${store.rootState.appName}/read_navigation`,
         { headers: { 'Accept-Language': payload.locale } }
       ) //, { params: payload })
       let navData = resp.data.items || []

@@ -29,7 +29,7 @@ export default {
       })
       result = await store.dispatch(`LongOperations/run`, {
         // operation: ,
-        name: `${store.rootState.app}/${payload.store.mode.objName}/query`,
+        name: `${store.rootState.appName}/${payload.store.mode.objName}/query`,
         data: params,
         operation: {
           autoDelete: true,

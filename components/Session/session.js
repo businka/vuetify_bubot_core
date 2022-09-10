@@ -43,7 +43,7 @@ export function getAppUrl() {
     throw new Error('Url not bubot app')
   return {
     base: first > 1 ? `/${_path.slice(0, first - 1).join('/')}/`: '/',
-    app: `${_path.slice(first, first + 2).join('/')}/`,
+    appName: `${_path.slice(first, first + 2).join('/')}/`,
     path: _path.slice(first + 2).join('/')
   }
 }

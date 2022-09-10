@@ -21,7 +21,7 @@ export default {
     load: async (store, payload) => {
       try {
         let uid = payload.uid
-        let { data } = await axios.get(`/form/${store.rootState.app}/${uid}`) //, { params: payload })
+        let { data } = await axios.get(`/form/${store.rootState.appName}/${uid}`) //, { params: payload })
         store.commit('initStoreKey', { uid, data })
         return data
       } catch (err) {
