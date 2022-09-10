@@ -26,7 +26,7 @@ module.exports = class Source {
 
     constructor(props, store) {
         if (store) {
-            this.props.appName = store.state.appName
+            this.props.appName = store.state.app
         }
         this.store = store
         this.rawData = props.rows || []

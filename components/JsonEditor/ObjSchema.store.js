@@ -31,7 +31,7 @@ export default {
         console.log('load scheme ' + schemaUid)
         let result = {}
         try {
-          const response = await axios.get(`/api/${store.rootState.appName}/ObjSchema/read`, { params: { id: schemaUid } })
+          const response = await axios.get(`/api/${store.rootState.app}/ObjSchema/read`, { params: { id: schemaUid } })
           result = response.data
         } catch (e) {
           result = {}
