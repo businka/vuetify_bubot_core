@@ -5,7 +5,7 @@ import UrlParam from '../../../Helpers/UrlParam'
 async function query_ie(store, payload, method, config) {
 
   config.method = 'post'
-  config.url = `/api/${payload.store.mode.objType}/${payload.store.mode.objName}/get_query`
+  config.url = `/${payload.store.mode.objType}/api/${payload.store.mode.objName}/get_query`
 
   const resp1 = await axios.request(config)
 
@@ -18,7 +18,7 @@ async function query_ie(store, payload, method, config) {
 
   const data2 = await commandTo1C(form, method, resp1.data.result)
 
-  config.url = `/api/${payload.store.mode.objType}/${payload.store.mode.objName}/parse_response_query`
+  config.url = `/${payload.store.mode.objType}/api/${payload.store.mode.objName}/parse_response_query`
   config.data.response = data2
   let data3
   data3 = await axios.request(config)
@@ -82,7 +82,7 @@ export default {
     try {
       let fieldId = payload.store.modeParams[payload.store.mode.fieldId || 'id']
       const data = await query_ie(store, payload, 'read', {
-        url: `/api/${payload.store.mode.objType}/${payload.store.mode.objName}/read`,
+        url: `/${payload.store.mode.objType}/api/${payload.store.mode.objName}/read`,
         params: { id: fieldId }
       })
       return data.data.data.items

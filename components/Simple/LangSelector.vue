@@ -2,6 +2,12 @@
 import { loadLanguageAsync } from '../../plugins/i18n'
 export default {
   name: 'LangSelector',
+    props: {
+        xSmall: {type: Boolean, default: false},
+        small: {type: Boolean, default: false},
+        large: {type: Boolean, default: false}
+    },
+
   data: function () {
     return {
       langs: ['ru', 'en', 'cn'],
@@ -22,7 +28,10 @@ export default {
       <v-btn
         text
         dense
-        x-small
+        tile
+        :x-small="xSmall"
+        :small="small"
+        :large="large"
         v-on="on"
       >
         <div :class="`LangSelectorFlag LangSelectorFlag-${$i18n.locale}`" />

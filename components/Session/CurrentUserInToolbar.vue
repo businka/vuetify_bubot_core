@@ -1,109 +1,114 @@
+ч
 <script>
 
 // import { getSession } from './session'
-import { redirectToSignIn } from './session'
+import {redirectToSignIn} from './session'
 
 export default {
-  name: 'CurrentUserInToolbar',
-  props: {
-    hideNoUser: { type: Boolean, default: false }
-  },
-  data: function () {
-    return {
-      title: '',
-      loading: false,
-      visible: false
-    }
-  },
-  computed: {
-    session () {
-      return this.$store.state['Session']
+    name: 'CurrentUserInToolbar',
+    props: {
+        hideNoUser: {type: Boolean, default: false},
+        xSmall: {type: Boolean, default: false},
+        small: {type: Boolean, default: false},
+        large: {type: Boolean, default: false}
     },
-    user () {
-      try {
-        return this.$store.state['Session']['user']['title']
-      } catch (e) {
-        return ''
-      }
+    data: function () {
+        return {
+            title: '',
+            loading: false,
+            visible: false
 
-    }
-  },
-  watch: {
-    user (value) {
-      if (value) {
-        this.visible = true
-        this.title = value
-      } else {
-        this.visible = !this.hideNoUser
-        this.title = this.$t('auth.SignIn')
-      }
-    }
-  },
-  mounted () {
-    this.init()
-  },
-  methods: {
-    init () {
-      if (!this.session._id) {  // инициализируем сессию в хранилище
-        this.$store.dispatch('Session/signIn', null, { root: true })
-      }
+        }
     },
-    signIn () {
-      redirectToSignIn()
+    computed: {
+        session() {
+            return this.$store.state['Session']
+        },
+        userTitle() {
+            try {
+                return this.session.user.title
+            } catch (e) {
+                return ''
+            }
+
+        }
     },
-    signOut () {
-      this.$store.dispatch('Session/signOut', null, { root: true })
+    watch: {
+        user(value) {
+            if (value) {
+                this.visible = true
+                this.title = value
+            } else {
+                this.visible = !this.hideNoUser
+                this.title = this.$t('auth.SignIn')
+            }
+        }
+    },
+    mounted() {
+        this.init()
+    },
+    methods: {
+        init() {
+            if (!this.session._id) {  // инициализируем сессию в хранилище
+                this.$store.dispatch('Session/onSignIn', null, {root: true})
+            }
+        },
+        signIn() {
+            redirectToSignIn()
+        },
+        signOut() {
+            this.$store.dispatch('Session/signOut', null, {root: true})
+        }
     }
-  }
 }
 </script>
 <template>
-  <span
-    v-if="session.available"
+  <v-menu
+    offset-y
   >
-    <v-menu
-      v-if="user"
-      offset-y
-    >
-      <template v-slot:activator="{ on }">
-        <v-btn
-          text
-          dense
-          x-small
-          v-on="on"
-        >
-          <div class="pl-1 LangSelectorText">
-            {{ title }}
-          </div>
-        </v-btn>
-      </template>
-      <v-list
-        min-width="60px"
+    <template v-slot:activator="{ on }">
+      <v-btn
+        text
         dense
-        class="pa-0"
+        tile
+        :x-small="xSmall"
+        :small="small"
+        :large="large"
+        v-on="on"
       >
-        <v-list-item
-          max
-          class="d-flex flex-row"
-          @click.stop="signOut()"
-        >
-          <div class="pl-1 LangSelectorText">
-            {{ $t('auth.SignOut') }}
-          </div>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-    <v-btn
-      v-else
-      text
+        <div class="pl-1 LangSelectorText">
+          {{ userTitle }}
+        </div>
+      </v-btn>
+    </template>
+    <v-list
+      min-width="60px"
       dense
-      x-small
-      @click.stop="signIn"
+      class="pa-0"
     >
-      {{ $t('auth.SignIn') }}
-    </v-btn>
-
-  </span>
+      <v-list-item
+        max
+        class="d-flex flex-row"
+        @click.stop="signOut()"
+      >
+        <div class="pl-1 LangSelectorText">
+          {{ $t('auth.SignOut') }}
+        </div>
+      </v-list-item>
+    </v-list>
+  </v-menu>
+  <!--    <v-btn-->
+  <!--      v-else-if="!hideNoUser"-->
+  <!--      text-->
+  <!--      tile-->
+  <!--      dense-->
+  <!--      :x-small="xSmall"-->
+  <!--      :small="small"-->
+  <!--      :large="large"-->
+  <!--      @click.stop="signIn"-->
+  <!--    >-->
+  <!--      {{ $t('auth.SignIn') }}-->
+  <!--    </v-btn>-->
 </template>
 
 <style lang="scss">

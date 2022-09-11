@@ -3,6 +3,8 @@ import VueI18n from 'vue-i18n'
 // import messages from '@/lang/en'
 import axios from 'axios'
 import { updateObject} from '../../Helpers/BaseHelper'
+import AppConst from '../../AppConst'
+
 
 Vue.use(VueI18n)
 
@@ -49,7 +51,7 @@ export async function loadLanguageAsync (lang) {
   // }
 
   // If the language hasn't been loaded yet
-  let resp = await axios.get(`/i18n/${lang}.json`)
+  let resp = await axios.get(`/${AppConst.appName}/i18n/${lang}.json`)
   let messages = await loadLocale(lang, resp.data)
   i18n.setLocaleMessage(lang, messages)
   loadedLanguages.push(lang)

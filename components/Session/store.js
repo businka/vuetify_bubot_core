@@ -20,6 +20,8 @@ export default {
         set(state, data) {
             state._id = data._id
             state.user = data.user
+            state.account = data.account
+            state.accounts = data.accounts
         },
         clear(state) {
             state._id = null
@@ -35,13 +37,13 @@ export default {
         // },
     },
     actions: {
-        signIn: async (store) => {
+        onSignIn: async (store) => {
             try {
                 // this.visible = true
                 // this.title = ''
                 // this.loading = true
                 const session = getSession()
-                const response = await buxios.get('/public_api/AuthService/User/read_session_info', {params: session})
+                const response = await buxios.get('/AuthService/public_api/User/read_session_info', {params: session})
                 store.commit('set', {
                     _id: response.data.session,
                     user: response.data.user,
@@ -60,7 +62,7 @@ export default {
             }
         },
         signOut: async (store) => {
-            await buxios.post('/api/AuthService/User/sign_out')
+            await buxios.post('/AuthService/api/User/sign_out')
             store.commit('clear')
             redirectToSignIn(window.location.pathname + window.location.search)
         }

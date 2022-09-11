@@ -18,13 +18,13 @@ export default class Service extends Source {
         // params = this.props.filter
         let actionName
         if (this.props.subtype) {
-            actionName = `${this.props.appName}/${this.props.objName}/${this.props.subtype}/${this.props.query || 'query'}`
+            actionName = `/${this.props.appName}/api/${this.props.objName}/${this.props.subtype}/${this.props.query || 'query'}`
 
         } else {
-            actionName = `${this.props.appName}/${this.props.objName}/${this.props.query || 'query'}`
+            actionName = `/${this.props.appName}/api/${this.props.objName}/${this.props.query || 'query'}`
         }
         try {
-            let resp = await buxios.get(`/api/${actionName}`,
+            let resp = await buxios.get(actionName,
                 {params}
             )
             console.log(resp)
@@ -40,7 +40,7 @@ export default class Service extends Source {
         this.loading = true
         let resp
         try {
-            resp = await buxios.get(`/api/${this.props.appName}/${this.props.objName}/read`,
+            resp = await buxios.get(`/${this.props.appName}/api/${this.props.objName}/read`,
                 {params: {id}}
             )
             this.loading = false
@@ -56,7 +56,7 @@ export default class Service extends Source {
         this.loading = true
         let resp
         try {
-            resp = await buxios.post(`/api/${this.props.appName}/${this.props.objName}/update`,
+            resp = await buxios.post(`/${this.props.appName}/api/${this.props.objName}/update`,
                 data
             )
             this.loading = false
@@ -70,7 +70,7 @@ export default class Service extends Source {
         this.loading = true
         let resp
         try {
-            resp = await buxios.post(`/api/${this.props.appName}/${this.props.objName}/create`,
+            resp = await buxios.post(`/${this.props.appName}/api/${this.props.objName}/create`,
                 data
             )
             this.loading = false
@@ -84,7 +84,7 @@ export default class Service extends Source {
         this.loading = true
         let resp
         try {
-            resp = await buxios.post(`/api/${this.props.appName}/${this.props.objName}/${payload.method}`, payload.data)
+            resp = await buxios.post(`/${this.props.appName}/api/${this.props.objName}/${payload.method}`, payload.data)
             this.loading = false
             return resp.data
         } finally {

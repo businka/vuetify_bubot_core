@@ -61,7 +61,7 @@ export default {
         filter.parent_id = null
         result = this.items
       }
-      const res = await axios.post(`/api/${this.store.mode.objType}/${this.store.mode.objName}/query`, {
+      const res = await axios.post(`/${this.store.mode.objType}/api/${this.store.mode.objName}/query`, {
         filter: filter
       })
       let index, len;

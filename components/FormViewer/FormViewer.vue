@@ -1,5 +1,5 @@
 <script>
-import { updateObject } from '../../../Helpers/BaseHelper'
+import {updateObject} from '../../../Helpers/BaseHelper'
 
 export default {
     name: 'FormViewer',
@@ -24,14 +24,12 @@ export default {
             this.loadForm()
         }
     },
-    computed: {
-
-    },
+    // computed: {},
     mounted() {
         this.loadForm()
     },
     methods: {
-        loadForm: async function() {
+        loadForm: async function () {
             this.loading = true
             try {
                 if (this.uid && !this.$store.getters['storeData']('Form', this.uid)) {
@@ -53,21 +51,21 @@ export default {
 </style>
 
 <template>
-    <v-row
-        v-if="form"
-        class="pa-0 ma-0"
+  <v-row
+    v-if="form"
+    class="pa-0 ma-0"
+  >
+    <v-col
+      class="pa-0 ma-0"
+      :xl="form.col_xl || '12'"
+      :lg="form.col_lg || '12'"
+      :sm="form.col_sm || '12'"
+      :xs="form.col_xs || '12'"
     >
-        <v-col
-            class="pa-0 ma-0"
-            :xl="form.col_xl || '12'"
-            :lg="form.col_lg || '12'"
-            :sm="form.col_sm || '12'"
-            :xs="form.col_xs || '12'"
-        >
-            <component
-                :is="form.template"
-                v-bind="form"
-            />
-        </v-col>
-    </v-row>
+      <component
+        :is="form.template"
+        v-bind="form"
+      />
+    </v-col>
+  </v-row>
 </template>
