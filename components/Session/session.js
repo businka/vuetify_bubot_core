@@ -31,7 +31,7 @@ export function redirectToSignIn (redirect) {
   if (redirect === undefined) {
     redirect = window.location.pathname
   }
-  let destUrl = `${url.base}ui/AuthService/`
+  let destUrl = `${url.base}AuthService/ui/`
   if (destUrl !== window.location.pathname)
     navigate(redirect?`${destUrl}?redirect=${redirect}`:destUrl)
 }
@@ -39,11 +39,11 @@ export function redirectToSignIn (redirect) {
 export function getAppUrl() {
   let _path = window.location.pathname.split('/')
   let first = _path.indexOf('ui')
-  if (first < 0)
+  if (first < 1)
     throw new Error('Url not bubot app')
   return {
-    base: first > 1 ? `/${_path.slice(0, first - 1).join('/')}/`: '/',
-    app: `${_path.slice(first, first + 2).join('/')}/`,
-    path: _path.slice(first + 2).join('/')
+    base: first > 2 ? `/${_path.slice(0, first - 2).join('/')}/`: '/',
+    app: `${_path.slice(first - 1, first + 1).join('/')}/`,
+    path: _path.slice(first + 1).join('/')
   }
 }
