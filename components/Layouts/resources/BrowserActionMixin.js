@@ -97,8 +97,8 @@ export default {
             console.log('actionReload')
             await this.source.fetchRows()
         },
-        actionAdd: async function () {
-            let res = await this.source.add()
+        actionAdd: async function (data) {
+            let res = await this.source.add(data)
             this.actionRowActivate(res)
         },
 

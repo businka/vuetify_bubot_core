@@ -1,25 +1,68 @@
+<script>
+import ActionMixin from '../../helpers/mixinTemplate/action'
+
+export default {
+    name: 'ActionBtnMenu',
+    mixins: [ActionMixin],
+    props: {
+        title: {
+            type: String,
+            default: ''
+        },
+        name: {
+            type: String,
+            default: ''
+        },
+        minWidth: {
+            type: String,
+            default: '150px'
+        },
+        data: {
+            type: Object,
+        },
+        items: {
+            type: Array,
+        },
+        icon: {
+            type: String,
+            default: ''
+        },
+        primary: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data: function () {
+        return {
+            show: false
+        }
+    }
+}
+</script>
+
 <template>
   <v-menu
-    v-if="params.items"
+    v-if="items"
     v-model="show"
-    min-width="300"
+    offset-y
+    :min-width="minWidth"
   >
     <template v-slot:activator="{ on: onMenu }">
       <v-tooltip bottom>
         <template v-slot:activator="{ on: onTooltip }">
           <v-btn
-            :class="params.primary?'ma-0 jay-space-right btn_default_action':'ma-0 jay-space-right'"
+            :class="primary?'ma-0 jay-space-right btn_default_action':'ma-0 jay-space-right'"
             icon
             dense
             small
-            :outlined="params.primary || false"
+            :outlined="primary || false"
             v-on="{ ...onMenu, ...onTooltip }"
             @click="show=true"
           >
-            <v-icon>{{ params.icon }}</v-icon>
+            <v-icon>{{ icon }}</v-icon>
           </v-btn>
         </template>
-        {{ params[`title_${$i18n.locale}`] || params.title || '' }}
+        {{ title || '' }}
       </v-tooltip>
     </template>
     <v-list
@@ -27,10 +70,10 @@
       class="pa-0"
     >
       <v-list-item
-        v-for="(menuItem, index) in params.items"
+        v-for="(menuItem, index) in items"
         :key="index"
         class="px-3"
-        @click="emitAction({name: menuItem.name, data: menuItem.data})"
+        @click="emitAction(menuItem.name, menuItem.data)"
       >
         <v-list-item-icon
           v-if="menuItem.icon"
@@ -45,20 +88,6 @@
     </v-list>
   </v-menu>
 </template>
-<script>
-import ActionMixin from '../../helpers/mixinTemplate/action'
-
-export default {
-  name: 'ActionBtnMenu',
-  mixins: [ActionMixin],
-  props: ['params'],
-  data: function () {
-    return {
-      show: false
-    }
-  }
-}
-</script>
 
 <style lang="scss">
   .btn_default_action {

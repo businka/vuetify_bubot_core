@@ -5,6 +5,7 @@ Vue.component('RightDrawerFormViewer2', () => import('./components/FormViewer/Ri
 Vue.component('RightDrawerFormViewer3', () => import('./components/FormViewer/RightDrawerFormViewer3'))
 Vue.component('TestForm', () => import('./components/FormViewer/TestForm'))
 Vue.component('SimpleForm', () => import('./components/JsonEditor/SimpleForm'))
+Vue.component('SimpleTabsForm', () => import('./components/JsonEditor/SimpleTabsForm'))
 // Vue.component('DocViewer', () => import('./components/DocViewer/DocViewer'))
 //
 // Vue.component('Tree', () => import('./components/TreeBrowser/TreeBrowser'))

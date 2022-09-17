@@ -11,7 +11,9 @@ export default {
     arrayElem: Boolean,
     level: Number,
     readOnly: Boolean,
-    hideReadOnly: Boolean
+    hideReadOnly: Boolean,
+    solo: Boolean,
+
   },
   data: function () {
     return {
@@ -54,7 +56,6 @@ export default {
       flat
       :dense="arrayElem"
       hide-details
-      :ddd="test"
       :value="value"
       @input="onInput"
       @change="onChange"
@@ -68,8 +69,8 @@ export default {
       flat
       :dense="arrayElem"
       hide-details
-      :ddd="test"
       :value="value"
+      :solo="solo"
       @keydown.escape.stop="cancelInput"
       @input="onInput"
       @change="onChange"

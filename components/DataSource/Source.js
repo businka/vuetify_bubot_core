@@ -40,13 +40,14 @@ module.exports = class Source {
 
     async changeFilter(filter) {
         // console.log('source changeFilter')
-        this.props.filter = updateObject(this.props.filterConst, this.props.filter, filter)
+        this.props.filter = updateObject({}, this.props.filterConst, this.props.filter, filter)
         this.props.dataTableOptions.page = 1
         await this.fetchRows()
     }
 
-    async add() {
-        let row = await this.create(this.props.filterConst)
+    async add(data) {
+        let _data = updateObject({}, this.props.filterConst, data)
+        let row = await this.create(_data)
         this.rows.push(row)
         let index = this.rows.length - 1
         return {
