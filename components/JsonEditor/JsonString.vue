@@ -1,10 +1,11 @@
 <script>
 // import Vue from 'vue'
+import {getPropByPath} from './JsonHelper'
 
 export default {
   props: {
     schema: Object,
-    elemValue: String,
+    elemValue: {},
     elemName: String,
     path: String,
     inputListeners: Object,
@@ -13,7 +14,12 @@ export default {
     readOnly: Boolean,
     hideReadOnly: Boolean,
     solo: Boolean,
-
+    dense: Boolean,
+    byPath: Boolean,
+    type: {
+        type: String,
+        default: 'text'
+    }
   },
   data: function () {
     return {
@@ -23,7 +29,11 @@ export default {
   },
   watch: {
     elemValue: function (value) {
-      this.value = value
+        if (this.byPath) {
+          this.value = getPropByPath(value, this.path)
+        } else {
+          this.value = value
+        }
     }
   },
   methods: {
@@ -54,7 +64,7 @@ export default {
       :items="schema.enum"
       :disabled="(readOnly ? readOnly : schema.readOnly)"
       flat
-      :dense="arrayElem"
+      :dense="dense || arrayElem"
       hide-details
       :value="value"
       @input="onInput"
@@ -67,10 +77,11 @@ export default {
       :placeholder="schema.description || null"
       :disabled="(readOnly ? readOnly : schema.readOnly)"
       flat
-      :dense="arrayElem"
+      :dense="dense || arrayElem"
       hide-details
       :value="value"
       :solo="solo"
+      :type="type"
       @keydown.escape.stop="cancelInput"
       @input="onInput"
       @change="onChange"

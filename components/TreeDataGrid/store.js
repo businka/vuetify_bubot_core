@@ -25,7 +25,7 @@ export default {
     setFilter(state, { uid, filter }) {
       state[uid].filter = Object.assign({}, state.filterDefault, filter)
     },
-    query (state, { uid, rows }) {
+    list (state, { uid, rows }) {
       state[uid].rows = rows
     },
     showForm (state, { key, data }) {
@@ -47,12 +47,12 @@ export default {
       let key = payload.store.uid
       let row = payload.row
       payload.filter = { parent: row.id }
-      let child = await processInDataSource('query', store, payload)
+      let child = await processInDataSource('list', store, payload)
       store.commit('child', { key: key, row: payload.row, child })
     },
-    query: async (store, payload) => {
-      await processInDataSource('query', store, payload)
-      // store.commit('query', { uid, rows: result.items })
+    list: async (store, payload) => {
+      await processInDataSource('list', store, payload)
+      // store.commit('list', { uid, rows: result.items })
     },
     rowActivate: (store, payload) => {
       store.commit('showEditForm', payload)

@@ -12,7 +12,7 @@ export default {
       return false
     }
   },
-  query: async (store, payload) => {
+  list: async (store, payload) => {
     let result = []
     let error = null
     try {
@@ -25,7 +25,7 @@ export default {
       })
       result = await store.dispatch(`LongOperations/run`, {
         // operation: ,
-        name: `${store.rootState.appName}/${payload.store.mode.objName}/query`,
+        name: `${store.rootState.appName}/${payload.store.mode.objName}/list`,
         data: params,
         operation: {
           autoDelete: true,
@@ -38,7 +38,7 @@ export default {
     } catch (err) {
       error = err
     }
-    store.commit('query', { uid: payload.store.uid, data: result, error })
+    store.commit('list', { uid: payload.store.uid, data: result, error })
     return []
   },
   create: async (store, payload) => {
@@ -124,7 +124,7 @@ export default {
       }
       throw error
     }
-    // store.commit('query', { uid: payload.store.uid, data: result, error })
+    // store.commit('list', { uid: payload.store.uid, data: result, error })
     return result
   },
 }

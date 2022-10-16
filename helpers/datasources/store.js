@@ -20,11 +20,11 @@ function get_data (store, payload, form) {
 
 
 export default {
-  query: async (store, payload) => {
+  list: async (store, payload) => {
     let form = store.rootGetters['storeData']('Form', payload.store.form)
     let data = get_data(store, payload, form)
     data = { rows: data }
-    store.commit('query', { uid: payload.store.uid, data: data })
+    store.commit('list', { uid: payload.store.uid, data: data })
     return data
   },
   read: async () => {

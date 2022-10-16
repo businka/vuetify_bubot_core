@@ -200,20 +200,20 @@ export default {
       }
       this.beginEditTag(_item)
     },
-    queryTagGroup: async function () {
+    listTagGroup: async function () {
       this.loading = true
-      let resp = await this.source.query()
-      let _query = []
+      let resp = await this.source.list()
+      let _list = []
       this.tagGroupsOpened = []
       for (let i = 0; i < resp.rows.length; i++) {
         let group = resp.rows[i]
         group['__active'] = []
         group['__open'] = []
         this.tagGroupsOpened.push(i)
-        let children = this.queryTag(group)
-        _query.push(children)
+        let children = this.listTag(group)
+        _list.push(children)
       }
-      const tags_root = await Promise.all(_query)
+      const tags_root = await Promise.all(_list)
       for (let i = 0; i < resp.rows.length; i++) {
         resp.rows[i]['__children'] = tags_root[i]
       }
@@ -222,7 +222,7 @@ export default {
       this.tagGroups = resp.rows
       this.loading = false
     },
-    queryTag: async function (item) {
+    listTag: async function (item) {
       let filter = {}
       if (!item.category) { // this category
         filter = {
@@ -235,7 +235,7 @@ export default {
           parent: item[this.dataSourceTag.keyProperty],
         }
       }
-      let resp = await this.sourceTag.query(filter)
+      let resp = await this.sourceTag.list(filter)
       for (let i = 0; i < resp.rows.length; i++) {
         resp.rows[i]['__parent'] = item
         if (resp.rows[i]['group']) {
@@ -261,17 +261,17 @@ export default {
       }
       this.init()
       if (this.options) {
-        this.queryTagGroup()
+        this.listTagGroup()
       }
     },
     options () {
       this.source.changeProps(this.options)
-      this.source.query()
+      this.source.list()
     },
   },
   beforeMount () {
     this.init()
-    this.queryTagGroup()
+    this.listTagGroup()
   },
 }
 </script>
@@ -370,7 +370,7 @@ export default {
             :open.sync="group.__open"
             :items="group.__children"
             :item-key="dataSource.keyProperty"
-            :load-children="queryTag"
+            :load-children="listTag"
             item-children="__children"
             @update:active="onActivable(group, $event)"
             class="category"

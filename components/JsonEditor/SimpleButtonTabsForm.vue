@@ -3,7 +3,7 @@
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import JsonEditorMixin from './JsonEditor.mixin'
 // import {initDataSource} from '../DataSource/DataSourceLoader'
-import {objHasOwnProperty} from '../../../Helpers/BaseHelper'
+// import {objHasOwnProperty} from '../../helpers/baseHelper'
 // import schemaStorage from './ObjSchema.store'
 
 
@@ -23,34 +23,23 @@ export default {
         tabs: {
             type: Array,
         },
-        right: {
-            type: Boolean
-        },
-        vertical: {
-            type: Boolean
-        }
     },
     data: () => ({
         activeTab: 0,
     }),
     computed: {},
+    mounted() {
+        this.init()
+    },
     methods: {
-        emitInternalAction: function (action) {
+        emitInternalAction(action) {
             const content = this.$refs['content']
             content.onAction(action)
         },
-        // async actionUpdate() {
-        //     for (let i = 0; i < this.tabs.length; ++i) {
-        //         await this.$refs[`tab${i}`].actionUpdate()
-        //     }
-        //     this.itemFull = await this.source.update(this.itemFull)
-        // },
-        actionDefaultAction: async function () {
-            for (let i = 0; i < this.tabs.length; ++i) {
-                if (this.$refs[`tab${i}`] && objHasOwnProperty(this.$refs[`tab${i}`][0], this.defaultAction.name)) {
-                    await this.$refs[`tab${i}`][0][this.defaultAction.name]()
-                }
-            }
+        async actionUpdate() {
+            this.itemFull = await this.source.update(this.itemFull)
+        },
+        async actionDefaultAction() {
             await this.source[this.defaultAction.name](this.itemFull)
             let _id = this.itemFull[this.dataSource.keyProperty]
             if (_id) {
@@ -58,6 +47,9 @@ export default {
             } else {
                 this.$emit('action', {name: 'CloseForm', data: {name: this.name, fetchRows: true}})
             }
+        },
+        onClose() {
+            this.$emit('action', {name: 'CloseForm', data: {name: this.name}})
         },
     }
 }
@@ -77,7 +69,7 @@ export default {
       class="pa-0"
     >
       <JsonString
-        v-if="schema && itemFull && schema.properties"
+        v-if="schema && itemFull"
         :schema="schema.properties.title"
         :elem-value="itemFull.title"
         elem-name="title"
@@ -117,25 +109,68 @@ export default {
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <v-tabs
-      :right="right"
-      :vertical="vertical"
-      class="Tab h100"
+    <v-toolbar
+      v-if="tabs"
+      flat
+      dense
+      height="36"
+      class="form-toolbar"
     >
-      <v-tab
-        v-for="(tab, index) in tabs"
-        :key="index"
+      <!--      <v-toolbar-items>-->
+      <v-btn
+        text
+        tile
+        :class="activeTab===0? 'activeTab text-none' : 'Tab text-none'"
+        @click="activeTab=0"
       >
-        {{ tab.title }}
-      </v-tab>
-      <v-tab-item
-        v-for="(tab, index) in tabs"
-        :key="index"
+        {{ tabs[0].title }}
+      </v-btn>
+      <!--      </v-toolbar-items>-->
+      <v-spacer/>
+      <v-toolbar-items>
+        <v-container
+          v-for="(tab, index) in tabs"
+          :key="index"
+          class="pa-0 ma-0"
+        >
+          <v-btn
+            v-if="index>0"
+            tile
+            text
+            :class="activeTab===index ? 'activeTab text-none' : 'Tab text-none'"
+            @click="activeTab=index"
+          >
+            {{ tab.title }}
+          </v-btn>
+        </v-container>
+      </v-toolbar-items>
+    </v-toolbar>
+    <v-container
+      class="pa-0 ma-0 content"
+      v-if="itemFull"
+    >
+      <v-container
+        v-if="activeTab===0"
         class="pa-0 ma-0 h100"
       >
         <component
+          :is="tabs[0].template"
+          :schema="schema"
+          :item="itemFull"
+          :key-property="dataSource.keyProperty"
+          v-bind="tabs[0]"
+          class="h100"
+          @action="onAction"
+        />
+      </v-container>
+      <v-container
+        v-for="(tab, index) in tabs"
+        :key="index"
+        class="pa-0 ma-0"
+      >
+        <component
           :is="tabs[index].template"
-          :ref="`tab${index}`"
+          v-if="index>0 &&index===activeTab"
           v-bind="tabs[index]"
           :schema="schema"
           :item="itemFull"
@@ -143,9 +178,18 @@ export default {
           class=""
           @action="onAction"
         />
-
-      </v-tab-item>
-    </v-tabs>
+      </v-container>
+    </v-container>
+    <!--    <component-->
+    <!--      :is="content.template"-->
+    <!--      v-if="content && itemFull"-->
+    <!--      ref="content"-->
+    <!--      v-bind="content"-->
+    <!--      :schema="schema"-->
+    <!--      :item="itemFull"-->
+    <!--      :key-property="dataSource.keyProperty"-->
+    <!--      @action="onAction"-->
+    <!--    />-->
   </v-container>
 </template>
 
@@ -166,15 +210,10 @@ export default {
     height: calc(100vh - 68px);
   }
 
-  .v-tab {
-    text-transform: none !important;
+  .activeTab {
+    border-bottom: 3px solid #FF7033;
   }
 
   .Tab {
-    height: calc(100vh - 32px);
-
-    .v-tabs-bar {
-      border-bottom: thin solid #cccccc;
-    }
   }
 </style>

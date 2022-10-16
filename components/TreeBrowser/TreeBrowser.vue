@@ -48,7 +48,7 @@ export default {
           }, { root: true })
         }
       }
-      await this.query()
+      await this.list()
 
     },
     async fetch(item){
@@ -61,7 +61,7 @@ export default {
         filter.parent_id = null
         result = this.items
       }
-      const res = await axios.post(`/${this.store.mode.objType}/api/${this.store.mode.objName}/query`, {
+      const res = await axios.post(`/${this.store.mode.objType}/api/${this.store.mode.objName}/list`, {
         filter: filter
       })
       let index, len;
@@ -77,7 +77,7 @@ export default {
         params: this.params,
         data
       }, { root: true })
-      await this.query()
+      await this.list()
 
     },
     async actionUpdateRow(data) {
@@ -88,7 +88,7 @@ export default {
         params: this.params,
         data: data
       }, { root: true })
-      await this.query()
+      await this.list()
 
     }
   }

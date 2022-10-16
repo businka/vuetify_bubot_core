@@ -65,7 +65,7 @@ module.exports = class Memory extends Source {
     //   this.keyProperty = this.props.keyProperty || 'id'
     // }
 
-    async query(filter) {
+    async list(filter) {
         let filteredRawData = []
         let _filter = updateObject({}, this.props.filterConst, filter)
         for (let i = 0; i < this.rawData.length; i++) {
@@ -119,7 +119,7 @@ module.exports = class Memory extends Source {
         const filter = {
             [this.keyProperty]: _id
         }
-        let items = await this.query(filter)
+        let items = await this.list(filter)
         if (items.length === 0) {
             return null
         }

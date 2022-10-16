@@ -15,7 +15,7 @@ export default {
   },
   mutations: {
     initStoreKey: initStoreKey,
-    query(state, { uid, data }) {
+    list(state, { uid, data }) {
       state[uid].rows = data.rows
     },
     showEditForm(state, payload) {
@@ -44,8 +44,8 @@ export default {
     delete: async (store, payload) => {
       await processInDataSource('delete', store, payload)
     },
-    query: async (store, payload) => {
-      await processInDataSource('query', store, payload)
+    list: async (store, payload) => {
+      await processInDataSource('list', store, payload)
     },
     updateRow: async (store, payload) => {
       store.commit('hideEditForm', { uid: payload.store.uid })

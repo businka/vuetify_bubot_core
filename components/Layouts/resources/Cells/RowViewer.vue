@@ -66,6 +66,12 @@ export default {
   .v-input--selection-controls__input {
     margin-right: 0;
   }
+  .truncate {
+    max-width: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 </style>
 
 <template>
@@ -73,7 +79,7 @@ export default {
     <td
       v-for="(col, i) in headers"
       :key="col.value"
-      class="px-2"
+      class="px-2 truncate"
       :style="`text-align:${(col.align || 'left')}; vertical-align:${(col.vAlign || 'middle')}; width:${col.value==='data-table-select'?'10px':col.width}`"
       @click="onClickRow(col)"
     >
@@ -86,6 +92,7 @@ export default {
         @change="select($event)"
       />
       <component
+        v-else
         :is="col.template||'RowCellDefault'"
         v-model="row"
         :edit-mode="editMode"

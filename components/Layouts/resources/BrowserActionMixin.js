@@ -20,6 +20,7 @@ export default {
     },
     methods: {
         init() {
+            console.log(`Browser init ${this.dataSource.objName}`)
             this.selected = []
             this.editForm = {}
             this.actionForm = {}
@@ -27,8 +28,8 @@ export default {
             this.needUpdate = true
             this.selectAll = false
             let dataSource = updateObject({}, {
-                filterFields: this.filterFields,
-                filterConst: this.filterConst
+                filterFields: (this.filterFields || {}),
+                filterConst: (this.filterConst || {})
             }, this.dataSource, this.options)
             try {
                 this.source = initDataSource(dataSource, this.$store)
@@ -43,10 +44,10 @@ export default {
                 data: data.value
             }, {root: true})
         },
-        // async query () {
+        // async list () {
         //   this.emitAction({ name: 'Loading', data: { value: true } })
         //   try {
-        //     await this.$store.dispatch(`${this.namespace}/query`, {
+        //     await this.$store.dispatch(`${this.namespace}/list`, {
         //       store: this.store,
         //       params: this.params,
         //       data: this.data
@@ -61,7 +62,7 @@ export default {
         //     uid: this.store.uid,
         //     filter: data,
         //   }, { root: true })
-        //   this.query()
+        //   this.list()
         // },
         // getSelected() {
         //   return this.$refs[this.store.uid].selection
@@ -102,7 +103,7 @@ export default {
             this.actionRowActivate(res)
         },
 
-        async actionCallDataSourceForSelectedItems(actionData) {
+        actionCallDataSourceForSelectedItems: async function(actionData) {
             try {
                 let source
 
@@ -117,7 +118,7 @@ export default {
 
                 } else {
                     if (this.selectAll) {
-                        payload.data.items = this.source.queryAll()
+                        payload.data.items = this.source.listAll()
                         payload.data.filter = this.source.filter
                     } else {
                         payload.data.items = this.selected
@@ -142,23 +143,34 @@ export default {
             await this.source.call({method: 'delete_tag', data})
             await this.source.fetchRow([data.id])
         },
+        RowActivateHandlerEmitAction(data) {
+            this.$emit('action', {name: 'RowActivate', data})
+        },
+        RowActivateHandlerShowForm(data) {
+            let formName = data.row.form || this.rowActivateHandler.form
+            let formUid = `${this.source.props.objName}/${data.row.subtype?data.row.subtype:''}/${formName}`
+            this.editForm = {
+                handler: this.rowActivateHandler['formViewer'],
+                formUid: formUid,
+                visible: true,
+                formData: {item: data.row, index: data.index, filterConst: this.source.props.filterConst},
+            }
+            console.log(`BrowserActionMixin RowActivateHandlerShowForm ${JSON.stringify(this.editForm)}`)
+        },
+        RowActivateHandlerExternal(data) {
+            console.log(`RowActivateHandlerExternal ${JSON.stringify(data)}`)
+            this.externalRowActivateHandler(this, data)
+        },
         actionRowActivate: function (data) {
             if (!data.row) {
                 console.error('rowActivate - "row" not found')
                 return
             }
-            if (this.rowActivateHandler.name === 'emitAction') {
-                this.$emit('action', {name: 'RowActivate', data})
+            let handler = `RowActivateHandler${this.rowActivateHandler.name}`
+            if (objHasOwnProperty(this, handler)) {
+                this[handler](data)
             } else {
-
-                let form = data.row.form || this.rowActivateHandler.form
-                this.editForm = {
-                    handler: this.rowActivateHandler.name,
-                    formUid: form,
-                    visible: true,
-                    formData: {item: data.row, index: data.index, filterConst: this.source.props.filterConst},
-                }
-                console.log(this.editForm)
+                console.log(`RowActivateHandler not found ${this.rowActivateHandler.name}`)
             }
         },
         async actionHandler(data) {

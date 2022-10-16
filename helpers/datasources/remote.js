@@ -12,13 +12,13 @@ export default {
   //     return false
   //   }
   // },
-  query: async (store, payload) => {
+  list: async (store, payload) => {
     let resp
     let result = []
     let error = null
     try {
       let params = Object.assign(payload.store.mode.filter || {}, payload.filter || {})
-      resp = await axios.get(`/${store.rootState.appName}/api/${payload.store.mode.objName}/query`,
+      resp = await axios.get(`/${store.rootState.appName}/api/${payload.store.mode.objName}/list`,
         { params }
       )
       result = resp.data
@@ -31,7 +31,7 @@ export default {
           error = { msg: `${err.response.status}: ${err.response.statusText}` }
       }
     }
-    store.commit('query', { uid: payload.store.uid, data: result, error })
+    store.commit('list', { uid: payload.store.uid, data: result, error })
     return []
   },
   create: async (store, payload) => {
@@ -118,7 +118,7 @@ export default {
       }
       throw error
     }
-    // store.commit('query', { uid: payload.store.uid, data: result, error })
+    // store.commit('list', { uid: payload.store.uid, data: result, error })
     return result
   },
 }

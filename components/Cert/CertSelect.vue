@@ -39,10 +39,10 @@ export default {
       }
       return true
     },
-    customFilter(item, queryText) {
+    customFilter(item, listText) {
       const textOne = item.subjectNameCN ? item.subjectNameCN.toLowerCase() : ''
       const textTwo = item.subjectNameSN.toLowerCase()
-      const searchText = queryText.toLowerCase()
+      const searchText = listText.toLowerCase()
       return textOne.indexOf(searchText) > -1 ||
         textTwo.indexOf(searchText) > -1
     }

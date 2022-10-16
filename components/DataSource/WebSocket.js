@@ -4,10 +4,10 @@ import { updateObject } from '../../../Helpers/BaseHelper'
 export default class WebSocket extends Memory {
   data = []
 
-  async query (filter, nav) {
+  async list (filter, nav) {
     let params = updateObject(nav, this.props.filterConst, filter)
     // params = this.props.filter
-    let actionName = `${this.props.appName}/${this.props.objName}/${this.props.query || 'query'}`
+    let actionName = `${this.props.appName}/${this.props.objName}/${this.props.list || 'list'}`
     let _reject, _resolve
     let result = new Promise(function (resolve, reject) {
       _reject = reject

@@ -14,7 +14,9 @@ export function updateProp(result, {action, path, value}) {
                 Vue.set(result, _path[i], value)
                 return
             }
-            throw new Error(`props "${_path[i]}" not found in source object`)
+            Vue.set(result, _path[i], {})
+            result = result[_path[i]]
+            //throw new Error(`props "${_path[i]}" not found in source object`)
         }
     }
     if (_path[i] === '')
@@ -32,4 +34,23 @@ export function updateProp(result, {action, path, value}) {
         // Vue.set(result, _path[i], result[_path[i]])
     }
 }
+
+export function getPropByPath(src, path, defaultValue) {
+    let _src = src
+    const _path = path.split('.')
+    let i
+    try {
+        for (i = 0; i < _path.length; i++) {
+            if (Object.prototype.hasOwnProperty.call(_src, _path[i])) {
+                _src = _src[_path[i]]
+            } else {
+                return defaultValue
+            }
+        }
+    } catch (e) {
+        return defaultValue
+    }
+    return _src
+}
+
 

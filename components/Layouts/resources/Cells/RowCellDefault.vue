@@ -32,3 +32,6 @@ export default {
 
   </span>
 </template>
+
+<style lang="scss">
+</style>

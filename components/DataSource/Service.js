@@ -8,25 +8,18 @@ export default class Service extends Source {
         return null
     }
 
-    async _query() {
+    async _list() {
         return null
     }
 
-    async query(filter, nav = {}) {
+    async list(filter, nav = {}) {
         this.loading = true
         let params = updateObject(nav, this.props.filterConst, filter)
         // params = this.props.filter
-        let actionName
-        if (this.props.subtype) {
-            actionName = `/${this.props.appName}/api/${this.props.objName}/${this.props.subtype}/${this.props.query || 'query'}`
+        let url = `/${this.props.appName}/api/${this.props.objName}/${this.props.list || 'list'}`
 
-        } else {
-            actionName = `/${this.props.appName}/api/${this.props.objName}/${this.props.query || 'query'}`
-        }
         try {
-            let resp = await buxios.get(actionName,
-                {params}
-            )
+            let resp = await buxios.get(url, {params})
             console.log(resp)
             return resp.data
         } catch (err) {
@@ -40,9 +33,8 @@ export default class Service extends Source {
         this.loading = true
         let resp
         try {
-            resp = await buxios.get(`/${this.props.appName}/api/${this.props.objName}/read`,
-                {params: {id}}
-            )
+            let url = `/${this.props.appName}/api/${this.props.objName}/read`
+            resp = await buxios.get(url, {params: {id}})
             this.loading = false
             return resp.data
         } catch (err) {
@@ -52,13 +44,12 @@ export default class Service extends Source {
         }
     }
 
-    async update(data) {
+    async update(payload) {
         this.loading = true
         let resp
         try {
-            resp = await buxios.post(`/${this.props.appName}/api/${this.props.objName}/update`,
-                data
-            )
+            let url = `/${this.props.appName}/api/${this.props.objName}/update`
+            resp = await buxios.post(url, payload)
             this.loading = false
             return resp.data
         } finally {
@@ -66,13 +57,12 @@ export default class Service extends Source {
         }
     }
 
-    async create(data) {
+    async create(payload) {
         this.loading = true
         let resp
         try {
-            resp = await buxios.post(`/${this.props.appName}/api/${this.props.objName}/create`,
-                data
-            )
+            let url = `/${this.props.appName}/api/${this.props.objName}/create`
+            resp = await buxios.post(url, payload)
             this.loading = false
             return resp.data
         } finally {
@@ -84,12 +74,12 @@ export default class Service extends Source {
         this.loading = true
         let resp
         try {
-            resp = await buxios.post(`/${this.props.appName}/api/${this.props.objName}/${payload.method}`, payload.data)
+            let url = `/${this.props.appName}/api/${this.props.objName}/${payload.method}`
+            resp = await buxios.post(url, payload.data)
             this.loading = false
             return resp.data
         } finally {
             this.loading = false
         }
-
     }
 }

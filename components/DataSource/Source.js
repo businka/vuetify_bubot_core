@@ -61,7 +61,7 @@ module.exports = class Source {
         try {
             const limit = this.props.itemsPerPage
             const page = this.props.page
-            let resp = await this.query(this.props.filter, {limit, page})
+            let resp = await this.list(this.props.filter, {limit, page})
             this.rows = resp.rows || []
             this.total = (page - 1) * limit + this.rows.length + (this.rows.length < limit ? 0 : 1)
             this.error = undefined
@@ -78,7 +78,7 @@ module.exports = class Source {
         let filter = updateObject({}, {[this.keyProperty]: list_id.toString()}, this.props.filter)
         let resp
         try {
-            resp = await this.query(filter)
+            resp = await this.list(filter)
         } catch (err) {
             this.rows = []
             this.error = err.toDict()
@@ -100,8 +100,8 @@ module.exports = class Source {
         }
     }
 
-    async query() {
-        throw new Error('method query not implemented in source class')
+    async list() {
+        throw new Error('method list not implemented in source class')
     }
 
     async call() {

@@ -44,9 +44,11 @@ export default {
             default: function () {
                 return {
                     name: '',
-                    form: ''
                 }
             }
+        },
+        externalRowActivateHandler: {
+            type: Function
         },
         toolbarItemsBeforeSearch: {
             type: Array,
@@ -112,16 +114,19 @@ export default {
         }
     },
     watch: {
-        dataSource: function () {
-            if (this.options) {
-                this.options.page = 1
+        dataSource: function (value) {
+            if (value.objName !== this.dataSource.objName) {
+                if (this.options) {
+                    this.options.page = 1
+                }
+                this.init()
+                this.needUpdate = true
             }
-            this.init()
-            this.needUpdate = true
         },
-        filterConst: function (value) {
-            if (value === this.filterConst) return
-            console.log('watch filterConst')
+        filterConst: function () {
+            // console.log(`Browser  ${this.dataSource.objName} watch filterConst`)
+            // if (value === this.filterConst) return
+            console.log(`Browser  ${this.dataSource.objName} watch filterConst 2`)
             this.source.changeProps({filterConst: this.filterConst})
             this.needUpdate = true
         },
@@ -130,11 +135,11 @@ export default {
             this.source.changeProps(this.options)
             this.needUpdate = true
         },
-        needUpdate: async function(value) {
-          if (value) {
-            await this.source.fetchRows()
-            this.needUpdate = false
-          }
+        needUpdate: async function (value) {
+            if (value) {
+                await this.source.fetchRows()
+                this.needUpdate = false
+            }
         }
     },
     beforeMount() {
@@ -145,156 +150,156 @@ export default {
 </script>
 
 <style lang="scss">
-    .height100 {
-        height: 100%;
-    }
+  .height100 {
+    height: 100%;
+  }
 
-    .browser {
-        /*height: 100%;*/
-        .v-data-table__wrapper {
-            height: calc(100vh - 160px);
-        }
+  .browser {
+    /*height: 100%;*/
+    .v-data-table__wrapper {
+      height: calc(100vh - 160px);
     }
+  }
 </style>
 
 <template>
-    <v-container class="pa-0 ma-0">
-        <v-data-table
-            v-if="source"
-            v-model="selected"
-            :headers="columns"
-            :page="source.page"
-            :items="source.rows"
-            :options.sync="options"
-            :server-items-length="source.total"
-            :item-key="source['keyProperty'] || '_id.$oid'"
-            :show-select="showOperationsPanel"
-            :hide-default-header="true"
-            :loading="source.loading"
-            :footer-props="{
+  <v-container class="pa-0 ma-0">
+    <v-data-table
+      v-if="source"
+      v-model="selected"
+      :headers="columns"
+      :page="source.page"
+      :items="source.rows"
+      :options.sync="options"
+      :server-items-length="source.total"
+      :item-key="source['keyProperty'] || '_id.$oid'"
+      :show-select="showOperationsPanel"
+      :hide-default-header="true"
+      :loading="source.loading"
+      :footer-props="{
         itemsPerPageOptions: [25, 50, 100, -1],
         showCurrentPage: true,
       }"
-            dense
-            disable-sort
-            fixed-header
-            class="browser"
-            :height="height"
+      dense
+      disable-sort
+      fixed-header
+      class="browser"
+      :height="height"
+    >
+      <template v-slot:top>
+        <BrowserToolBar
+          v-if="!hideToolbar"
+          :items-before-search="toolbarItemsBeforeSearch"
+          :items-before-filter="toolbarItemsBeforeFilter"
+          :filter-fields="filterFields"
+          :filter="source.filter"
+          :show-operations-panel-btn="!hideOperationsPanel || alwaysShowOperationsPanel"
+          :show-operations-panel="showOperationsPanel"
+          @changeOperationPanelState="showOperationsPanel = !showOperationsPanel"
+          @changeFilter="source.changeFilter($event)"
+          @action="onAction"
+        />
+      </template>
+      <!--    v-slot:header="{ props: { headers, options },someItems, everyItem, on }"-->
+      <template
+        v-slot:header="{ props: { someItems, everyItem, headers},  on }"
+      >
+        <thead>
+        <tr
+          v-if="!hideOperationsPanel"
+          v-show="showOperationsPanel"
         >
-            <template v-slot:top>
-                <BrowserToolBar
-                    v-if="!hideToolbar"
-                    :items-before-search="toolbarItemsBeforeSearch"
-                    :items-before-filter="toolbarItemsBeforeFilter"
-                    :filter-fields="filterFields"
-                    :filter="source.filter"
-                    :show-operations-panel-btn="!hideOperationsPanel || alwaysShowOperationsPanel"
-                    :show-operations-panel="showOperationsPanel"
-                    @changeOperationPanelState="showOperationsPanel = !showOperationsPanel"
-                    @changeFilter="source.changeFilter($event)"
-                    @action="onAction"
-                />
-            </template>
-            <!--    v-slot:header="{ props: { headers, options },someItems, everyItem, on }"-->
-            <template
-                v-slot:header="{ props: { someItems, everyItem, headers},  on }"
-            >
-                <thead>
-                <tr
-                    v-if="!hideOperationsPanel"
-                    v-show="showOperationsPanel"
-                >
-                    <th
-                        class="pa-0"
-                        :colspan="headers.length + actionColumn"
-                    >
-                        <OperationsPanel
-                            :items="operationsPanelItems"
-                            :select-all="{
+          <th
+            class="pa-0"
+            :colspan="headers.length + actionColumn"
+          >
+            <OperationsPanel
+              :items="operationsPanelItems"
+              :select-all="{
                   someItems,
                   everyItem,
                   toggleSelectAll: on['toggle-select-all']
                 }"
-                            @action="onAction"
-                        />
-                    </th>
-                </tr>
-                <tr
-                    v-if="showColumnHeaders"
-                >
-                    <!-- Header !-->
-                    <th
-                        v-for="col in headers"
-                        :key="col.value"
-                        :width="col.width"
-                    >
-                        {{ col[`title_${$i18n.locale}`] || col.text }}
-                    </th>
-                    <th v-if="actionColumn"></th>
-                </tr>
-                </thead>
-            </template> <!-- Headers Bars !-->
-            <template
-                v-slot:item="{ item, headers, index, isSelected, select }"
-            >
-                <component
-                    :is="editForm.handler"
-                    v-if="editForm && editForm.inline && index===editForm.index"
-                    :headers="headers"
-                    :item="item"
-                    :index="index"
-                    @action="onAction"
-                />
-                <component
-                    :is="rowTemplate"
-                    v-else
-                    :headers="headers"
-                    :row-actions="rowActions"
-                    :row-actions-field="rowActionsField"
-                    :item="item"
-                    :index="index"
-                    :is-selected="isSelected"
-                    :select="select"
-                    :edit-mode="editForm && editForm.handler==='inline' && index===editForm.formData.index"
-                    @action="onAction"
-                />
-            </template> <!-- item !-->
+              @action="onAction"
+            />
+          </th>
+        </tr>
+        <tr
+          v-if="showColumnHeaders"
+        >
+          <!-- Header !-->
+          <th
+            v-for="col in headers"
+            :key="col.value"
+            :width="col.width"
+          >
+            {{ col[`title_${$i18n.locale}`] || col.text }}
+          </th>
+          <th v-if="actionColumn"></th>
+        </tr>
+        </thead>
+      </template> <!-- Headers Bars !-->
+      <template
+        v-slot:item="{ item, headers, index, isSelected, select }"
+      >
+        <component
+          :is="editForm.handler"
+          v-if="editForm && editForm.inline && index===editForm.index"
+          :headers="headers"
+          :item="item"
+          :index="index"
+          @action="onAction"
+        />
+        <component
+          :is="rowTemplate"
+          v-else
+          :headers="headers"
+          :row-actions="rowActions"
+          :row-actions-field="rowActionsField"
+          :item="item"
+          :index="index"
+          :is-selected="isSelected"
+          :select="select"
+          :edit-mode="editForm && editForm.handler==='inline' && index===editForm.formData.index"
+          @action="onAction"
+        />
+      </template> <!-- item !-->
 
-            <template
-                v-slot:no-data=""
-            >
-                <v-container
-                    v-if="source.error"
-                    class="error--text"
-                >
-                    {{ source.error.message }}
-                    <span v-if="source.error.detail">: {{ source.error.detail }}</span>
-                </v-container>
-                <v-container
-                    v-else
-                >
-                    {{ $t('$vuetify.noDataText') }}
-                </v-container>
-            </template>  <!-- No data!-->
-        </v-data-table>
-        <component
-            :is="editForm.handler"
-            v-if="editForm && editForm.visible && editForm.handler!=='inline'"
-            :formUid="editForm.formUid"
-            :visible="editForm.visible"
-            :formData="editForm.formData"
-            @action="onAction($event, 'editForm')"
-        />
-        <component
-            :is="actionForm.handler"
-            v-if="actionForm && actionForm.visible"
-            :params="actionForm"
-            @action="onAction($event, 'actionForm')"
-        />
-        <ExtException
-            v-if="actionError"
-            v-model="actionError"
-            :dialog="true"
-        ></ExtException>
-    </v-container>
+      <template
+        v-slot:no-data=""
+      >
+        <v-container
+          v-if="source.error"
+          class="error--text"
+        >
+          {{ source.error.message }}
+          <span v-if="source.error.detail">: {{ source.error.detail }}</span>
+        </v-container>
+        <v-container
+          v-else
+        >
+          {{ $t('$vuetify.noDataText') }}
+        </v-container>
+      </template>  <!-- No data!-->
+    </v-data-table>
+    <component
+      :is="editForm.handler"
+      v-if="editForm && editForm.visible && editForm.handler!=='inline'"
+      :formUid="editForm.formUid"
+      :visible="editForm.visible"
+      :formData="editForm.formData"
+      @action="onAction($event, 'editForm')"
+    />
+    <component
+      :is="actionForm.handler"
+      v-if="actionForm && actionForm.visible"
+      :params="actionForm"
+      @action="onAction($event, 'actionForm')"
+    />
+    <ExtException
+      v-if="actionError"
+      v-model="actionError"
+      :dialog="true"
+    ></ExtException>
+  </v-container>
 </template>

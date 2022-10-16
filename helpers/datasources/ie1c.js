@@ -2,7 +2,7 @@ import axios from 'axios/index'
 import { commandTo1C } from '../c1/connector1C'
 import UrlParam from '../../../Helpers/UrlParam'
 
-async function query_ie(store, payload, method, config) {
+async function list_ie(store, payload, method, config) {
 
   config.method = 'post'
   config.url = `/${payload.store.mode.objType}/api/${payload.store.mode.objName}/get_query`
@@ -18,7 +18,7 @@ async function query_ie(store, payload, method, config) {
 
   const data2 = await commandTo1C(form, method, resp1.data.result)
 
-  config.url = `/${payload.store.mode.objType}/api/${payload.store.mode.objName}/parse_response_query`
+  config.url = `/${payload.store.mode.objType}/api/${payload.store.mode.objName}/parse_response_list`
   config.data.response = data2
   let data3
   data3 = await axios.request(config)
@@ -47,7 +47,7 @@ export default {
         method: 'query',
       }, payload.store.modeParams)
 
-      let resp = await query_ie(store, payload, 'query', {
+      let resp = await list_ie(store, payload, 'query', {
         data: config
       })
       data = resp.data.result
@@ -67,7 +67,7 @@ export default {
         method,
       }, payload.store.modeParams)
 
-      let resp = await query_ie(store, payload, method, {
+      let resp = await list_ie(store, payload, method, {
         data: config
       })
       return resp.data.result
@@ -81,7 +81,7 @@ export default {
   read: async (store, payload) => {
     try {
       let fieldId = payload.store.modeParams[payload.store.mode.fieldId || 'id']
-      const data = await query_ie(store, payload, 'read', {
+      const data = await list_ie(store, payload, 'read', {
         url: `/${payload.store.mode.objType}/api/${payload.store.mode.objName}/read`,
         params: { id: fieldId }
       })

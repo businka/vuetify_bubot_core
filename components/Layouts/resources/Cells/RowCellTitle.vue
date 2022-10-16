@@ -48,9 +48,10 @@ export default {
 
 <template>
   <div>
-    <v-row class="d-flex align-baseline  pa-0 ma-0">
+    <v-row class="pa-0 ma-0">
+      <v-col class="d-flex align-baseline  pa-0 ma-0">
       <div
-        class="text-body-1 pa-0 ma-0"
+        class="text-body-1 pa-0 ma-0 "
         v-text="title"
       ></div>
       <div
@@ -58,6 +59,7 @@ export default {
         class="text-caption  pa-0 ma-0 ml-1 text--secondary"
         v-text="subtitle"
       ></div>
+      </v-col>
     </v-row>
     <v-row
       v-if="info"
@@ -66,3 +68,11 @@ export default {
     ></v-row>
   </div>
 </template>
+<style lang="scss">
+
+  .truncate {
+    white-space: nowrap; /* Текст не переносится */
+    overflow: hidden; /* Обрезаем всё за пределами блока */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+  }
+</style>

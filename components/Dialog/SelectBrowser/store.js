@@ -26,7 +26,7 @@ export default {
       state[uid].filter = Object.assign({}, state.filterDefault, state[uid].filter, filter)
       // Vue.set(this.groupShow, name, true)
     },
-    query(state, { uid, data, error }) {
+    list(state, { uid, data, error }) {
       state[uid].rows = data.rows || []
       state[uid].error = error
     },
@@ -71,13 +71,13 @@ export default {
     },
     setFilter: async (store, payload) => {
       store.commit('setFilter', payload)
-      await store.dispatch('query', payload)
+      await store.dispatch('list', payload)
     },
-    query: async (store, payload) => {
-      // console.log('query - ' + payload)
+    list: async (store, payload) => {
+      // console.log('list - ' + payload)
       // store.commit("loading", { uid: payload.store.uid, data: true})
       payload.filter = store.state[payload.store.uid].filter
-      await processInDataSource('query', store, payload)
+      await processInDataSource('list', store, payload)
       // store.commit("loading", { uid: payload.store.uid, data: false})
     },
     updateRow: async (store, payload) => {

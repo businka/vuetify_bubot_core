@@ -61,7 +61,7 @@ export default {
     //   this.section = this.$route.params.section
     //   this.page = this.$route.params.page
     //   this.key = `${this.section}/${this.page}`
-    //   this.load({ key: this.key, active: this.$route.query.tab })
+    //   this.load({ key: this.key, active: this.$route.list.tab })
     //   // this.activeTab = this.form.default
     // }
   }

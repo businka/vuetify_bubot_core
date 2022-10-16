@@ -1,7 +1,5 @@
 import {objHasOwnProperty, updateObject} from '../../../Helpers/BaseHelper'
 import {updateProp } from './JsonHelper'
-// import Vue from 'vue'
-
 import schemaStorage from './ObjSchema.store'
 import {initDataSource} from '../DataSource/DataSourceLoader'
 
@@ -50,17 +48,36 @@ export default {
             loading: false,
             schema: {},
             error: {},
+            source: undefined,
             itemFull: undefined,
         }
+    },
+    beforeMount() {
+        this.init()
     },
     beforeCreate() {
         if (!objHasOwnProperty(this.$store.state, 'ObjSchema')) {
             this.$store.registerModule('ObjSchema', schemaStorage)
         }
     },
+    computed: {
+        _id() {
+            if (this.dataSource && this.dataSource.keyProperty && this.item) {
+                return this.item[this.dataSource.keyProperty]
+            }
+            return undefined
+        }
+    },
     watch: {
-        dataSource() {
-            this.init()
+        // dataSource() {
+        //     console.log(`watch dataSource JsonEditorMixin `)
+        //     this.init()
+        // },
+        _id(new_value) {
+            if (new_value !== this._id) {
+                console.log(`watch _id JsonEditorMixin ${new_value}`)
+                this.init()
+            }
         },
         // item() {
         //     this.loadItem()
@@ -72,10 +89,7 @@ export default {
             try {
                 const dataSource = updateObject({}, { filterFields: this.filterFields, filterConst: this.filterConst }, this.dataSource)
                 this.source = initDataSource(dataSource, this.$store)
-                await Promise.all([
-                    this.loadItem(),
-                    this.loadSchema()
-                ])
+                await this.loadData()
             } catch (err) {
                 console.error(err.toString())
                 this.error = err
@@ -83,6 +97,12 @@ export default {
                 this.loading = false
 
             }
+        },
+        async loadData() {
+            await Promise.all([
+                this.loadItem(),
+                this.loadSchema()
+            ])
         },
         async loadSchema() {
             if (this.dataSource.objName)
@@ -102,7 +122,7 @@ export default {
         },
 
         actionOpenLinkInNewTab(actionData) {
-            // actionData = {name: 'routeName', query: {data: "someData"}}
+            // actionData = {name: 'routeName', list: {data: "someData"}}
             let routeData = this.$router.resolve(actionData);
             window.open(routeData.href, '_blank');
             this.$router.go(actionData)
@@ -115,6 +135,9 @@ export default {
             actionData.data.items = [this.itemFull]
             actionData.data.filter = null
             return await this.source.call(actionData)
-        }
+        },
+        onClose() {
+            this.$emit('action', {name: 'CloseForm', data: {name: this.name}})
+        },
     }
 }

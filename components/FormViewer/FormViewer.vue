@@ -1,5 +1,6 @@
 <script>
 import {updateObject} from '../../../Helpers/BaseHelper'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 
 export default {
     name: 'FormViewer',
@@ -14,6 +15,7 @@ export default {
             }
         },
     },
+    mixins: [ActionMixin],
     data: () => ({
         _form: null,
         form: null
@@ -65,6 +67,7 @@ export default {
       <component
         :is="form.template"
         v-bind="form"
+        @action="onAction"
       />
     </v-col>
   </v-row>
