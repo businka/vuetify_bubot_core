@@ -84,7 +84,7 @@ export default {
   }
 
   .LangSelectorText {
-    /*text-transform: uppercase;*/
+    text-transform: none;
 
     /*height: 24px;*/
   }
