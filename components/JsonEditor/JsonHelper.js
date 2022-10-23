@@ -1,4 +1,5 @@
 import Vue from 'vue'
+// import { reactive } from 'vue'
 
 export function updateProp(result, {action, path, value}) {
     if (!result) {
@@ -21,18 +22,29 @@ export function updateProp(result, {action, path, value}) {
     }
     if (_path[i] === '')
         return
-    if (!action || action === 'change') {
-        Vue.set(result, _path[i], value)
-    } else if (action === 'push') {
-        if (!result[_path[i]]) {
-            Vue.set(result, _path[i], [])
-        }
-        result[_path[i]].push(value)
-    } else if (action === 'delete') {
-        result[_path[i]].splice(value, 1)
-        // Vue.delete(result[_path[i]], value)
-        // Vue.set(result, _path[i], result[_path[i]])
+    switch (action) {
+        case 'change':
+            Vue.set(result, _path[i], value)
+            break
+        case 'append':
+            if (!result[_path[i]]) {
+                Vue.set(result, _path[i], [])
+            }
+            result[_path[i]].push(value)
+            break
+        case 'extend':
+            if (!result[_path[i]]) {
+                Vue.set(result, _path[i], [])
+            }
+            result[_path[i]].push(...value)
+            break
+        case 'delete':
+            result[_path[i]].splice(value, 1)
     }
+}
+
+export function isNumeric(value) {
+    return /^-?\d+$/.test(value);
 }
 
 export function getPropByPath(src, path, defaultValue) {

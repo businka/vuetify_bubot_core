@@ -1,5 +1,5 @@
 import {objHasOwnProperty, updateObject} from '../../../Helpers/BaseHelper'
-import {updateProp } from './JsonHelper'
+import {updateProp} from './JsonHelper'
 import schemaStorage from './ObjSchema.store'
 import {initDataSource} from '../DataSource/DataSourceLoader'
 
@@ -53,6 +53,7 @@ export default {
         }
     },
     beforeMount() {
+        // console.log('JsonEditorMixin beforeMount')
         this.init()
     },
     beforeCreate() {
@@ -61,33 +62,27 @@ export default {
         }
     },
     computed: {
-        _id() {
-            if (this.dataSource && this.dataSource.keyProperty && this.item) {
-                return this.item[this.dataSource.keyProperty]
-            }
-            return undefined
-        }
+        // _id() {
+        //     if (this.dataSource && this.dataSource.keyProperty && this.item) {
+        //         return this.item[this.dataSource.keyProperty]
+        //     }
+        //     return undefined
+        // }
     },
     watch: {
-        // dataSource() {
-        //     console.log(`watch dataSource JsonEditorMixin `)
-        //     this.init()
-        // },
-        _id(new_value) {
-            if (new_value !== this._id) {
-                console.log(`watch _id JsonEditorMixin ${new_value}`)
-                this.init()
-            }
+        item() {
+            this.init()
         },
-        // item() {
-        //     this.loadItem()
-        // },
     },
     methods: {
-        async init() {
+        init: async function () {
+            console.log('init')
             this.loading = true
             try {
-                const dataSource = updateObject({}, { filterFields: this.filterFields, filterConst: this.filterConst }, this.dataSource)
+                const dataSource = updateObject({}, {
+                    filterFields: this.filterFields,
+                    filterConst: this.filterConst
+                }, this.dataSource)
                 this.source = initDataSource(dataSource, this.$store)
                 await this.loadData()
             } catch (err) {
@@ -98,17 +93,22 @@ export default {
 
             }
         },
-        async loadData() {
+        loadData: async function () {
+            console.log(this.item.subtype)
             await Promise.all([
                 this.loadItem(),
                 this.loadSchema()
             ])
+            await this.afterLoadData()
         },
-        async loadSchema() {
+        afterLoadData: async function () {
+        },
+        loadSchema: async function () {
+            console.log(`loadSchema${this.dataSource.objName}`)
             if (this.dataSource.objName)
                 this.schema = await this.$store.dispatch('ObjSchema/read', this.dataSource.objName, {root: true})
         },
-        async loadItem() {
+        loadItem: async function () {
             let _id = this.item[this.dataSource.keyProperty]
             if (_id) {
                 this.itemFull = await this.source.read(_id)
@@ -116,19 +116,19 @@ export default {
                 this.itemFull = await this.source.create(this.source.filterConst)
             }
         },
-        actionUpdateProp({path, action, value}) {
+        actionUpdateProp: function ({path, action, value}) {
             updateProp(this.itemFull, {action, path, value})
             this.$emit('change-value', this.itemFull)
         },
 
-        actionOpenLinkInNewTab(actionData) {
+        actionOpenLinkInNewTab: function (actionData) {
             // actionData = {name: 'routeName', list: {data: "someData"}}
             let routeData = this.$router.resolve(actionData);
             window.open(routeData.href, '_blank');
             this.$router.go(actionData)
         },
 
-        async actionCallDataSourceForSelectedItems (actionData) {
+        actionCallDataSourceForSelectedItems: async function (actionData) {
             if (!objHasOwnProperty(actionData, 'data')) {
                 actionData.data = {}
             }
@@ -136,7 +136,7 @@ export default {
             actionData.data.filter = null
             return await this.source.call(actionData)
         },
-        onClose() {
+        onClose: function () {
             this.$emit('action', {name: 'CloseForm', data: {name: this.name}})
         },
     }

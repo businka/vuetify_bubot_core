@@ -77,7 +77,7 @@ export default {
 
     },
     addItem () {
-      this.$emit('action', { name: 'UpdateProp', data: { action: 'push', path: this.path, value: this.getDefault() } })
+      this.$emit('action', { name: 'UpdateProp', data: { action: 'append', path: this.path, value: this.getDefault() } })
     },
     deleteItem (index) {
       this.$emit('action', { name: 'UpdateProp', data: { action: 'delete', path: this.path, value: index } })

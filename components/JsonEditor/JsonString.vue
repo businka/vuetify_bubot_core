@@ -56,7 +56,7 @@ export default {
 
 
 <template>
-  <div class="pb-1">
+  <v-container class="pa-0 ma-0">
     <v-select
       v-if="schema && Object.prototype.hasOwnProperty.call(schema, 'enum')"
       :label="schema.title || elemName"
@@ -86,5 +86,5 @@ export default {
       @input="onInput"
       @change="onChange"
     />
-  </div>
+  </v-container>
 </template>

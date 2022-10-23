@@ -49,7 +49,7 @@ export default {
         //   if (Object.prototype.hasOwnProperty.call(this.indexValue, path)) {
         //     path
         //   } else {
-        //     action = 'push'
+        //     action = 'append'
         //   }
         //   this.$emit('change-value', this.edit_value)
         // }

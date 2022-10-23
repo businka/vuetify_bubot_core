@@ -8,7 +8,7 @@ import {objHasOwnProperty} from '../../../Helpers/BaseHelper'
 
 
 export default {
-    name: "SimpleTabsForm",
+    name: "JsonTabsForm",
     components: {
         ParamEditor: () => import('../ParamsEditor/ParamsEditor'),
         JsonString: () => import('./JsonString'),
@@ -23,22 +23,22 @@ export default {
         tabs: {
             type: Array,
         },
-        right: {
+        tabs_right: {
             type: Boolean
         },
-        vertical: {
+        tabs_vertical: {
             type: Boolean
         }
     },
     data: () => ({
-        tabsActiveTab: 0,
-        tabsBind: []
+        tabs_active_tab: 0,
+        tabs_bind: []
 
     }),
     computed: {},
     methods: {
         afterLoadData: async function () {
-            this.tabsBind = this.tabs
+            this.tabs_bind = this.tabs
         },
         emitInternalAction: function (action) {
             const content = this.$refs['content']
@@ -123,33 +123,32 @@ export default {
     </v-toolbar>
     <v-tabs
       v-if="itemFull"
-      :right="right"
-      :vertical="vertical"
+      :right="tabs_right"
+      :vertical="tabs_vertical"
       height="36"
       class="Tab h100"
     >
       <v-tab
-        v-for="(tab, index) in tabs"
+        v-for="(tab, index) in tabs_bind"
         :key="index"
       >
         {{ tab.title }}
       </v-tab>
       <v-tab-item
-        v-for="(tab, index) in tabs"
+        v-for="(tab, index) in tabs_bind"
         :key="index"
         class="pa-0 ma-0 h100"
       >
         <component
-          :is="tabs[index].template"
+          :is="tabs_bind[index].template"
           :ref="`tab${index}`"
-          v-bind="tabs[index]"
+          v-bind="tabs_bind[index]"
           :schema="schema"
           :item="itemFull"
           :key-property="dataSource.keyProperty"
           class=""
           @action="onAction"
         />
-
       </v-tab-item>
     </v-tabs>
   </v-container>
@@ -160,7 +159,8 @@ export default {
     .v-toolbar__content {
       padding-left: 0;
       padding-right: 0;
-      border-bottom: thin solid #cccccc;
+      width: 100%;
+      /*border-bottom: thin solid #cccccc;*/
     }
   }
 

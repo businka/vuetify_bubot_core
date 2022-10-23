@@ -38,8 +38,8 @@ export default {
   },
   methods: {
     addElem(data){
-      console.log('push',this.path, data.default)
-      this.$emit('action', {name: 'UpdateProp', data:{ action:'push', path: this.path, value:data.default}})
+      console.log('append',this.path, data.default)
+      this.$emit('action', {name: 'UpdateProp', data:{ action:'append', path: this.path, value:data.default}})
       this.show=true
     },
     removeElem(index){

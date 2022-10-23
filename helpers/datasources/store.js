@@ -37,7 +37,7 @@ export default {
     let new_row = payload.data
     store.commit(`${namespace}/updateItemProps`, {
       uid,
-      action: 'push',
+      action: 'append',
       path: payload.store.mode.path,
       value: new_row
     }, { root: true })

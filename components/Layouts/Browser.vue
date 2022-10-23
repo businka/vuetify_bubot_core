@@ -114,14 +114,12 @@ export default {
         }
     },
     watch: {
-        dataSource: function (value) {
-            if (value.objName !== this.dataSource.objName) {
-                if (this.options) {
-                    this.options.page = 1
-                }
-                this.init()
-                this.needUpdate = true
+        dataSource: function () {
+            if (this.options) {
+                this.options.page = 1
             }
+            this.init()
+            this.needUpdate = true
         },
         filterConst: function () {
             // console.log(`Browser  ${this.dataSource.objName} watch filterConst`)

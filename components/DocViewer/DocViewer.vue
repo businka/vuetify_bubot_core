@@ -69,7 +69,7 @@ export default {
         this.$store.commit(`${this.store.namespace}/updateItemProps`, {
           uid: this.store.uid,
           path: 'item/params',
-          action: 'push',
+          action: 'append',
           value: data
         }, { root: true })
         this.$store.commit(`${this.store.namespace}/indexParams`, { uid: this.store.uid }, { root: true })

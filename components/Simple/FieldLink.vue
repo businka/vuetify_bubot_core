@@ -82,11 +82,11 @@ export default {
         },
         actionSelectItems(data) {
             let _selectValue = null
-            if (data.items && data.items.length) {
+            if (data && data.length) {
                 if (this.multiSelect) {
-                    _selectValue = data.items
+                    _selectValue = data
                 } else {
-                    _selectValue = data.items[0]
+                    _selectValue = data[0]
                 }
             }
             this.$emit('input', _selectValue)
@@ -99,9 +99,6 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-</style>
 
 <template>
     <div>
@@ -132,3 +129,6 @@ export default {
         />
     </div>
 </template>
+
+<style lang="scss">
+</style>

@@ -57,9 +57,9 @@ export default {
         }
     },
     watch: {
-        // formData() {
-        //     this.init()
-        // }
+        formData() {
+            this.init()
+        }
     },
     mounted() {
         this.init()

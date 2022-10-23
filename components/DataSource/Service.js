@@ -20,7 +20,7 @@ export default class Service extends Source {
 
         try {
             let resp = await buxios.get(url, {params})
-            console.log(resp)
+            // console.log(resp)
             return resp.data
         } catch (err) {
             throw new ExtException(err)

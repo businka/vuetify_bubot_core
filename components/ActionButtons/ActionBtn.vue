@@ -1,29 +1,34 @@
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
+
 export default {
-  name: 'ActionButton',
-  mixins: [ActionMixin],
-  props: {
-    title: {
-      type: String,
-      default: ''
+    name: 'ActionButton',
+    mixins: [ActionMixin],
+    props: {
+        title: {
+            type: String,
+            default: ''
+        },
+        name: {
+            type: String,
+            default: ''
+        },
+        data: {
+            type: Object,
+        },
+        icon: {
+            type: String,
+            default: ''
+        },
+        primary: {
+            type: Boolean,
+            default: false
+        },
+        rounded: {
+            type: Boolean,
+            default: false
+        }
     },
-    name: {
-      type: String,
-      default: ''
-    },
-    data: {
-      type: Object,
-    },
-    icon: {
-      type: String,
-      default: ''
-    },
-    primary: {
-      type: Boolean,
-      default: false
-    }
-  },
 }
 </script>
 
@@ -39,28 +44,20 @@ export default {
 </style>
 
 <template>
-  <v-tooltip
-    bottom
-    :disabled="!title || !icon"
+  <v-btn
+    :icon="!!icon"
+    :outlined="!!primary"
+    :color="primary?'primary':''"
+    dense
+    :title="title"
+    :rounded="rounded"
+    small
+    :text="!icon"
+    @click.stop="emitAction(name, data)"
   >
-    <template v-slot:activator="{ on }">
-      <v-btn
-        :icon="!!icon"
-        :outlined="!!primary"
-        :color="primary?'primary':''"
-        dense
-        small
-        :text="!icon"
-        class="mr-2"
-        @click.stop="emitAction(name, data)"
-        v-on="on"
-      >
-        <v-icon v-if="icon">
-          {{ icon }}
-        </v-icon>
-        <span v-else>{{ $t(title) }}</span>
-      </v-btn>
-    </template>
-    {{ $t(title) }}
-  </v-tooltip>
+    <v-icon v-if="icon">
+      {{ icon }}
+    </v-icon>
+    <span v-else>{{ $t(title) }}</span>
+  </v-btn>
 </template>
