@@ -84,7 +84,7 @@ export default {
     <v-system-bar class="px-0">
       <v-spacer />
       <LongOperationsBadge />
-      <CurrentUser />
+      <CurrentUser small/>
       <v-divider vertical />
       <LangSelector />
     </v-system-bar>

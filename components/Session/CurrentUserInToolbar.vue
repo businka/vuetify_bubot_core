@@ -71,6 +71,8 @@ export default {
         text
         dense
         tile
+        min-width="60px"
+        class="UserMenu"
         :x-small="xSmall"
         :small="small"
         :large="large"
@@ -112,4 +114,11 @@ export default {
 </template>
 
 <style lang="scss">
+  .v-btn .UserMenu {
+    height: 14px;
+    min-width: 60px;
+  }
+  .LangSelectorText {
+    text-transform: none;
+  }
 </style>

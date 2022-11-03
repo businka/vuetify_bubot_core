@@ -118,12 +118,44 @@ export default {
       class="pa-0"
     >
       <div
+        v-if="items && current>=0"
+      >
+        <v-list-item
+          :key="items[current].path"
+          :to="items[current].path"
+          active-class="active-section-active"
+          class="active-section"
+        >
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t(`NavDrawer.${items[current].title}`) }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          v-for="item in items[current].child"
+          :key="item.path"
+          :to="item.path"
+          active-class="active-section-active"
+          class="active-section"
+          dense
+        >
+          <v-list-item-content>
+            <v-list-item-title
+              class="pl-5"
+            >
+              {{ $t(`NavDrawer.${item.title}`) }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </div>
+      <div
         v-for="(item, i) in items"
         :key="i"
       >
         <!-- не активный раздел без детей -->
         <v-list-item
-          v-if="!item.child"
+          v-if="i!==current && !item.child"
           v-ripple
           clickable
           class="px-1"
@@ -140,7 +172,7 @@ export default {
         </v-list-item>
         <!-- не активный раздел c детьми -->
         <v-menu
-          v-if="item.child"
+          v-if="i!==current && item.child"
           dark
           left
           fixed

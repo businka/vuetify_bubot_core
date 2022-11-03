@@ -79,7 +79,7 @@ export default {
       height="30"
       flat
       dense
-      class="pa-0 d-flex form-toolbar"
+      class="pa-0 justify-end form-toolbar"
     >
       <JsonString
         v-if="schema && itemFull && schema.properties"
@@ -94,7 +94,7 @@ export default {
       ></JsonString>
       <v-toolbar-items
         v-if="toolBar"
-        class="pa-0 justify-end"
+        class="pa-0 justify-end "
       >
         <component
           :is="item.template || 'ActionBtn'"
@@ -160,6 +160,7 @@ export default {
       padding-left: 0;
       padding-right: 0;
       width: 100%;
+      justify-content: end;
       /*border-bottom: thin solid #cccccc;*/
     }
   }
