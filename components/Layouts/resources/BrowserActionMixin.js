@@ -20,17 +20,17 @@ export default {
     },
     methods: {
         init() {
-            console.log(`Browser init ${this.dataSource.objName}`)
+            // console.log(`Browser init ${this.dataSource.objName} filterConst ${JSON.stringify(this.filterConst)} options ${JSON.stringify(this.options)}`)
             this.selected = []
             this.editForm = {}
             this.actionForm = {}
             this.actionError = undefined
-            this.needUpdate = true
             this.selectAll = false
             let dataSource = updateObject({}, {
                 filterFields: (this.filterFields || {}),
                 filterConst: (this.filterConst || {})
             }, this.dataSource, this.options)
+            this.needUpdate = true
             try {
                 this.source = initDataSource(dataSource, this.$store)
             } catch (err) {
@@ -103,7 +103,7 @@ export default {
             this.actionRowActivate(res)
         },
 
-        actionCallDataSourceForSelectedItems: async function(actionData) {
+        actionCallDataSourceForSelectedItems: async function (actionData) {
             try {
                 let source
 
@@ -148,14 +148,19 @@ export default {
         },
         RowActivateHandlerShowForm(data) {
             let formName = data.row.form || this.rowActivateHandler.form
-            let formUid = `${this.source.props.objName}/${data.row.subtype?data.row.subtype:''}/${formName}`
+            let formUid
+            if (formName.indexOf('/') < 0) {
+                formUid = `${this.source.props.objName}${data.row.subtype ? ('/' + data.row.subtype) : ''}/${formName}`
+            } else {
+                formUid = formName
+            }
             this.editForm = {
                 handler: this.rowActivateHandler['formViewer'],
                 formUid: formUid,
                 visible: true,
                 formData: {item: data.row, index: data.index, filterConst: this.source.props.filterConst},
             }
-            console.log(`BrowserActionMixin RowActivateHandlerShowForm ${JSON.stringify(this.editForm)}`)
+            // console.log(`BrowserActionMixin RowActivateHandlerShowForm ${JSON.stringify(this.editForm)}`)
         },
         RowActivateHandlerExternal(data) {
             console.log(`RowActivateHandlerExternal ${JSON.stringify(data)}`)

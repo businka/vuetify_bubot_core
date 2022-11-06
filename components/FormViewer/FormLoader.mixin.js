@@ -19,9 +19,6 @@ export default {
                 return {}
             }
         },
-        // panelName: {
-        //     type: String,
-        // },
         visible: {
             type: Boolean,
             default: false
@@ -29,12 +26,11 @@ export default {
     },
     data: () => ({
         loading: false,
-        error: ''
+        error: '',
+        form: null
+
     }),
     computed: {
-        form() {
-            return updateObject({}, this.$store.getters['storeData']('Form', this.formUid), this.formProps, this.formData)
-        },
         width() {
             return this.form ? this.form.width || 600 : 600
         },
@@ -57,15 +53,17 @@ export default {
         }
     },
     watch: {
-        formData() {
-            this.init()
+        formData: async function() {
+            console.log(`FormLoader.mixin watch FormData ${this.formUid}`)
+            this.updateForm()
         }
     },
-    mounted() {
-        this.init()
+    mounted: async function() {
+        await this.init()
     },
     methods: {
         init: async function() {
+            // console.log(`FormLoader.mixin init ${this.formUid} `)
             if (this.formUid && isEmptyObject(this.formProps))
                 if (!this.$store.getters['storeData']('Form', this.formUid)) {
                     this.loading = true
@@ -74,13 +72,19 @@ export default {
                         await this.$store.dispatch(`Form/load`, {
                             uid: this.formUid,
                         }, {root: true})
+                        // console.log(`FormLoader.mixin init ${this.formUid} complete`)
 
                     } catch (err) {
                         this.error = err
+                        this.form = null
+                        // console.log(`FormLoader.mixin init ${this.formUid} error`)
                     }
                     this.loading = false
-                    console.log('init form loader ' + this.formUid)
                 }
+            this.updateForm()
+        },
+        updateForm: function (){
+            this.form = updateObject({}, this.$store.getters['storeData']('Form', this.formUid), this.formProps, this.formData)
         },
         emitInternalAction: function (action) {
             const context = this.$refs[this.form]

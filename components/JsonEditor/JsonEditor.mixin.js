@@ -75,36 +75,34 @@ export default {
         },
     },
     methods: {
-        init: async function () {
-            console.log('init')
-            this.loading = true
+        init: function () {
+            // console.log(`JsonEditor.mixin init`)
+            const dataSource = updateObject({}, {
+                filterFields: this.filterFields,
+                filterConst: this.filterConst
+            }, this.dataSource)
+            this.source = initDataSource(dataSource, this.$store)
+            this.loadData()
+        },
+        loadData: async function () {
             try {
-                const dataSource = updateObject({}, {
-                    filterFields: this.filterFields,
-                    filterConst: this.filterConst
-                }, this.dataSource)
-                this.source = initDataSource(dataSource, this.$store)
-                await this.loadData()
+                // console.log(`JsonEditor.mixin loadData ${this.item.subtype}`)
+                this.loading = true
+                await Promise.all([
+                    this.loadItem(),
+                    this.loadSchema()
+                ])
+                await this.afterLoadData()
             } catch (err) {
                 console.error(err.toString())
                 this.error = err
             } finally {
                 this.loading = false
-
             }
-        },
-        loadData: async function () {
-            console.log(this.item.subtype)
-            await Promise.all([
-                this.loadItem(),
-                this.loadSchema()
-            ])
-            await this.afterLoadData()
         },
         afterLoadData: async function () {
         },
         loadSchema: async function () {
-            console.log(`loadSchema${this.dataSource.objName}`)
             if (this.dataSource.objName)
                 this.schema = await this.$store.dispatch('ObjSchema/read', this.dataSource.objName, {root: true})
         },

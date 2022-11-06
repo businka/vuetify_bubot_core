@@ -115,6 +115,7 @@ export default {
     },
     watch: {
         dataSource: function () {
+            // console.log(`Browser  ${this.dataSource.objName} watch dataSource needUpdate ${this.needUpdate}`)
             if (this.options) {
                 this.options.page = 1
             }
@@ -122,21 +123,21 @@ export default {
             this.needUpdate = true
         },
         filterConst: function () {
-            // console.log(`Browser  ${this.dataSource.objName} watch filterConst`)
-            // if (value === this.filterConst) return
-            console.log(`Browser  ${this.dataSource.objName} watch filterConst 2`)
-            this.source.changeProps({filterConst: this.filterConst})
+            // console.log(`Browser  ${this.dataSource.objName} watch filterConst 2, needUpdate ${this.needUpdate} `)
             this.needUpdate = true
+            this.source.changeProps({filterConst: this.filterConst})
         },
         options: function () {
-            console.log('watch options')
+            // console.log(`Browser  ${this.dataSource.objName} watch options ${JSON.stringify(this.options)}`)
             this.source.changeProps(this.options)
             this.needUpdate = true
         },
         needUpdate: async function (value) {
+            // await this.$nextTick()
+            // console.log(`needUpdate ${value}`)
             if (value) {
-                await this.source.fetchRows()
                 this.needUpdate = false
+                await this.source.fetchRows()
             }
         }
     },
@@ -154,8 +155,9 @@ export default {
 
   .browser {
     /*height: 100%;*/
+    border-radius: 0;
     .v-data-table__wrapper {
-      height: calc(100vh - 160px);
+      height: calc(100vh - 180px);
     }
   }
 </style>

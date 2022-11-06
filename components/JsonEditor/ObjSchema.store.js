@@ -28,7 +28,7 @@ export default {
       if (Object.prototype.hasOwnProperty.call(store.state, schemaUid)) {
         return await store.state[schemaUid]
       } else {
-        console.log('load scheme ' + schemaUid)
+        // console.log('load scheme ' + schemaUid)
         let result = {}
         try {
           const response = await axios.get(`/${store.rootState.appName}/api/ObjSchema/read`, { params: { id: schemaUid } })
