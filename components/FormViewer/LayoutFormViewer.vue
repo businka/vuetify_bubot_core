@@ -76,6 +76,10 @@ export default {
   .height100 {
     height: 100%;
   }
+  .form {
+    background: #f7f7f7;
+    height: calc(100vh - 24px);
+  }
 </style>
 
 <template>
@@ -90,7 +94,7 @@ export default {
     </v-system-bar>
     <v-row
       v-if="form"
-      class="pa-0 ma-0 "
+      class="pa-0 ma-0 form"
     >
       <v-col
         class="pa-0 ma-0"
@@ -104,7 +108,7 @@ export default {
           v-bind="form"
         />
       </v-col>
+      <LongOperations/>
     </v-row>
-    <LongOperations />
   </v-main>
 </template>

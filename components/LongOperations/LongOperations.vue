@@ -65,7 +65,7 @@ export default {
 
 
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-container>
+  <v-container v-if="lo.showCurrent || (lo.listTemplate && lo.showList)">
     <LoResult
       v-if="lo.showCurrent"
       :form-data="{dataSource: currentOperation.dataSource}"
