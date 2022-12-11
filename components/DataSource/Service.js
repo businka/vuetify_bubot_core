@@ -19,20 +19,8 @@ export default class Service extends Source {
             filter: updateObject(this.props.filterConst, filter),
             nav
         }
-        data = EJSON.serialize(data)
-        let config = {headers: {'ContentType': 'application/json'}}
-        // params = this.props.filter
         let url = `/${this.props.appName}/api/${this.props.objName}/${this.props.list || 'list'}`
-
-        try {
-            let resp = await buxios.post(url, data, config)
-            // console.log(resp)
-            return resp.data
-        } catch (err) {
-            throw new ExtException(err)
-        } finally {
-            this.loading = false
-        }
+        return this.post(url, data)
     }
 
     async read(id) {
@@ -50,42 +38,32 @@ export default class Service extends Source {
         }
     }
 
-    async update(payload) {
-        this.loading = true
-        let resp
-        try {
-            let url = `/${this.props.appName}/api/${this.props.objName}/update`
-            resp = await buxios.post(url, payload)
-            this.loading = false
-            return resp.data
-        } finally {
-            this.loading = false
-        }
+    async update(data) {
+        let url = `/${this.props.appName}/api/${this.props.objName}/update`
+        return this.post(url, data)
     }
 
-    async create(payload) {
-        this.loading = true
-        let resp
-        try {
-            let url = `/${this.props.appName}/api/${this.props.objName}/create`
-            resp = await buxios.post(url, payload)
-            this.loading = false
-            return resp.data
-        } finally {
-            this.loading = false
-        }
+    async create(data) {
+        let url = `/${this.props.appName}/api/${this.props.objName}/create`
+        return this.post(url, data)
     }
 
-    async call(payload) {
+    async call(data) {
+        let url = `/${this.props.appName}/api/${this.props.objName}/${data.method}`
+        return this.post(url, data)
+    }
+    async post(url, data) {
         this.loading = true
         let resp
         try {
-            let url = `/${this.props.appName}/api/${this.props.objName}/${payload.method}`
-            resp = await buxios.post(url, payload.data)
+            data = EJSON.serialize(data)
+            let config = {headers: {'ContentType': 'application/json'}}
+            resp = await buxios.post(url, data, config)
             this.loading = false
             return resp.data
         } finally {
             this.loading = false
         }
+
     }
 }
