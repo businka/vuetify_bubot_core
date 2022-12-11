@@ -1,5 +1,6 @@
 <script>
 import RowCellMixin from './RowCell.mixin'
+import {zeroPad} from '../../../../../Helpers/BaseHelper'
 
 export default {
     name: 'CellDateTime',
@@ -7,14 +8,14 @@ export default {
     methods: {
         getDateString(date) {
             if (date) {
-                return `${date.getDate()}.${date.getMonth()}.${String(date.getFullYear()).substring(2, 4)}`
+                return `${zeroPad(date.getDate(), 2)}.${zeroPad(date.getMonth(), 2)}.${String(date.getFullYear()).substring(2, 4)}`
             } else {
                 return '1'
             }
 
         },
         getTimeString(date) {
-            return `${date.getHours()}:${date.getMinutes()}`
+            return `${zeroPad(date.getHours(), 2)}:${zeroPad(date.getMinutes(), 2)}`
         }
     },
     computed: {
