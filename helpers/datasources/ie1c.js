@@ -1,4 +1,4 @@
-import axios from 'axios/index'
+import axios from 'axios'
 import { commandTo1C } from '../c1/connector1C'
 import UrlParam from '../../../Helpers/UrlParam'
 

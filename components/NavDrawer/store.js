@@ -1,4 +1,4 @@
-import buxios from '../../../Helpers/buxios'
+import buxios from '../../helpers/buxios'
 
 export default {
   state: {

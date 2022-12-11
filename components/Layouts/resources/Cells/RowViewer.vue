@@ -32,7 +32,8 @@ export default {
     },
     methods: {
         init: function() {
-            this.row = jsonClone(this.item)
+            // this.row = jsonClone(this.item)
+            this.row = this.item
         },
         actionSelectItems(actionData) {
             const data = updateObject({items: [this.item]}, actionData)

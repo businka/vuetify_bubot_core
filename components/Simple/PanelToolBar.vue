@@ -71,14 +71,14 @@ export default {
     height="30"
     flat
     dense
-    class="header1_bg pa-0"
+    class="header1_bg pa-0 justify-end"
   >
     <JsonString
       v-if="headerSchema"
       :schema="headerSchema"
       :array-elem="true"
       :elem-value="headerValue"
-      class="flex-grow-1 flex-shrink-0 PanelHeader"
+      class="PanelHeader"
       @action="emitAction('UpdateHeader', $event)">
     </JsonString>
     <v-toolbar-items

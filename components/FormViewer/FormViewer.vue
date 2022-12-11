@@ -17,7 +17,6 @@ export default {
     },
     mixins: [ActionMixin],
     data: () => ({
-        _form: null,
         form: null
 
     }),
@@ -39,8 +38,8 @@ export default {
                         uid: this.uid
                     }, {root: true})
                 }
-                this._form = this.$store.getters['storeData']('Form', this.uid)
-                this.form = updateObject({}, this._form, this.param)
+                let _form = this.$store.getters['storeData']('Form', this.uid)
+                this.form = updateObject({}, _form, this.param)
             } finally {
                 this.loading = false
             }

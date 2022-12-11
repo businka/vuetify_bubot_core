@@ -39,7 +39,7 @@ export default {
             v-bind="form"
             @action="onAction"
         />
-        <template
+        <v-container
             v-if="error && !loading"
             class="pa-2"
         >
@@ -62,6 +62,6 @@ export default {
                     </v-btn>
                 </v-toolbar-items>
             </v-toolbar>
-        </template>
+        </v-container>
     </v-navigation-drawer>
 </template>

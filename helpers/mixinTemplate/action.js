@@ -12,7 +12,7 @@ export default {
     emitAction (name, data) {
       this.$emit('action', { name, data })
     },
-    async dispatchAction (action) {
+    dispatchAction: async function (action) {
       const data = action.data || {}
       // const action_method = `action${action.name}`
       // if (Object.prototype.hasOwnProperty.call(this, action_method)) {
@@ -30,6 +30,13 @@ export default {
         },
         { root: true })
       // }
+    },
+
+    actionOpenLinkInNewTab: function (actionData) {
+      // actionData = {name: 'routeName', list: {data: "someData"}}
+      let routeData = this.$router.resolve(actionData);
+      window.open(routeData.href, '_blank');
+      this.$router.go(actionData)
     }
   }
 }

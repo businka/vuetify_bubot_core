@@ -48,9 +48,13 @@ export default {
       ></div>
     </v-row>
     <v-row
-      v-if="value.info"
-      class="text-caption pa-0 ma-0 text--secondary"
-      v-text="value.info"
-    ></v-row>
+        v-if="value.info"
+        class="pa-0 ma-0"
+    >
+      <div
+          class="text-caption pa-0 ma-0 text--secondary"
+          v-text="value.info">
+      </div>
+    </v-row>
   </div>
 </template>

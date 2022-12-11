@@ -3,7 +3,7 @@ import ActionMixin from '../../helpers/mixinTemplate/action'
 import BrowserActionMixin from './resources/BrowserActionMixin'
 
 export default {
-    name: 'Browser',
+    name: 'TableBrowser',
     components: {
         BrowserToolBar: () => import('./resources/ToolBar'),
         OperationsPanel: () => import('./resources/OperationsPanel'),
@@ -156,6 +156,7 @@ export default {
   .browser {
     /*height: 100%;*/
     border-radius: 0;
+
     .v-data-table__wrapper {
       height: calc(100vh - 180px);
     }
@@ -174,12 +175,9 @@ export default {
       :server-items-length="source.total"
       :item-key="source['keyProperty'] || '_id.$oid'"
       :show-select="showOperationsPanel"
-      :hide-default-header="true"
+      hide-default-header
+      hide-default-footer
       :loading="source.loading"
-      :footer-props="{
-        itemsPerPageOptions: [25, 50, 100, -1],
-        showCurrentPage: true,
-      }"
       dense
       disable-sort
       fixed-header
@@ -239,6 +237,26 @@ export default {
         </tr>
         </thead>
       </template> <!-- Headers Bars !-->
+      <template v-slot:[`body.append`]="{updateOptions, pagination: {page},headers}">
+        <tr v-if="source.has_more">
+          <td
+            class="pa-0"
+            :colspan="headers.length + actionColumn"
+          >
+            <v-btn
+              text
+              block
+              tile
+              class="pa-0"
+              @click="updateOptions({page: page += 1})"
+            >
+              Загрузить ещё
+            </v-btn>
+
+          </td>
+        </tr>
+      </template>
+
       <template
         v-slot:item="{ item, headers, index, isSelected, select }"
       >
@@ -293,7 +311,7 @@ export default {
     <component
       :is="actionForm.handler"
       v-if="actionForm && actionForm.visible"
-      :params="actionForm"
+      v-bind="actionForm"
       @action="onAction($event, 'actionForm')"
     />
     <ExtException

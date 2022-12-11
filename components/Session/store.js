@@ -3,7 +3,7 @@
 // import {Base64} from '../../components/Cert/base64'
 // import { setToken } from './auth'
 import {getSession, redirectToSignIn} from './session'
-import buxios from '../../../Helpers/buxios'
+import buxios from '../../helpers/buxios'
 // import { getUrlParam } from '../../helpers/UrlParam'
 
 export default {
@@ -43,7 +43,10 @@ export default {
                 // this.title = ''
                 // this.loading = true
                 const session = getSession()
-                const response = await buxios.get('/AuthService/public_api/User/read_session_info', {params: session})
+                const response = await buxios.get(
+                    '/AuthService/public_api/User/read_session_info',
+                    {params: {session}}
+                    )
                 store.commit('set', {
                     _id: response.data.session,
                     user: response.data.user,

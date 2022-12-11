@@ -130,7 +130,7 @@ export default {
           :to="item.path"
         >
           <v-list-item-icon v-if="item.icon" class="mx-2">
-            <v-icon v-text="item.icon" />
+            <v-icon>{{item.icon}}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>
@@ -177,7 +177,7 @@ export default {
               <v-list-item-icon
                 class="mx-2"
               >
-                <v-icon v-text="item.icon" />
+                <v-icon>{{item.icon}}</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
                 <v-list-item-title>

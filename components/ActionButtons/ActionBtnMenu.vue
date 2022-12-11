@@ -48,22 +48,17 @@ export default {
     :min-width="minWidth"
   >
     <template v-slot:activator="{ on: onMenu }">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on: onTooltip }">
-          <v-btn
-            :class="primary?'ma-0 jay-space-right btn_default_action':'ma-0 jay-space-right'"
-            icon
-            dense
-            small
-            :outlined="primary || false"
-            v-on="{ ...onMenu, ...onTooltip }"
-            @click="show=true"
-          >
-            <v-icon>{{ icon }}</v-icon>
-          </v-btn>
-        </template>
-        {{ title || '' }}
-      </v-tooltip>
+      <v-btn
+        :class="primary?'ma-0 jay-space-right btn_default_action':'ma-0 jay-space-right'"
+        icon
+        dense
+        small
+        :outlined="primary || false"
+        v-on="onMenu"
+        @click="show=true"
+      >
+        <v-icon>{{ icon }}</v-icon>
+      </v-btn>
     </template>
     <v-list
       dense

@@ -1,5 +1,6 @@
 let Source = require('./Source')
-import buxios from '../../../Helpers/buxios'
+import buxios from '../../helpers/buxios'
+import {EJSON} from 'bson'
 import {updateObject} from '../../../Helpers/BaseHelper'
 import ExtException from '../../../Helpers/ExtException'
 
@@ -12,14 +13,19 @@ export default class Service extends Source {
         return null
     }
 
-    async list(filter, nav = {}) {
+    async list(filter = {}, nav = {}) {
         this.loading = true
-        let params = updateObject(nav, this.props.filterConst, filter)
+        let data = {
+            filter: updateObject(this.props.filterConst, filter),
+            nav
+        }
+        data = EJSON.serialize(data)
+        let config = {headers: {'ContentType': 'application/json'}}
         // params = this.props.filter
         let url = `/${this.props.appName}/api/${this.props.objName}/${this.props.list || 'list'}`
 
         try {
-            let resp = await buxios.get(url, {params})
+            let resp = await buxios.post(url, data, config)
             // console.log(resp)
             return resp.data
         } catch (err) {

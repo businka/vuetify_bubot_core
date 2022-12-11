@@ -92,8 +92,7 @@ export default {
               <v-list-item-content>
                 <v-list-item-title
                   class="text-short"
-                  v-text="value.title"
-                />
+                >{{value.title}}</v-list-item-title>
                 <v-list-item-subtitle
                   class="text-short"
                 >

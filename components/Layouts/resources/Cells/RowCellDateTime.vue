@@ -1,22 +1,20 @@
 <script>
 import RowCellMixin from './RowCell.mixin'
 
-let reggie = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/
 export default {
     name: 'CellDateTime',
     mixins: [RowCellMixin],
     methods: {
-        getDateArray(date) {
-            return reggie.exec(date)
-        },
-        getDate(date) {
-            if (!date) {
-                return date
+        getDateString(date) {
+            if (date) {
+                return `${date.getDate()}.${date.getMonth()}.${String(date.getFullYear()).substring(2, 4)}`
+            } else {
+                return '1'
             }
-            return `${date[3]}.${date[2]}.${date[1].substring(2, 4)}`
+
         },
-        getTime(date) {
-            return `${date[4]}:${date[5]}`
+        getTimeString(date) {
+            return `${date.getHours()}:${date.getMinutes()}`
         }
     },
     computed: {
@@ -24,34 +22,50 @@ export default {
             return this.getPreviousValue()
         },
         _date: function () {
-            return this.getDateArray(this._value)
+            switch (typeof this._value) {
+                case "object":
+                    return this._value
+                case 'string':
+                    return new Date(this._value)
+                default:
+                    return undefined
+            }
+
         },
         date: function () {
-            return this.getDate(this._date)
+            if (this._date) {
+                return this.getDateString(this._date)
+            } else {
+                return '1'
+            }
         },
         time: function () {
-            return this.getTime(this._date)
+            return this.getTimeString(this._date)
         },
         showDate: function () {
-            return this.date !== this.getDate(this.previousDate)
+            return this.date !== this.getDateString(this.previousDate)
         },
         showTime: function () {
-            return this.showDate || this.time !== this.getTime(this.previousDate)
+            return this.showDate || this.time !== this.getTimeString(this.previousDate)
         }
     }
 }
 </script>
 
 <template>
-    <v-container class="pa-0">
-        <div v-if="date && showDate">
-            {{date}}
-        </div>
-        <div
-            v-if="date && showTime"
-            class="grey--text caption text-right"
-            style="margin-top: -6px">
-            {{time}}
-        </div>
-    </v-container>
+  <v-container class="pa-0  ">
+    <div v-if="date && showDate" class="text-right">
+      {{date}}
+    </div>
+    <div
+      v-if="date && showTime"
+      class="grey--text caption text-right"
+      style="margin-top: -6px">
+      {{time}}
+    </div>
+  </v-container>
 </template>
+
+<style scoped>
+
+</style>

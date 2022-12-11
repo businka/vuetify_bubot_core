@@ -96,6 +96,7 @@ export default {
         // },
         actionReload: async function () {
             console.log('actionReload')
+            this.source.props.page = 1
             await this.source.fetchRows()
         },
         actionAdd: async function (data) {
@@ -178,16 +179,22 @@ export default {
                 console.log(`RowActivateHandler not found ${this.rowActivateHandler.name}`)
             }
         },
-        async actionHandler(data) {
-            this.$store.commit(`${this.store.namespace}/showActionForm`, {
-                uid: this.store.uid,
-                data: {
-                    handler: data.handler,
-                    formUid: data.form,
-                    visible: true,
-                    formData: {item: data.item}
-                }
-            })
+        async actionShowActionForm(data) {
+            this.editForm = {
+                handler: data.handler,
+                formUid: data.formUid,
+                visible: true,
+                formData: {item: data.row, index: data.index, filterConst: this.source.props.filterConst},
+            }
+            // this.$store.commit(`${this.store.namespace}/showActionForm`, {
+            //     uid: this.store.uid,
+            //     data: {
+            //         handler: data.handler,
+            //         formUid: data.form,
+            //         visible: true,
+            //         formData: {item: data.item}
+            //     }
+            // })
         },
         actionCloseForm: async function (data, panelName) {
             this[panelName].visible = false

@@ -1,6 +1,6 @@
 <script>
 import ActionMixin from '../../../../helpers/mixinTemplate/action'
-import { getPropValueByPath } from '../../../../../Helpers/BaseHelper'
+import {getPropValueByPath} from '../../../../../Helpers/BaseHelper'
 
 export default {
   name: 'RowCellTitle',
@@ -50,29 +50,33 @@ export default {
   <div>
     <v-row class="pa-0 ma-0">
       <v-col class="d-flex align-baseline  pa-0 ma-0">
-      <div
-        class="text-body-1 pa-0 ma-0 "
-        v-text="title"
-      ></div>
-      <div
-        v-if="subtitle"
-        class="text-caption  pa-0 ma-0 ml-1 text--secondary"
-        v-text="subtitle"
-      ></div>
+        <div
+            class="text-body-1 pa-0 ma-0 "
+            v-text="title"
+        ></div>
+        <div
+            v-if="subtitle"
+            class="text-caption  pa-0 ma-0 ml-1 text--secondary"
+            v-text="subtitle"
+        ></div>
       </v-col>
     </v-row>
     <v-row
-      v-if="info"
-      class="text-caption pa-0 ma-0 text--secondary"
-      v-text="info"
-    ></v-row>
+        v-if="info"
+        class="pa-0 ma-0"
+    >
+      <div
+          class="text-caption pa-0 ma-0 text--secondary"
+          v-text="info">
+      </div>
+    </v-row>
   </div>
 </template>
 <style lang="scss">
 
-  .truncate {
-    white-space: nowrap; /* Текст не переносится */
-    overflow: hidden; /* Обрезаем всё за пределами блока */
-    text-overflow: ellipsis; /* Добавляем многоточие */
-  }
+.truncate {
+  white-space: nowrap; /* Текст не переносится */
+  overflow: hidden; /* Обрезаем всё за пределами блока */
+  text-overflow: ellipsis; /* Добавляем многоточие */
+}
 </style>

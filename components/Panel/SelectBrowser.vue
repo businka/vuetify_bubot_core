@@ -188,7 +188,7 @@ export default {
       :loading="loading"
       @action="onAction"
     ></PanelToolBar>
-    <Browser
+    <TableBrowser
       :data-source="dataSource"
       :columns="columns"
       :row-actions="currentRowActions"

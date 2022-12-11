@@ -8,7 +8,7 @@ export default {
   }),
   components: {
     TagTreeView: () => import('../Simple/TagTreeView'),
-    Browser: () => import('./Browser'),
+    Browser: () => import('./TableBrowser'),
   },
   methods: {
     getBrowserSource () {

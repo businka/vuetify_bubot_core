@@ -2,7 +2,7 @@
 import ActionMixin from '../../helpers/mixinTemplate/action'
 
 export default {
-    name: "Shedule",
+    name: "AutorunSchedule",
     props: {
         autorun: {
             type: Boolean,
@@ -17,16 +17,20 @@ export default {
             default: 1
         },
         autorun_time: {
-
+        },
+        autorun_state: {
         },
         last_run: {
-            type: String,
+            type: Date,
+        },
+        last_result: {
+            type: Object,
         },
         last_duration: {
             type: String,
         },
         next_run: {
-            type: String,
+            type: Date,
         },
     },
     mixins: [ActionMixin],
@@ -43,20 +47,26 @@ export default {
                 return 'Без повторений'
             }
             return 'dd'
+        },
+        autorunValue: {
+            get () {
+                return !!this.autorun
+            },
+            set (value) {
+                this.$emit('action', {name: 'UpdateProp', data:{ action:'change', 'path':'autorun','value': !!value}})
+            }
         }
     },
     methods: {
-        onChangeAutorun: function(value) {
-            this.emitAction('UpdateProp', {'action': 'change', 'path':'autorun','value': !!value})
-        }
-    }
+    },
+
 }
 </script>
 
 <template>
     <v-row class="d-flex justify-start ma-0 pa-0" align="center">
         <v-checkbox
-            v-model="autorun"
+            v-model="autorunValue"
             hide-details
             single-line
             dense
@@ -64,7 +74,6 @@ export default {
             label="Автозапуск каждые"
             class="pr-3 theme--light.v-label"
             style="margin-left: -5px;"
-            @change="onChangeAutorun"
         ></v-checkbox>
         <v-text-field
             :value="autorun_interval"
@@ -86,10 +95,9 @@ export default {
             @change="emitAction('UpdateProp', {'action': 'change', 'path':'autorun_rate','value': $event})"
 
         ></v-select>
-<!--        <span v-if="autorun_rate==='hour'" class="d-flex justify-start align-baseline">-->
+        <span v-if="autorun_rate==='day'" class="d-flex justify-start align-baseline">
         <span class="pt-2 theme--light v-label align-baseline">в</span>
         <v-text-field
-          v-if="autorun_rate==='hour'"
             :value="autorun_time"
             type="time"
             single-line
@@ -99,7 +107,7 @@ export default {
           @change="emitAction('UpdateProp', {'action': 'change', 'path':'autorun_time','value': $event})"
         >
         </v-text-field>
-<!--         </span>-->
+         </span>
     </v-row>
 </template>
 

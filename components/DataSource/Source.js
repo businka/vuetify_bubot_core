@@ -1,4 +1,4 @@
-const {updateObject} = require('../../../Helpers/BaseHelper')
+const {updateObject, objHasOwnProperty} = require('../../../Helpers/BaseHelper')
 const {findIndexInArrayObj} = require('../../../Helpers/ArrayHelper')
 const {ExtException} = require('../../../Helpers/ExtException')
 const Vue = require('vue').default
@@ -6,6 +6,7 @@ const Vue = require('vue').default
 module.exports = class Source {
     props = {
         rows: [],
+        has_more: false,
         page: 1,
         filter: {},
         filterConst: {},
@@ -16,6 +17,7 @@ module.exports = class Source {
         filterFields: [],
         keyProperty: 'id'
     }
+    last_nav = undefined
     total = 0
     rawData = []
     rows = []
@@ -59,11 +61,30 @@ module.exports = class Source {
     async fetchRows() {
         this.loading = true
         try {
-            const limit = this.props.itemsPerPage
-            const page = this.props.page
-            let resp = await this.list(this.props.filter, {limit, page})
-            this.rows = resp.rows || []
-            this.total = (page - 1) * limit + this.rows.length + (this.rows.length < limit ? 0 : 1)
+            let nav = {}
+            if (this.props.page !== 1 && this.last_nav && this.last_nav.page
+                && this.props.page !== this.last_nav.page) {
+                updateObject(nav, this.last_nav)
+            }
+            nav.limit = this.props.itemsPerPage
+            nav.page = this.props.page
+            let resp = await this.list(this.props.filter, nav)
+            let new_rows = resp.rows || []
+            this.last_nav = resp.nav || undefined
+            if (this.last_nav && objHasOwnProperty(this.last_nav, 'has_more')) {
+                this.has_more = this.last_nav.has_more
+            } else {
+                this.has_more = nav.limit && new_rows.length && new_rows.length >= nav.limit
+            }
+
+            if (nav.page === 1) {
+                this.rows = new_rows//.splice(0,this.rows.length)
+            } else {
+                this.rows.push.apply(this.rows, new_rows)
+            }
+            this.total = this.rows.length
+
+            // this.total = (page - 1) * limit + this.rows.length + (this.rows.length < limit ? 0 : 1)
             this.error = undefined
         } catch (err) {
             let err1 = new ExtException({parent: err})
