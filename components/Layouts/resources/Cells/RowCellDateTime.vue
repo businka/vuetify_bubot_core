@@ -8,7 +8,7 @@ export default {
     methods: {
         getDateString(date) {
             if (date) {
-                return `${zeroPad(date.getDate(), 2)}.${zeroPad(date.getMonth(), 2)}.${String(date.getFullYear()).substring(2, 4)}`
+                return `${zeroPad(date.getDate(), 2)}.${zeroPad(date.getMonth() + 1, 2)}.${String(date.getFullYear()).substring(2, 4)}`
             } else {
                 return '1'
             }

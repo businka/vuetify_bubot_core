@@ -38,19 +38,19 @@ export default class Service extends Source {
         }
     }
 
-    async update(data) {
+    async update(payload) {
         let url = `/${this.props.appName}/api/${this.props.objName}/update`
-        return this.post(url, data)
+        return this.post(url, payload.data)
     }
 
-    async create(data) {
+    async create(payload) {
         let url = `/${this.props.appName}/api/${this.props.objName}/create`
-        return this.post(url, data)
+        return this.post(url, payload.data)
     }
 
-    async call(data) {
-        let url = `/${this.props.appName}/api/${this.props.objName}/${data.method}`
-        return this.post(url, data)
+    async call(payload) {
+        let url = `/${this.props.appName}/api/${this.props.objName}/${payload.method}`
+        return this.post(url, payload.data)
     }
     async post(url, data) {
         this.loading = true

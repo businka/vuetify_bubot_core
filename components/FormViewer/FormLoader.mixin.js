@@ -55,7 +55,7 @@ export default {
     watch: {
         formData: async function() {
             console.log(`FormLoader.mixin watch FormData ${this.formUid}`)
-            this.updateForm()
+            this.init()
         }
     },
     mounted: async function() {
@@ -63,7 +63,7 @@ export default {
     },
     methods: {
         init: async function() {
-            // console.log(`FormLoader.mixin init ${this.formUid} `)
+            console.log(`FormLoader.mixin init ${this.formUid} `)
             if (this.formUid && isEmptyObject(this.formProps))
                 if (!this.$store.getters['storeData']('Form', this.formUid)) {
                     this.loading = true
