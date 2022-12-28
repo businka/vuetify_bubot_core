@@ -14,7 +14,7 @@ export default {
         defaultAction: {
             type: Object,
             default: function () {
-                return {}
+                return undefined
             }
         },
         dataSource: {

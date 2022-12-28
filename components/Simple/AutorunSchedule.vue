@@ -9,12 +9,10 @@ export default {
             default: true
         },
         autorun_rate: {
-            type: String,
-            default: 'hour'
+            type: String
         },
         autorun_interval: {
-            type: Number,
-            default: 1
+            type: Number
         },
         autorun_time: {},
         last_run: {
@@ -57,7 +55,29 @@ export default {
             }
         }
     },
-    methods: {},
+    watch: {
+        autorun_rate() {
+            this.init()
+        }
+    },
+    methods: {
+        init: function () {
+            if (!this.autorun_rate) {
+                this.$emit('action', {
+                    name: 'UpdateProp',
+                    data: {action: 'change', 'path': 'autorun_rate', 'value': 'hour'}
+                })
+                this.$emit('action', {
+                    name: 'UpdateProp',
+                    data: {action: 'change', 'path': 'autorun_interval', 'value': 1}
+                })
+            }
+
+        }
+    },
+    beforeMount() {
+        this.init()
+    },
 
 }
 </script>
