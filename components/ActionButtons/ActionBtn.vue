@@ -41,6 +41,11 @@ export default {
   /*    background-color: #FDECD9;*/
   /*  }*/
   /*}*/
+  .v-btn__content {
+    span {
+      text-transform: none !important;
+    }
+  }
 </style>
 
 <template>

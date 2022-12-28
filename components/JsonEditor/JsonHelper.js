@@ -40,6 +40,10 @@ export function updateProp(result, {action, path, value}) {
             break
         case 'delete':
             result[_path[i]].splice(value, 1)
+            break
+        default:
+            console.error(`Unknown action ${action}`)
+
     }
 }
 

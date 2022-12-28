@@ -16,7 +16,7 @@ export default class Service extends Source {
     async list(filter = {}, nav = {}) {
         this.loading = true
         let data = {
-            filter: updateObject(this.props.filterConst, filter),
+            filter: updateObject({}, this.props.filterConst, filter),
             nav
         }
         let url = `/${this.props.appName}/api/${this.props.objName}/${this.props.list || 'list'}`

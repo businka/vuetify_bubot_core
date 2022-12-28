@@ -66,6 +66,7 @@ export default {
       <component
         :is="form.template"
         v-bind="form"
+        @change-value="$emit('change-value', $event)"
         @action="onAction"
       />
     </v-col>
