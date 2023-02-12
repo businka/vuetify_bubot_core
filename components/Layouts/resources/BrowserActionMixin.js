@@ -95,7 +95,7 @@ export default {
         //   source.call(actionData.name, this.deviceLink)
         // },
         actionReload: async function () {
-            console.log('actionReload')
+            // console.log('actionReload')
             this.source.props.page = 1
             await this.source.fetchRows()
         },
@@ -200,11 +200,11 @@ export default {
             this[panelName].visible = false
             if (data) {
                 if (data.fetchRow) {
-                    console.log('actionCloseForm')
+                    console.log(`actionCloseForm fetchRow ${data.fetchRow}`)
                     await this.source.fetchRow(data.fetchRow)
                 }
                 if (data.fetchRows) {
-                    console.log('actionCloseForm')
+                    console.log('actionCloseForm fetchRows')
                     await this.source.fetchRows()
                 }
             }

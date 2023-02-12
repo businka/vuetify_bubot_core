@@ -49,7 +49,8 @@ module.exports = class Source {
 
     async add(data) {
         let _data = updateObject({}, this.props.filterConst, data)
-        let row = await this.create({data: _data})
+        let row
+        row = await this.create({data: _data})
         this.rows.push(row)
         let index = this.rows.length - 1
         return {

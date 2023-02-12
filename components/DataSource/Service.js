@@ -12,6 +12,13 @@ export default class Service extends Source {
     async _list() {
         return null
     }
+    get_obj_url() {
+        if (this.props.subtype) {
+            return `/${this.props.appName}/api/${this.props.objName}/${this.props.subtype}`
+        } else {
+            return `/${this.props.appName}/api/${this.props.objName}`
+        }
+    }
 
     async list(filter = {}, nav = {}) {
         this.loading = true
@@ -19,7 +26,7 @@ export default class Service extends Source {
             filter: updateObject({}, this.props.filterConst, filter),
             nav
         }
-        let url = `/${this.props.appName}/api/${this.props.objName}/${this.props.list || 'list'}`
+        let url = `${this.get_obj_url()}/${this.props.list || 'list'}`
         return this.post(url, data)
     }
 
