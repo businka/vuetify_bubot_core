@@ -60,7 +60,8 @@ export default {
     <v-select
       v-if="schema && Object.prototype.hasOwnProperty.call(schema, 'enum')"
       :label="schema.title || elemName"
-      :placeholder="schema.description || null"
+      :placeholder="schema.description || ''"
+      :title="schema.description || ''"
       :items="schema.enum"
       :disabled="(readOnly ? readOnly : schema.readOnly)"
       flat
@@ -74,7 +75,8 @@ export default {
     <v-text-field
       v-else
       :label="schema.title || elemName"
-      :placeholder="schema.description || null"
+      :placeholder="schema.description || ''"
+      :title="schema.description || ''"
       :disabled="(readOnly ? readOnly : schema.readOnly)"
       flat
       :dense="dense || arrayElem"

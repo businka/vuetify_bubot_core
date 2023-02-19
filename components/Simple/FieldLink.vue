@@ -21,6 +21,10 @@ export default {
             type: String,
             default: ''
         },
+        description: {
+            type: String,
+            default: ''
+        },
         titleField: {
             type: String,
             default: 'title'
@@ -106,6 +110,8 @@ export default {
             class="linkField pb-1"
             :value="_title"
             :label="label"
+            :placeholder=description
+            :title=description
             append-icon="mdi-chevron-up"
             clearable
             hide-details
