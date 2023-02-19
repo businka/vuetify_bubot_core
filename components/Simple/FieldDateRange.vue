@@ -5,6 +5,16 @@ import ActionMixin from '../../helpers/mixinTemplate/action'
 export default {
     name: "FieldDateRange",
     mixins: [ActionMixin],
+    data: () => ({
+        begin: undefined,
+        end: undefined,
+        showPicker: false
+    }),
+    computed: {
+        // dateRangeText () {
+        //     return this.dates.join(' ~ ')
+        // },
+    },
 }
 </script>
 
@@ -13,15 +23,55 @@ export default {
 </style>
 
 <template>
-  <v-container class="pa-0 ma-o">
+  <v-container class="pa-0 ma-0" d-flex>
+
     <v-text-field
-      v-model="dateRangeText"
-      :label="label_range_from"
-    ></v-text-field>
+      label="from"
+      single-line
+      dense
+      type="datetime-local"
+    >
+    </v-text-field>
+    -
     <v-text-field
-      :v-model="label_range_to"
-      :label="label_range_to"
-      prepend-icon="mdi-calendar"
-    ></v-text-field>
+      label="to"
+      type="datetime-local"
+      single-line
+      dense
+      append-icon="mdi-calendar"
+    >
+      <template v-slot:prepend>
+      </template>
+    </v-text-field>
+    <v-dialog
+      v-if="showPicker"
+      v-model="modal"
+      :return-value.sync="date"
+      persistent
+      width="290px"
+    >
+      <v-date-picker
+        v-model="date"
+        scrollable
+      >
+        <v-spacer></v-spacer>
+        <v-btn
+          text
+          color="primary"
+          @click="modal = false"
+        >
+          Cancel
+        </v-btn>
+        <v-btn
+          text
+          color="primary"
+          @click="$refs.dialog.save(date)"
+        >
+          OK
+        </v-btn>
+      </v-date-picker>
+    </v-dialog>
+
+
   </v-container>
 </template>

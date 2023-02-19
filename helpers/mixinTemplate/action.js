@@ -1,7 +1,7 @@
 export default {
   methods: {
     onAction (action, component) {
-      console.log(`${this.$options.name} on action ${action.name} component ${component}`)
+      // console.log(`${this.$options.name} on action ${action.name} component ${component}`)
       let _action = `action${action.name}`
       if (Object.prototype.hasOwnProperty.call(this, _action)) {
         this[_action](action.data, component)
