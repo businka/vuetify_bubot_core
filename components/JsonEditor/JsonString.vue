@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     onChange (value) {
-      console.log('oc2' + this.path + '-' + value)
+      // console.log('oc2' + this.path + '-' + value)
       this.$emit('action', { name: 'UpdateProp', data: { action: 'change', path: this.path, value } })
     },
     onInput (value) {
