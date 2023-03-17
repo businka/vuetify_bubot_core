@@ -108,14 +108,14 @@ export default {
             try {
                 let source
 
-                let payload = updateObject({data: {}}, actionData, {data: this.source.props.filterConst})
+                let payload = updateObject({data: {}}, actionData, {data: {filter: this.source.props.filterConst}})
                 if (objHasOwnProperty(actionData, 'dataSource')) {
                     source = initDataSource(actionData.dataSource, this.$store)
                 } else {
                     source = this.source
                 }
                 if (objHasOwnProperty(payload.data, 'items')) {
-                    payload.data.filter = null
+                    // payload.data.filter = null
 
                 } else {
                     if (this.selectAll) {
@@ -123,7 +123,7 @@ export default {
                         payload.data.filter = this.source.filter
                     } else {
                         payload.data.items = this.selected
-                        payload.data.filter = null
+                        // payload.data.filter = null
                     }
                 }
                 await source.call(payload)

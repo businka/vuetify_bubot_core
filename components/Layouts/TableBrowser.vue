@@ -191,6 +191,7 @@ export default {
           :items-before-filter="toolbarItemsBeforeFilter"
           :filter-fields="filterFields"
           :filter="source.filter"
+          :hide-search-string="hideSearchString"
           :show-operations-panel-btn="!hideOperationsPanel || alwaysShowOperationsPanel"
           :show-operations-panel="showOperationsPanel"
           @changeOperationPanelState="showOperationsPanel = !showOperationsPanel"

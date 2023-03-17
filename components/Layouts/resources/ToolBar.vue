@@ -30,6 +30,10 @@ export default {
         return {}
       }
     },
+    hideSearchString: {
+        type: Boolean,
+        default: false
+    },
     showOperationsPanelBtn: {
       type: Boolean,
       default: false
@@ -69,6 +73,7 @@ export default {
     />
 
     <SearchField
+      v-if="!hideSearchString"
       class="mr-2"
       :value="filter.searchString"
       @changeFilter="$emit('changeFilter', $event)"
