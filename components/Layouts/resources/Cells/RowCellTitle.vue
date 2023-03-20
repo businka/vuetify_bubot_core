@@ -53,9 +53,11 @@ export default {
         <div
             class="text-body-1 pa-0 ma-0 "
             v-text="title"
+            :title="title"
         ></div>
         <div
             v-if="subtitle"
+            :title="subtitle"
             class="text-caption  pa-0 ma-0 ml-1 text--secondary"
             v-text="subtitle"
         ></div>
@@ -67,6 +69,7 @@ export default {
     >
       <div
           class="text-caption pa-0 ma-0 text--secondary"
+          :title="info"
           v-text="info">
       </div>
     </v-row>

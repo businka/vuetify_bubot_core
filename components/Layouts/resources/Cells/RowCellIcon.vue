@@ -27,10 +27,13 @@ export default {
         default:
           _value = this._value.toString()
       }
-      if (this.icons) {
+      if (this.icons && _value) {
         if (this.icons[_value]) {
           _res.name = this.icons[_value].name || ''
           _res.color = this.icons[_value].color || ''
+        } else if (this.icons._other) {
+            _res.name = this.icons._other.name || ''
+            _res.color = this.icons._other.color || ''
         }
       } else {
         _res.name = _value
@@ -60,6 +63,7 @@ export default {
     >
       <v-icon
           :color="icon.color"
+          :title="_value"
       >
       {{ icon.name }}
       </v-icon>
