@@ -9,13 +9,15 @@ export default {
         getDateString(date) {
             if (date) {
                 return `${zeroPad(date.getDate(), 2)}.${zeroPad(date.getMonth() + 1, 2)}.${String(date.getFullYear()).substring(2, 4)}`
-            } else {
-                return '1'
             }
+            return ''
 
         },
         getTimeString(date) {
-            return `${zeroPad(date.getHours(), 2)}:${zeroPad(date.getMinutes(), 2)}`
+            if (date) {
+                return `${zeroPad(date.getHours(), 2)}:${zeroPad(date.getMinutes(), 2)}`
+            }
+            return ''
         }
     },
     computed: {
@@ -37,7 +39,7 @@ export default {
             if (this._date) {
                 return this.getDateString(this._date)
             } else {
-                return '1'
+                return ''
             }
         },
         time: function () {

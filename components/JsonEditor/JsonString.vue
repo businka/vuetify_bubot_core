@@ -91,7 +91,7 @@ export default {
       flat
       :dense="dense || arrayElem"
       hide-details
-      :value="value.toLocaleString('sv')"
+      :value="value?value.toLocaleString('sv'):''"
       :solo="solo"
       type="datetime-local"
       @change="convertToTime">
