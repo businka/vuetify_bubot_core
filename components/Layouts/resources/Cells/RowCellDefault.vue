@@ -26,6 +26,7 @@ export default {
     </span>
     <span
       v-else
+      :title="_value"
     >
       {{_value}}
     </span>

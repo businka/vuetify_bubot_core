@@ -159,6 +159,16 @@ export default {
 
     .v-data-table__wrapper {
       height: calc(100vh - 180px);
+      table {
+        thead {
+          tr {
+            th {
+              z-index: 0;
+              color: red;
+            }
+          }
+        }
+      }
     }
   }
 </style>
@@ -171,6 +181,7 @@ export default {
       :headers="columns"
       :page="source.page"
       :items="source.rows"
+      :items-per-page="source.props.itemsPerPage"
       :options.sync="options"
       :server-items-length="source.total"
       :item-key="source['keyProperty'] || '_id.$oid'"
