@@ -63,7 +63,7 @@ export default {
     >
       <v-icon
           :color="icon.color"
-          :title="`${col.title} ${_value}`"
+          :title="`${col.text}: ${_value}`"
       >
       {{ icon.name }}
       </v-icon>
