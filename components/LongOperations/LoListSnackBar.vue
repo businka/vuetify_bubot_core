@@ -5,40 +5,44 @@ import ActionMixin from '../../helpers/mixinTemplate/action'
 // import { ObjectId } from 'bson'
 
 export default {
-  name: 'LoListSnackBar',
-  components: {
-    // 'SnackBarLO': () => import('./SnackBarLO')
-    // 'RowViewer': () => import('../Cells/RowViewer'),
-    // 'RowEditor': () => import('../Cells/RowEditor')
-  },
-  mixins: [ActionMixin],
-  props: ['lo'],
-  data: function () {
-    return {}
-  },
-  computed: {
-    // lo () {
-    //   return this.$store.state[this.$options.name] || {}
-    // }
-  },
-  mounted () {
-    // this.init()
-  },
-  beforeMount () {
-  },
-  methods: {
-    onCancel: function (uid) {
-      console.log(`cancel ${uid}`)
-      this.$store.dispatch('LongOperations/cancel', uid, { root: true })
+    name: 'LoListSnackBar',
+    components: {
+        'LoListSnackBarElem': () => import('./LoListSnackBarElem')
     },
-    onDelete: function (uid) {
-      console.log(`delete ${uid}`)
-      this.$store.commit('LongOperations/delete', uid, { root: true })
+    mixins: [ActionMixin],
+    props: ['lo'],
+    data: function () {
+        return {}
     },
-    onActivate: function (uid) {
-      this.$store.commit('LongOperations/showOperation', uid, { root: true })
+    computed: {
+        operations() {
+            return this.lo.operations || []
+        }
+    },
+    mounted() {
+        // this.init()
+    },
+    beforeMount() {
+    },
+    watch: {
+        operations() {
+            console.log('bar watch oper')
+
+        }
+    },
+    methods: {
+        actionOnCancel: function (uid) {
+            console.log(`cancel ${uid}`)
+            this.$store.dispatch('LongOperations/cancel', uid, {root: true})
+        },
+        actionOnDelete: function (uid) {
+            console.log(`delete ${uid}`)
+            this.$store.commit('LongOperations/delete', uid, {root: true})
+        },
+        actionOnActivate: function (uid) {
+            this.$store.commit('LongOperations/showOperation', uid, {root: true})
+        }
     }
-  }
 
 }
 </script>
@@ -77,81 +81,12 @@ export default {
         style="max-height: 400px; min-width: 350px;"
         class="pa-0 overflow-y-auto"
       >
-        <v-container
-          v-for="(value, uid) in lo.operations"
-          :key="uid"
-          class="d-flex pa-0"
-        >
-          <v-hover
-            v-if="value.show"
-            v-slot:default="{ hover }"
-          >
-            <v-list-item
-              @click="onActivate(uid)"
-            >
-              <v-list-item-content>
-                <v-list-item-title
-                  class="text-short"
-                >{{value.title}}</v-list-item-title>
-                <v-list-item-subtitle
-                  class="text-short"
-                >
-                  <v-tooltip
-                    bottom
-                    :open-delay="600"
-                  >
-                    <template v-slot:activator="{ on,  attrs }">
-                      <div
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        {{ value.message }}
-                      </div>
-                    </template>
-                    <span> {{ value.message }} </span>
-                  </v-tooltip>
-                </v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-avatar>
-                <v-progress-circular
-                  v-if="value.status==='pending' || value.status==='run'"
-                  :value="value.progress"
-                  :indeterminate="value.progress === -1"
-                  @click.stop="value.cancelable ? onCancel(uid): onActivate(uid)"
-                >
-                  {{ (value.cancelable && hover) ? 'X' : (value.progress >=0 ? value.progress: '') }}
-                </v-progress-circular>
-                <v-icon
-                  v-else-if="value.status==='success'"
-                  :color="hover ? '' : 'primary'"
-                  @click.stop="onDelete(uid)"
-                >
-                  {{ hover ? 'mdi-delete' : 'mdi-check' }}
-                </v-icon>
-                <v-icon
-                  v-else-if="value.status==='error' "
-                  :color="hover ? '' : 'error'"
-                  @click.stop="onDelete(uid)"
-                >
-                  {{ (hover) ? 'mdi-delete' : 'mdi-alert-octagon-outline' }}
-                </v-icon>
-                <v-icon
-                  v-else-if="value.status==='canceling' "
-                  @click.stop="onDelete(uid)"
-                >
-                  {{ (hover) ? 'mdi-delete' : 'mdi-close' }}
-                </v-icon>
-                <v-icon
-                  v-else-if="value.status==='cancel'"
-                  :color="hover ? '' : 'error'"
-                  @click.stop="onDelete(uid)"
-                >
-                  {{ (hover) ? 'mdi-delete' : 'mdi-cancel' }}
-                </v-icon>
-              </v-list-item-avatar>
-            </v-list-item>
-          </v-hover>
-        </v-container>
+        <lo-list-snack-bar-elem
+          v-for="(operation, index) in operations"
+          :key="index"
+          v-bind="operation"
+          @action="onAction"
+        ></lo-list-snack-bar-elem>
       </v-list>
     </v-card>
   </v-snackbar>

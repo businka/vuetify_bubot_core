@@ -12,7 +12,7 @@ export default {
     message: { type: String },
     percent: { type: Number },
     progress: { type: Number },
-    result: { type: Array },
+    result: { type: Object },
     show: { type: Boolean },
     status: { type: String },
     title: { type: String }
@@ -91,8 +91,9 @@ export default {
     ></ExtException>
     <component
       :is="form.template"
-      v-else-if="form.template"
+      v-else-if="form && form.template"
       v-bind="form"
+      :value="result"
       @action="onAction"
     />
   </v-navigation-drawer>

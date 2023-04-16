@@ -2,63 +2,63 @@
 // import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 import storage from './LongOperations.store'
 import ActionMixin from '../../helpers/mixinTemplate/action'
-import { objHasOwnProperty } from '../../../Helpers/BaseHelper'
+import {objHasOwnProperty} from '../../../Helpers/BaseHelper'
 // import { ObjectId } from 'bson'
 
 export default {
-  name: 'LongOperations',
-  components: {
-    'LoListSnackBar': () => import('./LoListSnackBar'),
-    'LoResult': () => import('./LongOperationResult')
-  },
-  mixins: [ActionMixin],
-  data: function () {
-    return {}
-  },
-  computed: {
-    lo () {
-      return this.$store.state[this.$options.name] || {}
+    name: 'LongOperations',
+    components: {
+        'LoListSnackBar': () => import('./LoListSnackBar'),
+        'LoResult': () => import('./LongOperationResult')
     },
-    currentOperation () {
-      try {
-        const uid = this.lo['currentUid']
-        return this.lo['operations'][uid]
-      } catch (e) {
-        return ''
-      }
+    mixins: [ActionMixin],
+    data: function () {
+        return {}
     },
-    currentOperationTmplProps () {
-      if (this.currentOperation) {
-        return Object.assign({}, this.currentOperation['templateProps'], { item: this.currentOperation })
-      }
-      return {}
-    }
-  },
-  mounted () {
-    // this.init()
-  },
-  beforeMount () {
-    if (!objHasOwnProperty(this.$store.state, this.$options.name)) {
-      this.$store.registerModule(this.$options.name, storage)
-      if (this.$options.sockets) {
-        this.$options.sockets.onopen = () => {
-          console.log('ws connect')
+    computed: {
+        lo() {
+            return this.$store.state[this.$options.name] || {}
+        },
+        currentOperation() {
+            try {
+                const uid = this.lo['currentUid']
+                return this.lo['operations'][uid]
+            } catch (e) {
+                return ''
+            }
+        },
+        currentOperationTmplProps() {
+            if (this.currentOperation) {
+                return Object.assign({}, this.currentOperation['templateProps'], {item: this.currentOperation})
+            }
+            return {}
         }
-        this.$options.sockets.onmessage = (message) => {
-          if (message.type !== 'message') return
-          const data = JSON.parse(message.data)
-          const type = data.type || 'unknown'
-          this.$store.dispatch(`LongOperations/on_${type}`, data, { root: true })
-        }
+    },
+    mounted() {
+        // this.init()
+    },
+    beforeMount() {
+        if (!objHasOwnProperty(this.$store.state, this.$options.name)) {
+            this.$store.registerModule(this.$options.name, storage)
+            if (this.$options.sockets) {
+                this.$options.sockets.onopen = () => {
+                    console.log('ws connect')
+                }
+                this.$options.sockets.onmessage = (message) => {
+                    if (message.type !== 'message') return
+                    const data = JSON.parse(message.data)
+                    const type = data.type || 'unknown'
+                    this.$store.dispatch(`LongOperations/on_${type}`, data, {root: true})
+                }
 
-      }
+            }
+        }
+    },
+    methods: {
+        actionCloseForm: function () {
+            this.$store.commit('LongOperations/hideOperation', null, {root: true})
+        }
     }
-  },
-  methods: {
-    actionCloseForm: function () {
-      this.$store.commit('LongOperations/hideOperation', null, { root: true })
-    }
-  }
 
 }
 </script>

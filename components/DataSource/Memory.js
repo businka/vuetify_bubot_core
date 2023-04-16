@@ -56,7 +56,6 @@ module.exports = class Memory extends Source {
     data = []
     total = 0
     rows = []
-    store
     keyProperty;
     loading = false
 

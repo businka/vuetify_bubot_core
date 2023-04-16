@@ -3,13 +3,14 @@
 // import { initStoreKey } from '../../helpers/mixinStore/mutations'
 // import { processInDataSource } from '../../helpers/mixinStore'
 import Vue from 'vue'
-import { objHasOwnProperty } from '../../../Helpers/BaseHelper'
+// import { objHasOwnProperty } from '../../../Helpers/BaseHelper'
+import { findIndexInArrayObj, findInArrayObj } from '../../../Helpers/ArrayHelper'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
   namespaced: true,
   state: {
-    operations: {},
+    operations: [],
     executed: 0,
     showList: false,
     listTemplate: 'LoListSnackBar',
@@ -18,6 +19,9 @@ export default {
     showCurrent: false
   },
   getters: {
+    find: state => uid => {
+      return findInArrayObj(state.operations, uid, 'uid')
+    },
     getRawDataSource: state => uid => {
       if (!state.operations[uid]) {
         throw new Error(`for long operation ${uid} datasource not found`)
@@ -27,18 +31,22 @@ export default {
 
   },
   mutations: {
-    run (state, { uid, operation }) {
-      Vue.set(state.operations, uid, operation)
-      if (state.operations[uid].show)
+    run (state, operation) {
+
+      state.operations.push(operation)
+      // Vue.set(state.operations, uid, operation)
+      if (operation.show)
         state.executed++;
       if (state.executed)
         state.showList = true
     },
     notify (state, { uid, data }) {
-      Object.assign(state.operations[uid], data)
+      let operation = findInArrayObj(state.operations, uid, 'uid')
+      Object.assign(operation, data)
     },
     error (state, payload) {
-      let operation = state.operations[payload.uid]
+      let operation = findInArrayObj(state.operations, payload.uid, 'uid')
+      // let operation = state.operations[payload.uid]
       if (operation === undefined) {
         console.warn('long operation not found')
         return
@@ -48,14 +56,22 @@ export default {
       operation.message = `${payload.data.message} ${payload.data.detail}`
     },
     success (state, payload) {
-      let operation = state.operations[payload.uid]
+      // let operation = findInArrayObj(state.operations, payload.uid, 'uid')
+      let index = findIndexInArrayObj(state.operations, payload.uid, 'uid')
+      let operation = state.operations[index]
       if (operation === undefined) {
         console.warn('long operation not found')
         return
       }
-      operation.result = payload.data
+      console.log(`before ${state.operations[index]['status']}`)
+      state.operations.splice(index, 1, Object.assign(operation,{
+        result: payload.data,
+        status: 'success'
+      }))
+      console.log(`after ${state.operations[index]['status']}`)
+      // operation.result = payload.data
       // Object.assign(operation, payload)
-      operation.status = 'success'
+      // operation.status =
     },
     showList (state) {
       state.showList = true
@@ -72,15 +88,21 @@ export default {
       state.currentUid = ''
     },
     canceling (state, uid) {
-      state.operations[uid].status = 'canceling'
+      let operation = findInArrayObj(state.operations, uid, 'uid')
+      operation.status = 'canceling'
     },
     cancel (state, uid) {
-      state.operations[uid].status = 'cancel'
+      let operation = findInArrayObj(state.operations, uid, 'uid')
+      operation.status = 'cancel'
     },
     delete (state, uid) {
-      if (state.operations[uid].show)
+      let index = findIndexInArrayObj(state.operations, uid, 'uid')
+      let operation = state.operations[index]
+      state.operations.splice(index, 1)
+
+      if (operation.show)
         state.executed--;
-      Vue.delete(state.operations, uid)
+
       if (!state.executed) {
         state.currentUid = ''
         state.showCurrent = false
@@ -109,27 +131,31 @@ export default {
         data: payload.actionData
       })
       operation = new_operation
+      operation.uid = uid
       operation.result = null
       operation.progress = -1
       operation.status = 'pending'
-      commit('run', { uid, operation })
+      commit('run', operation)
       return uid
     },
     on_cancel: (store, payload) => {
       store.commit('cancel', payload.uid)
     },
     on_complete: (store, payload) => {
+      console.warn(`on complete ${payload.uid}`)
       const uid = payload.uid
-      const operation = store.state.operations[uid]
+      let operation = store.getters.find(payload.uid)
+      // const operation = store.state.operations[uid]
       if (operation === undefined) {
         console.warn('long operation not found')
         return
       }
 
       store.commit(payload.type, payload)
+
       if (operation['autoDelete'])
         store.commit('delete', uid)
-      if (operation.resolve) {
+      if (operation && operation.resolve) {
         operation.resolve(payload.data)
       }
     },
@@ -152,16 +178,14 @@ export default {
       store.commit('notify', payload)
     },
     on_success: (store, payload) => {
+      console.log('store on_success')
       store.dispatch('on_complete', payload)
     },
     delete: ({ state, commit }, uid) => {
       if (state.currentUid === uid) {
         commit('hideOperation')
       }
-      if (objHasOwnProperty(state.operations, uid)) {
-        commit('delete', uid)
-      }
-
+      commit('delete', uid)
     }
   }
 }
