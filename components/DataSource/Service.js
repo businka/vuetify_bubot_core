@@ -56,7 +56,7 @@ export default class Service extends Source {
     }
 
     async call(payload) {
-        let url = `/${this.props.appName}/api/${this.props.objName}/${payload.method}`
+        let url = `${this.get_obj_url()}/${payload.method}`
         return this.post(url, payload.data)
     }
     async post(url, data) {
