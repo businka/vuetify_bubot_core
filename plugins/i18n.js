@@ -2,8 +2,8 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 // import messages from '@/lang/en'
 import axios from 'axios'
-import { updateObject} from '../../Helpers/BaseHelper'
-import AppConst from '../../AppConst'
+import { updateObject} from '@/Helpers/BaseHelper'
+import AppConst from '@/AppConst'
 
 
 Vue.use(VueI18n)
@@ -65,3 +65,5 @@ export async function loadLanguageAsync (lang) {
   //   }
   // )
 }
+
+export default i18n
