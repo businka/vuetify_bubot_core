@@ -45,8 +45,8 @@ export default {
             this.value = value
         },
         convertToTime(date) {
-            let date1 = new Date(date)
-            this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, date1}})
+            let value = new Date(date)
+            this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, value}})
         },
         cancelInput() {
             this.test++
