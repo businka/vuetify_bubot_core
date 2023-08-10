@@ -1,6 +1,7 @@
-let Memory = require('./Memory')
+import Memory from './Memory'
 
 export default class Vuex extends Memory {
+
   data = []
 
   _list () {

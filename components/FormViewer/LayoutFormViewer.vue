@@ -4,10 +4,12 @@ import LongOperations from '../LongOperations/LongOperations'
 import LangSelector from '../Simple/LangSelector'
 import LongOperationsBadge from '../LongOperations/LongOperationBadge'
 import CurrentUser from '../Session/CurrentUserInToolbar'
+import TableBrowser from "@/BubotCore/components/TableBrowser/TableBrowser"
 
 export default {
   name: 'LayoutFormViewer',
   components: {
+    TableBrowser,
     NavDrawer,
     CurrentUser,
     LangSelector,
@@ -68,7 +70,11 @@ export default {
     //   const context = this.$refs[this.params.form]
     //   context.dispatchAction(action)
     // }
-  }
+  },
+  // setup(props) {
+  //   console.log(props)
+  //   return {}
+  // }
 }
 </script>
 
@@ -85,13 +91,15 @@ export default {
 <template>
   <v-main class="height100">
     <NavDrawer class="height100"/>
-    <v-system-bar class="px-0">
+    <v-toolbar class="px-0" height="24">
       <v-spacer />
       <LongOperationsBadge />
-      <CurrentUser small/>
+      <v-toolbar-items>
+      <CurrentUser/>
       <v-divider vertical />
       <LangSelector />
-    </v-system-bar>
+      </v-toolbar-items>
+    </v-toolbar>
     <v-row
       v-if="form"
       class="pa-0 ma-0 form"

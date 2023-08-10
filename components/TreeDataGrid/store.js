@@ -7,7 +7,8 @@ export default {
   namespaced: true,
   state: {
     namespace: 'treeDataGrid',
-    formCheckProperty: 'columns'
+    formCheckProperty: 'columns',
+    data: {}
   },
   getters: {
     // get: get,

@@ -1,8 +1,7 @@
-let Memory = require('./Memory')
+import Memory from './Memory'
 import { updateObject } from '../../../Helpers/BaseHelper'
 
 export default class WebSocket extends Memory {
-  data = []
 
   async list (filter, nav) {
     let params = updateObject({}, nav, this.props.filterConst, filter)

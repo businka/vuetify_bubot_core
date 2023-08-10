@@ -2,7 +2,7 @@
 export default {
   name: 'TagViewer',
   props: {
-    value: {
+    modelValue: {
       type: Array,
       default: function () {
         return []

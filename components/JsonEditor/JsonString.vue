@@ -11,10 +11,15 @@ export default {
         inputListeners: Object,
         arrayElem: Boolean,
         level: Number,
-        readOnly: Boolean,
+        readOnly: {
+          type: Boolean,
+          default: undefined
+
+        },
+        singleLine: Boolean,
         hideReadOnly: Boolean,
-        solo: Boolean,
-        dense: Boolean,
+        variant: String,
+        density: String,
         byPath: Boolean,
         type: {
             type: String,
@@ -41,9 +46,9 @@ export default {
             // console.log('oc2' + this.path + '-' + value)
             this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, value}})
         },
-        onInput(value) {
-            this.value = value
-        },
+        // onInput(value) {
+        //     this.value = value
+        // },
         convertToTime(date) {
             let value = new Date(date)
             this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, value}})
@@ -58,6 +63,7 @@ export default {
 </script>
 
 <style lang="scss">
+
   .fix_height {
     input {
       height: 26px
@@ -73,13 +79,12 @@ export default {
       :placeholder="schema.description || ''"
       :title="schema.description || ''"
       :items="schema.enum"
-      :disabled="(readOnly ? readOnly : schema.readOnly)"
+      :readonly="(readOnly ? readOnly : schema.readOnly)"
       flat
       :dense="dense || arrayElem"
       hide-details
-      :value="value"
-      @input="onInput"
-      @change="onChange"
+      :model-value="value"
+      @update:modelValue="onChange"
     />
     <!--//todo.добавить выбор перечисляемых-->
     <v-text-field
@@ -87,15 +92,13 @@ export default {
       :label="schema.title || elemName"
       :placeholder="schema.description || ''"
       :title="schema.description || ''"
-      :disabled="(readOnly ? readOnly : schema.readOnly)"
-      flat
+      :readonly="(readOnly ? readOnly : schema.readonly)"
       :dense="dense || arrayElem"
       hide-details
       :value="value?value.toLocaleString('sv'):''"
-      :solo="solo"
+      :variant="variant"
       type="datetime-local"
-      @change="convertToTime">
-      @change="convertToTime">
+      @update:modelValue="convertToTime">
 
     </v-text-field>
     <v-text-field
@@ -103,16 +106,15 @@ export default {
       :label="schema.title || elemName"
       :placeholder="schema.description || ''"
       :title="schema.description || ''"
-      :disabled="(readOnly ? readOnly : schema.readOnly)"
-      flat
-      :dense="dense || arrayElem"
+      :readonly="(readOnly ? readOnly : schema.readonly)"
+      :density="density || arrayElem"
       hide-details
-      :value="value"
-      :solo="solo"
+      :model-value="value"
+      :variant="variant"
       :type="type"
+      :single-line="singleLine"
       @keydown.escape.stop="cancelInput"
-      @input="onInput"
-      @change="onChange"
+      @update:modelValue="onChange"
     />
   </v-container>
 </template>

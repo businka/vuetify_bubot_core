@@ -1,6 +1,6 @@
-let Source = require('./Source')
-const uuid = require('uuid')
-const {getType, objHasOwnProperty, updateObject, getPropValueByPath} = require('../../../Helpers/BaseHelper')
+import Source from './Source'
+import { v4 as uuidv4 } from 'uuid'
+import {getType, objHasOwnProperty, updateObject, getPropValueByPath} from '@/Helpers/BaseHelper'
 
 const conditions = {
     'equals': function (filterField, filterValue, row) {
@@ -52,12 +52,12 @@ const conditions = {
 }
 
 // module.exports = class Memory extends DataSource {
-module.exports = class Memory extends Source {
-    data = []
-    total = 0
-    rows = []
-    keyProperty;
-    loading = false
+export default class Memory extends Source {
+  constructor(props) {
+    super(props);
+    this.data = []
+  }
+
 
     // constructor (props) {
     //   this.props = props
@@ -139,7 +139,7 @@ module.exports = class Memory extends Source {
             updateObject(item, data, this.props.filterConst)
             return item
         } else {
-            data[this.keyProperty] = uuid.v4()
+            data[this.keyProperty] = uuidv4()
             updateObject(data, this.props.filterConst)
             return data
         }

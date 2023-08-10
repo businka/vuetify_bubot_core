@@ -1,7 +1,9 @@
 <script>
+import ActionBtn from "@/BubotCore/components/ActionButtons/ActionBtn"
 export default {
   name: 'BrowserOperationsPanel',
   components: {
+    ActionBtn,
     SearchField: () => import('./Filter/SearchField'),
   },
   props: {
@@ -20,33 +22,43 @@ export default {
       type: Object
     }
   },
+  // data: () => ({
+  //   model: 'Leider',
+  // }),
   methods: {
+    select: function (event) {
+      console.log(event)
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .bordered {
-    border-bottom: thin solid #cccccc;
+  .bordered-bottom {
+    border-bottom:  thin solid #cccccc;
+  }
+  .bordered-top {
+    border-top: thin solid #cccccc;
   }
   .selectAll {
-    margin-left: -7px;
+    //margin-left: -7px;
   }
 </style>
 
 <template>
   <v-toolbar
-    dense
-    flat
-    height="44"
-    class="bordered"
+    density="compact"
+    class="bordered-bottom bordered-top"
   >
+    <v-toolbar-items>
     <v-checkbox
       v-if="!hideSelectAll"
+      density="compact"
       hide-details
-      :input-value="selectAll.everyItem"
-      class="selectAll"
-      @change="selectAll.toggleSelectAll"
+      :model-value="selectAll.allSelected"
+      :indeterminate="selectAll.someSelected && !selectAll.allSelected"
+      class="pt-1 pl-3"
+      @update:modelValue="selectAll.selectAll($event)"
     />
     <component
       :is="item.template || 'ActionBtn'"
@@ -55,5 +67,6 @@ export default {
       v-bind="item"
       @action="$emit('action', $event)"
     />
+    </v-toolbar-items>
   </v-toolbar>
 </template>

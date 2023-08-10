@@ -1,8 +1,9 @@
-import Vue from 'vue'
+// import Vue from 'vue'
+// import { ref } from 'vue'
 import {updateProp } from '../../components/JsonEditor/JsonHelper'
 
 export function initStoreKey(state, { uid, data }) {
-  Vue.set(state, uid, data)
+  state.data = {...state.data, [uid]: data}
 }
 
 export function updateItemPropsArrayPath(state, { uid, path, value }) {
@@ -18,7 +19,7 @@ export function updateItemPropsArrayPath(state, { uid, path, value }) {
   // if (Object.prototype.hasOwnProperty.call(result, path[i])) {
   //   result[path[i]] = value
   // } else {
-  Vue.set(result, path[i], value)
+  result[path[i]] = value
   // }
 }
 

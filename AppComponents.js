@@ -1,46 +1,47 @@
-import Vue from 'vue'
+import { defineAsyncComponent } from 'vue'
 
-Vue.component('RightDrawerFormViewer', () => import('./components/FormViewer/RightDrawerFormViewer'))
-Vue.component('RightDrawerFormViewer2', () => import('./components/FormViewer/RightDrawerFormViewer2'))
-Vue.component('RightDrawerFormViewer3', () => import('./components/FormViewer/RightDrawerFormViewer3'))
-Vue.component('TestForm', () => import('./components/FormViewer/TestForm'))
-Vue.component('SimpleForm', () => import('./components/JsonEditor/SimpleForm'))
-Vue.component('SimpleTabsForm', () => import('./components/JsonEditor/SimpleTabsForm'))
-Vue.component('JsonTabsForm', () => import('./components/JsonEditor/JsonTabsForm'))
-// Vue.component('DocViewer', () => import('./components/DocViewer/DocViewer'))
+export default function registerComponents(app) {
+  app.component('RightDrawerFormViewer', defineAsyncComponent(() => import('./components/FormViewer/RightDrawerFormViewer')))
+  app.component('RightDrawerFormViewer2', defineAsyncComponent(() => import('./components/FormViewer/RightDrawerFormViewer2')))
+  app.component('RightDrawerFormViewer3', defineAsyncComponent(() => import('./components/FormViewer/RightDrawerFormViewer3')))
+  app.component('TestForm', defineAsyncComponent(() => import('./components/FormViewer/TestForm')))
+  app.component('SimpleForm', defineAsyncComponent(() => import('./components/JsonEditor/SimpleForm')))
+  app.component('SimpleTabsForm', defineAsyncComponent(() => import('./components/JsonEditor/SimpleTabsForm')))
+  app.component('JsonTabsForm', defineAsyncComponent(() => import('./components/JsonEditor/JsonTabsForm')))
+// app.component('DocViewer', defineAsyncComponent(() => import('./components/DocViewer/DocViewer')))
 //
-// Vue.component('Tree', () => import('./components/TreeBrowser/TreeBrowser'))
-Vue.component('ToolBar', () => import('./components/Simple/ToolBar'))
-Vue.component('MassOperationsBar', () => import('./components/Simple/MassOperationsBar'))
-// Vue.component('FilterBar', () => import('./components/Filter/FilterBar'))
-Vue.component('TableBrowser', () => import('./components/Layouts/TableBrowser'))
-// Vue.component('DataGrid', () => import('./components/DataGrid/DataGrid'))
-Vue.component('SelectBrowser', () => import('./components/Panel/SelectBrowser'))
-// Vue.component('TreeDataGrid', () => import('./components/DataGrid/TreeDataGrid'))
-// Vue.component('TabsBrowser', () => import('./components/TabsBrowser/TabsBrowser'))
-//
-//
-// Vue.component('BtnLink', () => import('./components/DocViewer/BtnLink'))
-// Vue.component('FieldLink', () => import('./components/Simple/FieldLink'))
-// Vue.component('JsonObjectLink', () => import('./components/JsonEditor/JsonObjectLink'))
+// app.component('Tree', defineAsyncComponent(() => import('./components/TreeBrowser/TreeBrowser')))
+  app.component('ToolBar', defineAsyncComponent(() => import('./components/Simple/ToolBar')))
+  app.component('MassOperationsBar', defineAsyncComponent(() => import('./components/Simple/MassOperationsBar')))
+// app.component('FilterBar', defineAsyncComponent(() => import('./components/Filter/FilterBar')))
+  app.component('TableBrowser', defineAsyncComponent(() => import('./components/TableBrowser/TableBrowser')))
+// app.component('DataGrid', defineAsyncComponent(() => import('./components/DataGrid/DataGrid')))
+  app.component('SelectBrowser', defineAsyncComponent(() => import('./components/Panel/SelectBrowser')))
+// app.component('TreeDataGrid', defineAsyncComponent(() => import('./components/DataGrid/TreeDataGrid')))
+// app.component('TabsBrowser', defineAsyncComponent(() => import('./components/TabsBrowser/TabsBrowser')))
 //
 //
-Vue.component('JsonEditor', () => import('./components/JsonEditor/JsonEditor'))
-Vue.component('JsonForm', () => import('./components/JsonEditor/JsonForm'))
-// Vue.component('ParamsEditor', () => import('./components/ParamsEditor/ParamsEditor'))
+// app.component('BtnLink', defineAsyncComponent(() => import('./components/DocViewer/BtnLink')))
+// app.component('FieldLink', defineAsyncComponent(() => import('./components/Simple/FieldLink')))
+// app.component('JsonObjectLink', defineAsyncComponent(() => import('./components/JsonEditor/JsonObjectLink')))
+//
+//
+  app.component('JsonEditor', defineAsyncComponent(() => import('./components/JsonEditor/JsonEditor')))
+  app.component('JsonForm', defineAsyncComponent(() => import('./components/JsonEditor/JsonForm')))
+// app.component('ParamsEditor', defineAsyncComponent(() => import('./components/ParamsEditor/ParamsEditor')))
 
 
+// app.component('RowCellDefault', defineAsyncComponent(() => import('./components/Cells/RowCellDefault')))
+// app.component('RowCellTitle', defineAsyncComponent(() => import('./components/Cells/RowCellTitle')))
+// app.component('RowCellNumber', defineAsyncComponent(() => import('./components/Cells/RowCellNumber')))
+// app.component('RowCellFieldLink', defineAsyncComponent(() => import('./components/Cells/RowCellFieldLink')))
+// app.component('RowCellIcon', defineAsyncComponent(() => import('./components/Cells/RowCellIcon')))
+// app.component('RowCellDateTime', defineAsyncComponent(() => import('./components/Cells/RowCellDateTime')))
 
-// Vue.component('RowCellDefault', () => import('./components/Cells/RowCellDefault'))
-// Vue.component('RowCellTitle', () => import('./components/Cells/RowCellTitle'))
-// Vue.component('RowCellNumber', () => import('./components/Cells/RowCellNumber'))
-// Vue.component('RowCellFieldLink', () => import('./components/Cells/RowCellFieldLink'))
-// Vue.component('RowCellIcon', () => import('./components/Cells/RowCellIcon'))
-// Vue.component('RowCellDateTime', () => import('./components/Cells/RowCellDateTime'))
 
-
-// Vue.component('ActionBtnDefault', () => import('./components/ActionButtons/ActionBtnDefault'))
-Vue.component('ActionTitle', () => import('./components/ActionButtons/ActionTitle'))
-Vue.component('ActionBtn', () => import('./components/ActionButtons/ActionBtn'))
-Vue.component('ActionBtnMenu', () => import('./components/ActionButtons/ActionBtnMenu'))
+// app.component('ActionBtnDefault', defineAsyncComponent(() => import('./components/ActionButtons/ActionBtnDefault')))
+  app.component('ActionTitle', defineAsyncComponent(() => import('./components/ActionButtons/ActionTitle')))
+  app.component('ActionBtn', defineAsyncComponent(() => import('@/BubotCore/components/ActionButtons/ActionBtn')))
+  app.component('ActionBtnMenu', defineAsyncComponent(() => import('./components/ActionButtons/ActionBtnMenu')))
+}
 

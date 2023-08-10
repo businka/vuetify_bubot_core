@@ -17,7 +17,7 @@ export default {
       type: String,
       default: 'info'
     },
-    value: {
+    modelValue: {
       type: Object,
       default: () => {
       }

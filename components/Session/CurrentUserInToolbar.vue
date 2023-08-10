@@ -66,9 +66,8 @@ export default {
   <v-menu
     offset-y
   >
-    <template v-slot:activator="{ on }">
+    <template v-slot:activator="{ props }">
       <v-btn
-        text
         dense
         tile
         min-width="60px"
@@ -76,7 +75,7 @@ export default {
         :x-small="xSmall"
         :small="small"
         :large="large"
-        v-on="on"
+        v-bind="props"
       >
         <div class="pl-1 LangSelectorText">
           {{ userTitle }}

@@ -20,12 +20,11 @@ export default {
 
 <template>
   <v-navigation-drawer
-    right
+    location="right"
     :width="width"
-    fixed
     class="elevation-6"
-    permanent
-    :value="visible"
+    :temporary="true"
+    :model-value="formVisible"
   >
     <v-progress-linear
       v-if="loading"
@@ -35,7 +34,6 @@ export default {
     <component
       :is="form.template"
       v-if="form && !loading"
-      :ref="form"
       v-bind="form"
       @action="onAction"
     />

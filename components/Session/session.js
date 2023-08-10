@@ -1,8 +1,11 @@
-import Vue from 'vue'
-import { navigate } from '../../../Helpers/UrlParam'
+// import Vue from 'vue'
+import VueCookies from 'vue-cookies'
+import { navigate } from '@/Helpers/UrlParam'
+import appConst from "@/AppConst"
+import {objHasOwnProperty} from "@/Helpers/BaseHelper"
 
 export function getSession() {
-  return Vue.$cookies.get('session')
+  return VueCookies.get('session')
 }
 
 // export function get_user() {
@@ -31,7 +34,8 @@ export function redirectToSignIn (redirect) {
   if (redirect === undefined) {
     redirect = window.location.pathname
   }
-  let destUrl = `${url.base}AuthService/ui/`
+  let destUrl = `${url.base}${objHasOwnProperty(appConst,'authPath')? appConst.authPath : 'AuthService/ui/'}`
+  console.log(destUrl, window.location.pathname)
   if (destUrl !== window.location.pathname)
     navigate(redirect?`${destUrl}?redirect=${redirect}`:destUrl)
 }

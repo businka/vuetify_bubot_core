@@ -110,11 +110,9 @@ export default {
     permanent
   >
     <!--<v-toolbar>{{$t('NavDrawer.Title')}}</v-toolbar>-->
-    <v-system-bar class="px-0">
-      BuBot
-    </v-system-bar>
     <v-list
       v-if="items"
+      density="compact"
       class="pa-0"
     >
       <div
@@ -124,19 +122,18 @@ export default {
         <!-- не активный раздел без детей -->
         <v-list-item
           v-if="!item.child"
-          v-ripple
           clickable
-          class="px-1"
+          class="px-2"
           :to="item.path"
         >
-          <v-list-item-icon v-if="item.icon" class="mx-2">
-            <v-icon>{{item.icon}}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
+          <template v-slot:prepend>
+            <v-icon v-if="item.icon" :icon="item.icon" class="ma-0"></v-icon>
+          </template>
+          <v-list-item>
             <v-list-item-title>
               {{ $t(`NavDrawer.${item.title}`) }}
             </v-list-item-title>
-          </v-list-item-content>
+          </v-list-item>
         </v-list-item>
         <!-- не активный раздел c детьми -->
         <v-menu
@@ -152,19 +149,17 @@ export default {
             <v-list-item
 
               :active="false"
-              class="px-1"
               v-on="on"
             >
-              <v-list-item-icon
-                class="mx-2"
-              >
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
+              <template v-slot:prepend>
+                <v-icon class="mx-2" :icon="item.icon"></v-icon>
+              </template>
+
+              <v-list-item>
                 <v-list-item-title>
                   {{ $t(`NavDrawer.${item.title}`) }}
                 </v-list-item-title>
-              </v-list-item-content>
+              </v-list-item>
             </v-list-item>
           </template>
           <v-list
@@ -174,16 +169,14 @@ export default {
               :key="item.path"
               :to="item.path"
             >
-              <v-list-item-icon
-                class="mx-2"
-              >
-                <v-icon>{{item.icon}}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
+              <template v-slot:prepend>
+                <v-icon class="mx-2" :icon="item.icon"></v-icon>
+              </template>
+              <v-list-item>
                 <v-list-item-title>
                   {{ $t(`NavDrawer.${item.title}`) }}
                 </v-list-item-title>
-              </v-list-item-content>
+              </v-list-item>
             </v-list-item>
             <v-list-item
               v-for="subitem in item.child"
@@ -191,18 +184,26 @@ export default {
               :to="subitem.path"
               dense
             >
-              <v-list-item-content>
+              <v-list-item>
                 <v-list-item-title
                   class="pl-5"
                 >
                   {{ $t(`NavDrawer.${subitem.title}`) }}
                 </v-list-item-title>
-              </v-list-item-content>
+              </v-list-item>
             </v-list-item>
           </v-list>
         </v-menu>
       </div>
     </v-list>
+    <template v-slot:prepend>
+      <span class="v-system-bar px-0 v-theme--dark justify-start">Bubot</span>
+<!--      <v-system-bar class="px-0">-->
+<!--        BuBot-->
+<!--      </v-system-bar>-->
+
+    </template>
+
   </v-navigation-drawer>
 </template>
 <!--<i18n src="./locales/en.json"></i18n>-->

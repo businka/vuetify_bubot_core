@@ -16,8 +16,8 @@ export const coreGetters = {
     if (state[namespace] === undefined) {
       throw new Error(`namespace "${namespace}" not declared`)
     }
-    if (Object.prototype.hasOwnProperty.call(state[namespace], uid)) {
-      return state[namespace][uid]
+    if (Object.prototype.hasOwnProperty.call(state[namespace].data, uid)) {
+      return state[namespace].data[uid]
     }
     return value
   }

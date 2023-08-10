@@ -8,6 +8,7 @@ export default {
   namespaced: true,
   state: {
     namespace: 'DataGrid',
+    'data': {}
   },
   getters: {
     // get: get,

@@ -7,7 +7,9 @@ export default {
   namespaced: true,
   state: {
     namespace: 'DataGrid',
-    formCheckProperty: 'columns'
+    formCheckProperty: 'columns',
+    data: {},
+
   },
   getters: {
     // get: get,

@@ -1,10 +1,11 @@
 import axios from 'axios'
-import { initStoreKey } from '../../helpers/mixinStore/mutations'
+import {initStoreKey} from "@/BubotCore/helpers/mixinStore/mutations"
+// import { initStoreKey } from '../../helpers/mixinStore/mutations'
 
 export default {
   namespaced: true,
   state: {
-    namespace: 'form'
+    'data': {}
   },
   mutations: {
     initStoreKey: initStoreKey,

@@ -1,10 +1,13 @@
-const {updateObject, objHasOwnProperty} = require('../../../Helpers/BaseHelper')
-const {findIndexInArrayObj} = require('../../../Helpers/ArrayHelper')
-const {ExtException} = require('../../../Helpers/ExtException')
-const Vue = require('vue').default
+import  {updateObject, objHasOwnProperty} from '@/Helpers/BaseHelper'
+import  {findIndexInArrayObj} from '@/Helpers/ArrayHelper'
+import  ExtException from '@/Helpers/ExtException'
+// import   Vue = require('vue').default
 
-module.exports = class Source {
-    props = {
+export default class Source {
+
+
+    constructor(props, store) {
+      this.props = {
         rows: [],
         has_more: false,
         page: 1,
@@ -16,17 +19,16 @@ module.exports = class Source {
         dataTableOptions: {},
         filterFields: [],
         keyProperty: 'id'
-    }
-    last_nav = undefined
-    total = 0
-    rawData = []
-    rows = []
-    store = {}
-    // keyProperty = ""
-    loading = false
-    error = {}
+      }
+      this.last_nav = undefined
+      this.total = 0
+      this.rawData = []
+      this.rows = []
+      this.store = {}
+      // keyProperty = ""
+      this.loading = false
+      this.error = {}
 
-    constructor(props, store) {
         if (store) {
             this.props.appName = store.state.appName
         }
@@ -72,7 +74,7 @@ module.exports = class Source {
             let resp = await this.list(this.props.filter, nav)
             let new_rows = resp.rows || []
             this.last_nav = resp.nav || undefined
-            if (this.last_nav && objHasOwnProperty(this.last_nav, 'has_more')) {
+            if (this.last_nav && objHasOwnProperty(this.last_nav, 'gggggggggggggggggggg_more')) {
                 this.has_more = this.last_nav.has_more
             } else {
                 this.has_more = nav.limit && new_rows.length && new_rows.length >= nav.limit
@@ -110,7 +112,7 @@ module.exports = class Source {
             let destValueIndex = findIndexInArrayObj(resp.rows, _id, this.keyProperty)
             let srcValueIndex = findIndexInArrayObj(this.rows, _id, this.keyProperty)
             if (srcValueIndex >= 0 && destValueIndex >= 0) {
-                Vue.set(this.rows, srcValueIndex, resp.rows[destValueIndex])
+                this.rows[srcValueIndex] =  resp.rows[destValueIndex]
                 continue
             }
             if (srcValueIndex >= 0 && destValueIndex === -1) { // запись больше не в выборке

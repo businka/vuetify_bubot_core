@@ -9,7 +9,7 @@ export default {
             default: () => [{
             }]
         },
-        value: {
+        modelValue: {
             type: Object,
             default: () => {
             }
@@ -20,13 +20,14 @@ export default {
         field: {
             type: String
         },
+
         title: {
             type: String
         },
-        type: {
-            type: String,
-            default: 'string'
-        },
+        // type: {
+        //     type: String,
+        //     default: 'string'
+        // },
         editMode: {
             type: Boolean,
             default: false
@@ -43,7 +44,7 @@ export default {
     },
     computed: {
         _value () {
-            return getPropValueByPath(this.value, this.field, '')
+            return getPropValueByPath(this.modelValue, this.field, '')
         },
     },
     methods: {
@@ -55,7 +56,7 @@ export default {
             return getPropValueByPath(previous, this.field, '')
         },
         onChange (value) {
-            let data = Object.assign({}, this.value)
+            let data = Object.assign({}, this.modelValue)
             let path = this.field.split(".")
             let result = data
             let _name = path[0]

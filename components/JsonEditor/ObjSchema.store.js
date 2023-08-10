@@ -3,16 +3,17 @@
 // import { initStoreKey, updateItemProps } from '../../Helpers/mixinStore/mutations'
 // import { mode, getProps } from '../../Helpers/mixinStore/getters'
 import axios from 'axios'
-import Vue from 'vue'
+import {initStoreKey} from "@/BubotCore/helpers/mixinStore/mutations"
+// import Vue from 'vue'
 
 export default {
   namespaced: true,
-  state: {},
+  state: {
+    'data': {}
+  },
   // getters: {},
   mutations: {
-    schema (state, { uid, schema }) {
-      Vue.set(state, uid, schema)
-    },
+    initStoreKey: initStoreKey,
   },
   actions: {
     async read (store, schemaUid) {
@@ -25,8 +26,8 @@ export default {
       // }
       // const schemaUid = payload.schemaUid
       // const schemaId = rt.join('+')
-      if (Object.prototype.hasOwnProperty.call(store.state, schemaUid)) {
-        return await store.state[schemaUid]
+      if (Object.prototype.hasOwnProperty.call(store.state.data, schemaUid)) {
+        return await store.state.data[schemaUid]
       } else {
         // console.log('load scheme ' + schemaUid)
         let result = {}
@@ -36,8 +37,8 @@ export default {
         } catch (e) {
           result = {}
         }
-        store.commit('schema', {
-          uid: schemaUid, schema: result
+        store.commit('initStoreKey', {
+          uid: schemaUid, data: result
         })
         return result
       }

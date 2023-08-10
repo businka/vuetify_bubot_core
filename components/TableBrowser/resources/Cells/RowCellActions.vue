@@ -5,7 +5,7 @@ export default {
   name: 'RowCellActions',
   mixins: [ActionMixin],
   props: {
-    value: {
+    modelValue: {
       type: Object,
       default: () => {
       }
@@ -27,7 +27,7 @@ export default {
     _actions () {
       let res = []
       if (this.field) {
-        res = res.concat(this.value[this.field] || [])
+        res = res.concat(this.modelValue[this.field] || [])
       }
       res = res.concat(this.actions)
       return res

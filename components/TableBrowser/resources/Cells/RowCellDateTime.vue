@@ -1,6 +1,6 @@
 <script>
 import RowCellMixin from './RowCell.mixin'
-import {zeroPad} from '../../../../../Helpers/BaseHelper'
+import {zeroPad} from '@/Helpers/BaseHelper'
 
 export default {
     name: 'CellDateTime',
@@ -62,7 +62,7 @@ export default {
     </div>
     <div
       v-if="date && showTime"
-      class="grey--text caption text-right"
+      class="text-grey text-caption text-right"
       style="margin-top: -6px">
       {{time}}
     </div>

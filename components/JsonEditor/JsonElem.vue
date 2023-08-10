@@ -7,7 +7,7 @@ export default {
     JsonArrayOneOf: () => import('./JsonArrayOneOf'),
     JsonObject: () => import('./JsonObject'),
     JsonObjectLink: () => import('./JsonObjectLink'),
-    JsonInteger: () => import('./JsonInteger'),
+    JsonInteger: () => import('./JsonNumber'),
     JsonBoolean: () => import('./JsonBoolean'),
   },
   props: {

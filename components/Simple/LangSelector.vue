@@ -1,5 +1,5 @@
 <script>
-import { loadLanguageAsync } from '../../plugins/i18n'
+import { loadLocaleMessages } from '../../plugins/i18n'
 export default {
   name: 'LangSelector',
     props: {
@@ -15,8 +15,9 @@ export default {
   },
   methods: {
     changeLang (lang) {
-      loadLanguageAsync(lang)
-      // this.$i18n.locale = lang
+      console.log('changeLang', lang)
+      loadLocaleMessages(this.$i18n, lang)
+      this.$i18n.locale = lang
     }
   }
 }
@@ -24,15 +25,14 @@ export default {
 
 <template>
   <v-menu>
-    <template v-slot:activator="{ on }">
+    <template v-slot:activator="{ props }">
       <v-btn
-        text
         dense
         tile
         :x-small="xSmall"
         :small="small"
         :large="large"
-        v-on="on"
+        v-bind="props"
       >
         <div :class="`LangSelectorFlag LangSelectorFlag-${$i18n.locale}`" />
         <div class="pl-1 LangSelectorText">

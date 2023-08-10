@@ -1,3 +1,2 @@
-import Vue from 'vue'
-import VueCookies from 'vue-cookies'
-Vue.use(VueCookies)
+import VueCookies from 'vue3-cookies'
+export default VueCookies

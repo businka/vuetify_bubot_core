@@ -10,7 +10,7 @@ export default {
       type: Object,
       default: () => ({})
     },
-    value: {
+    modelValue: {
       type: Object,
       default: () => ({})
     },
@@ -37,7 +37,7 @@ export default {
       return this.path[this.path.length - 1]
     },
     _value() {
-      let result = this.value
+      let result = this.modelValue
       let i, len
       for (i = 0, len = this.path.length; i < len; i++) {
         if (Object.prototype.hasOwnProperty.call(result, this.path[i])) {
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     onChange(value) {
-      let data = Object.assign({}, this.value)
+      let data = Object.assign({}, this.modelValue)
       let result = data
       let i, len
       for (i = 0, len = this.path.length; i < len - 1; i++) {

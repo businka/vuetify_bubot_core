@@ -18,7 +18,7 @@ export default {
       type: String,
       default: 'info'
     },
-    value: {
+    modelValue: {
       type: Object,
       default: () => {
       }
@@ -34,13 +34,13 @@ export default {
   },
   computed: {
     title: function () {
-      return getPropValueByPath(this.value, this.titleField)
+      return getPropValueByPath(this.modelValue, this.titleField)
     },
     subtitle: function () {
-      return getPropValueByPath(this.value, this.subtitleField)
+      return getPropValueByPath(this.modelValue, this.subtitleField)
     },
     info: function () {
-      return getPropValueByPath(this.value, this.infoField)
+      return getPropValueByPath(this.modelValue, this.infoField)
     }
   }
 }

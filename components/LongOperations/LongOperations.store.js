@@ -2,9 +2,9 @@
 // import { initForm, error } from '../../helpers/mixinStore/actions'
 // import { initStoreKey } from '../../helpers/mixinStore/mutations'
 // import { processInDataSource } from '../../helpers/mixinStore'
-import Vue from 'vue'
+import {app} from '@/main'
 // import { objHasOwnProperty } from '../../../Helpers/BaseHelper'
-import { findIndexInArrayObj, findInArrayObj } from '../../../Helpers/ArrayHelper'
+import { findIndexInArrayObj, findInArrayObj } from '@/Helpers/ArrayHelper'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -112,7 +112,7 @@ export default {
   },
   actions: {
     cancel: ({ commit }, uid) => {
-      Vue.prototype.$socket.sendObj({
+      app.$socket.sendObj({
         uid,
         type: 'cancel'
       }, { root: true })
@@ -124,7 +124,7 @@ export default {
       let operation = state.operations.uid
       if (operation && (operation.status === 'pending' || operation.status === 'run'))
         return uid
-      Vue.prototype.$socket.sendObj({
+      app.$socket.sendObj({
         uid,
         type: 'call',
         name: payload.actionName,

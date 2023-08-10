@@ -64,8 +64,9 @@ export default {
       <v-icon
           :color="icon.color"
           :title="`${title||''}: ${_value}`"
+          :icon="icon.name"
+          size="small"
       >
-      {{ icon.name }}
       </v-icon>
 
     </span>

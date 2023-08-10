@@ -1,4 +1,4 @@
-import Vue from 'vue'
+// import { app } from '@/main.js'
 // import { reactive } from 'vue'
 
 export function updateProp(result, {action, path, value}) {
@@ -12,10 +12,10 @@ export function updateProp(result, {action, path, value}) {
             result = result[_path[i]]
         } else {
             if (i === _path.length - 1) {  // мы добавляем этот элемент
-                Vue.set(result, _path[i], value)
+                result[_path[i]] = value
                 return
             }
-            Vue.set(result, _path[i], {})
+            result[_path[i]] = {}
             result = result[_path[i]]
             //throw new Error(`props "${_path[i]}" not found in source object`)
         }
@@ -24,17 +24,17 @@ export function updateProp(result, {action, path, value}) {
         return
     switch (action) {
         case 'change':
-            Vue.set(result, _path[i], value)
+            result[_path[i]] = value
             break
         case 'append':
             if (!result[_path[i]]) {
-                Vue.set(result, _path[i], [])
+                result[_path[i]] = []
             }
             result[_path[i]].push(value)
             break
         case 'extend':
             if (!result[_path[i]]) {
-                Vue.set(result, _path[i], [])
+                result[_path[i]] = []
             }
             result[_path[i]].push(...value)
             break
