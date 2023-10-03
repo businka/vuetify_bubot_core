@@ -1,5 +1,6 @@
 <script>
 export default {
+  name: 'NavDrawer2',
   computed: {
     activePath: {
       get: function () {

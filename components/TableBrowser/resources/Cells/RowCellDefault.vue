@@ -28,7 +28,7 @@ export default {
       v-else
       :title="_value"
     >
-      {{_value}}
+      {{ _value }}
     </span>
 
   </span>

@@ -72,38 +72,37 @@ export default {
   <div>
     <v-menu
       v-model="visible"
-      z-index="0"
-      :min-width="400"
-      left
+      location="bottom end"
       :close-on-click="false"
       :close-on-content-click="false"
     >
-      <template v-slot:activator="{ on }">
+      <template v-slot:activator="{ props }">
         <v-btn
           icon
-          dense
+          density="compact"
           small
-          v-on="on"
+          v-bind="props"
         >
           <v-icon>{{ icon }}</v-icon>
         </v-btn>
       </template>
       <v-card
+        min-width="400"
       >
         <v-toolbar
-          dense
-          flat
+          density="compact"
+          variant="flat"
           height="44"
         >
-          {{ $t('FilterSelected') }}
-          <v-spacer />
+          <v-toolbar-title :text="$t('FilterSelected')" />
+          <v-spacer/>
           <v-btn
             outlined
-            dense
-            rounded
+            density="compact"
+            variant="outlined"
+            rounded="xl"
             color="primary"
             x-small
-            class="mr-2"
             @click="onFilterSelected"
           >
             {{ $t('FilterSelect') }}
@@ -111,7 +110,6 @@ export default {
           <v-toolbar-items>
             <v-btn
               icon
-              dense
               small
               @click="visible=false"
             >

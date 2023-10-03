@@ -79,9 +79,8 @@ export default {
 
 <template>
   <v-toolbar
-    dense
-    flat
-    height="44"
+    density="compact"
+    variant="flat"
     class="bordered-top bordered-bottom"
   >
     <v-toolbar-items>
@@ -102,13 +101,12 @@ export default {
         @action="$emit('action', $event)"
       />
     </v-toolbar-items>
-
-      <SearchField
-        v-if="!hideSearchString"
-        class="mr-2"
-        :value="filter.searchString"
-        @changeFilter="$emit('changeFilter', $event)"
-      />
+    <SearchField
+      v-if="!hideSearchString"
+      class="mr-2"
+      :value="filter.searchString"
+      @changeFilter="$emit('changeFilter', $event)"
+    />
     <v-toolbar-items>
       <component
         :is="item.template || 'ActionBtn'"

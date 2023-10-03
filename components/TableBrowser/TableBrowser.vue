@@ -196,7 +196,7 @@ export default {
       hide-default-footer
       :items="source.rows"
       :itemsPerPage=0
-      :item-value="source['keyProperty'] || '_id.$oid'"
+      :item-value="source['keyProperty']"
       :loading="source.loading"
       :v-model:page="source.page"
       :show-select="true"
@@ -294,6 +294,7 @@ export default {
                 :row-actions-field="rowActionsField"
                 :item="item"
                 :index="index"
+                :key-property="source['keyProperty']"
                 :is-selected="isSelected"
                 :toggle-select="toggleSelect"
                 :edit-mode="editForm && editForm.handler==='inline' && index===editForm.formData.index"

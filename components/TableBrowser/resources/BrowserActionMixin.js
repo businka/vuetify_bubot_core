@@ -105,6 +105,9 @@ export default {
     },
 
     actionCallDataSourceForSelectedItems: async function (actionData) {
+      await this.actionCallDataSource(actionData, true)
+    },
+    actionCallDataSource: async function (actionData, addSelectionItems) {
       try {
         let source
 
@@ -114,16 +117,18 @@ export default {
         } else {
           source = this.source
         }
-        if (objHasOwnProperty(payload.data, 'items')) {
-          // payload.data.filter = null
-
-        } else {
-          if (this.selectAll) {
-            payload.data.items = this.source.listAll()
-            payload.data.filter = this.source.filter
-          } else {
-            payload.data.items = this.selected
+        if (addSelectionItems) {
+          if (objHasOwnProperty(payload.data, 'items')) {
             // payload.data.filter = null
+
+          } else {
+            if (this.selectAll) {
+              payload.data.items = this.source.listAll()
+              payload.data.filter = this.source.filter
+            } else {
+              payload.data.items = this.selected
+              // payload.data.filter = null
+            }
           }
         }
         await source.call(payload)

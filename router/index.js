@@ -1,10 +1,9 @@
-
 export const coreRoutes = [
   {
     path: '/',
-    name: 'home',
     component: () => import('../components/FormViewer/LayoutFormViewer')
   },
+
   {
     path: '/:objName/:subtype/:objForm',
     component: () => import('../components/FormViewer/LayoutFormViewer')

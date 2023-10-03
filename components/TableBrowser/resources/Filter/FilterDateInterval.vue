@@ -10,10 +10,10 @@ export default {
   <v-row>
     <v-col cols="12" class="d-flex">
       <v-text-field
-        :value="_value[_name]"
+        :model-value="_value[_name]"
         :label="field[`title_${$i18n.locale}`] || field.text "
         hide-details
-        single-line
+        variant="solo"
         :placeholder="field.text"
         :autofocus="autofocus"
         :type="field.type||'text'"
@@ -22,10 +22,10 @@ export default {
         @keydown.escape="emitAction({name:'CancelEditField'})"
       />
         <v-text-field
-          :value="_value[_name]"
+          :model-value="_value[_name]"
           :label="field[`title_${$i18n.locale}`] || field.text "
           hide-details
-          single-line
+          variant="solo"
           :placeholder="field.text"
           :autofocus="autofocus"
           :type="field.type||'text'"

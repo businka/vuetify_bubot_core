@@ -1,5 +1,6 @@
 <script>
 export default {
+  name: 'NavDrawer',
   computed: {
     activePath: {
       get: function () {
@@ -37,7 +38,17 @@ export default {
 
 <style lang="scss">
   .v-list-item--active {
-    /*background-color: green;*/
+  }
+  div .nav1_bg .v-list {
+    border-top: thin solid transparent;
+    .v-list-item {
+      border-bottom: thin solid transparent;
+      border-top: thin solid transparent;
+
+    }
+    .v-list-item__spacer {
+      width: 16px
+    }
   }
 
   .active-section {
@@ -105,14 +116,13 @@ export default {
     v-model="visible"
     class="nav1_bg"
     app
-    dark
+    theme="dark"
     :width="200"
     permanent
   >
     <!--<v-toolbar>{{$t('NavDrawer.Title')}}</v-toolbar>-->
     <v-list
       v-if="items"
-      density="compact"
       class="pa-0"
     >
       <div
@@ -125,15 +135,11 @@ export default {
           clickable
           class="px-2"
           :to="item.path"
+          :title="$t(`NavDrawer.${item.title}`)"
         >
           <template v-slot:prepend>
-            <v-icon v-if="item.icon" :icon="item.icon" class="ma-0"></v-icon>
+            <v-icon v-if="item.icon" :icon="item.icon" class=""></v-icon>
           </template>
-          <v-list-item>
-            <v-list-item-title>
-              {{ $t(`NavDrawer.${item.title}`) }}
-            </v-list-item-title>
-          </v-list-item>
         </v-list-item>
         <!-- не активный раздел c детьми -->
         <v-menu
@@ -147,7 +153,6 @@ export default {
         >
           <template v-slot:activator="{ on }">
             <v-list-item
-
               :active="false"
               v-on="on"
             >

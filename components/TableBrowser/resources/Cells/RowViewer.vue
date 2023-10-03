@@ -17,7 +17,7 @@ export default {
     'RowColorProgress': defineAsyncComponent(() => import('./RowColorProgress')),
   },
   mixins: [ActionMixin],
-  props: ['columns', 'item', 'index', 'editMode', 'isSelected', 'toggleSelect', 'store', 'rowActions', 'rowActionsField'],
+  props: ['columns', 'item', 'index', 'editMode', 'isSelected', 'toggleSelect', 'store', 'rowActions', 'rowActionsField', 'keyProperty'],
   data: function () {
     return {
       row: {},
@@ -34,8 +34,7 @@ export default {
   },
   methods: {
     init: function () {
-      // this.row = jsonClone(this.item)
-      this.row = this.item.raw
+      this.row = jsonClone(this.item)
       this.selectable = this.item.selectable
     },
     actionSelectItems(actionData) {
@@ -54,10 +53,10 @@ export default {
       this.$emit('action', {name: 'RowActivate', data: {row: this.item, index: undefined}})
     },
     onClickRow: function (col) {
-      console.log('RowActivate')
       if (col.key === 'data-table-select') {
         return
       }
+      console.log('RowActivate')
       this.$emit('action', {name: 'RowActivate', data: {row: this.row, index: this.index}})
     },
     getTdStyle: function (col) {
@@ -85,14 +84,13 @@ export default {
       :style="getTdStyle(col)"
       @click="onClickRow(col)"
     >
-      {{ col.value }}
       <v-checkbox
         v-if="col.key==='data-table-select'"
         class="pl-0 pr-2 data-table-select"
         density="compact"
         hide-details
-        :model-value="isSelected(item)"
-        @update:modelValue="toggleSelect(item)"
+        :model-value="isSelected({value:item[keyProperty]})"
+        @update:modelValue="toggleSelect({value: item[keyProperty]})"
       />
       <component
         v-else

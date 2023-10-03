@@ -93,7 +93,7 @@ export default {
       :placeholder="schema.description || ''"
       :title="schema.description || ''"
       :readonly="(readOnly ? readOnly : schema.readonly)"
-      :dense="dense || arrayElem"
+      :density="density || arrayElem"
       hide-details
       :value="value?value.toLocaleString('sv'):''"
       :variant="variant"
