@@ -52,10 +52,9 @@ export default {
 <template>
   <v-btn
     :icon="!!icon"
-    :outlined="!!primary"
-    :color="primary?'primary':''"
+    :variant="!!primary?'outlined':undefined"
+    :color="primary?'primary':undefined"
     :density="density"
-
     :title="title"
     :rounded="rounded"
     small
