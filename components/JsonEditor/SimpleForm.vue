@@ -10,7 +10,7 @@ import JsonEditorMixin from './JsonEditor.mixin'
 export default {
     name: "SimpleForm",
     components: {
-        // JsonElem: () => import('./JsonElem'),
+        // JsonElem: defineAsyncComponent(() => import('./JsonElem')),
     },
     mixins: [JsonEditorMixin, ActionMixin],
     props: {
@@ -60,7 +60,7 @@ export default {
     <v-toolbar
       height="30"
       flat
-      dense
+      density="compact"
       class="form-toolbar pa-0"
     >
       <v-spacer/>
@@ -85,7 +85,7 @@ export default {
       <v-toolbar-items>
         <v-btn
           icon
-          dense
+          density="compact"
           small
           @click="onClose"
         >

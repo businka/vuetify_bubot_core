@@ -1,17 +1,18 @@
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import BrowserActionMixin from './resources/BrowserActionMixin'
+import {defineAsyncComponent} from "vue"
 
 export default {
     name: 'TableBrowser',
     components: {
-        BrowserToolBar: () => import('./resources/ToolBar'),
-        OperationsPanel: () => import('./resources/OperationsPanel'),
-        RowViewer: () => import('./resources/Cells/RowViewer'),
-        RowEditor: () => import('./resources/Cells/RowEditor'),
-        ExtException: () => import('../Simple/ExtException')
-        // Headers: () => import('./resources/Headers'),
-        // FilterPanel: () => import('./resources/FilterPanel'),
+        BrowserToolBar: defineAsyncComponent(() => import('./resources/ToolBar')),
+        OperationsPanel: defineAsyncComponent(() => import('./resources/OperationsPanel')),
+        RowViewer: defineAsyncComponent(() => import('./resources/Cells/RowViewer')),
+        RowEditor: defineAsyncComponent(() => import('./resources/Cells/RowEditor')),
+        ExtException: defineAsyncComponent(() => import('../Simple/ExtException'))
+        // Headers: defineAsyncComponent(() => import('./resources/Headers')),
+        // FilterPanel: defineAsyncComponent(() => import('./resources/FilterPanel')),
     },
     mixins: [ActionMixin, BrowserActionMixin],
     props: {

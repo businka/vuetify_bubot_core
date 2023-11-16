@@ -117,18 +117,16 @@ export default {
         } else {
           source = this.source
         }
-        if (addSelectionItems) {
-          if (objHasOwnProperty(payload.data, 'items')) {
-            // payload.data.filter = null
+        if (objHasOwnProperty(payload.data, 'items')) {
+          // payload.data.filter = null
 
+        } else {
+          if (this.selectAll) {
+            payload.data.items = this.source.listAll()
+            payload.data.filter = this.source.filter
           } else {
-            if (this.selectAll) {
-              payload.data.items = this.source.listAll()
-              payload.data.filter = this.source.filter
-            } else {
-              payload.data.items = this.selected
-              // payload.data.filter = null
-            }
+            payload.data.items = this.selected
+            // payload.data.filter = null
           }
         }
         await source.call(payload)

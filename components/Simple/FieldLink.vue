@@ -1,11 +1,12 @@
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import {isEmptyObject} from '../../../Helpers/BaseHelper'
+import {defineAsyncComponent} from "vue"
 
 export default {
     name: 'FieldLink',
     components: {
-        RightDrawerFormViewer3: () => import('../FormViewer/RightDrawerFormViewer3'),
+        RightDrawerFormViewer3: defineAsyncComponent(() => import('../FormViewer/RightDrawerFormViewer3')),
     },
     mixins: [ActionMixin],
     props: {

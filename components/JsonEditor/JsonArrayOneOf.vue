@@ -1,8 +1,9 @@
 <script>
+import {defineAsyncComponent} from "vue"
 
 export default {
   components: {
-    JsonElem: () => import('./JsonElem.vue')
+    JsonElem: defineAsyncComponent(() => import('./JsonElem.vue'))
   },
   props: ['schema', 'elemValue', 'elemName', 'path', 'inputListeners', 'arrayElem', 'level', 'readOnly'],
   data: () => ({
@@ -73,7 +74,7 @@ export default {
     >
       <v-btn
         icon
-        dense
+        density="compact"
         @click="show = !show"
       >
         <v-icon>{{ show ? 'mdi-minus-box-outline' : 'mdi-plus-box-outline' }}</v-icon>
@@ -93,7 +94,7 @@ export default {
       >
         <template v-slot:activator="{ on }">
           <v-btn
-            dense
+            density="compact"
             icon
             v-on="on"
           >
@@ -130,8 +131,8 @@ export default {
                 cols="11"
               >
                 <JsonElem
-                  :elem-value="_elemValue"
-                  :elem-name="index+'.'"
+                  :elemValue="_elemValue"
+                  :elemName="index+'.'"
                   :schema="getElemSchema(_elemValue)"
                   :path="`${path}${delimiter}${index}`"
                   :input-listeners="inputListeners"
@@ -145,7 +146,7 @@ export default {
                 cols="1"
               >
                 <v-btn
-                  dense
+                  density="compact"
                   icon
                   @click="removeElem(index)"
                 >

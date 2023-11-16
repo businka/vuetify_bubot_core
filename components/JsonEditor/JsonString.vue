@@ -3,12 +3,12 @@
 import {getPropByPath} from './JsonHelper'
 
 export default {
+  name: 'JsonString',
   props: {
     schema: Object,
     elemValue: {},
     elemName: String,
     path: String,
-    inputListeners: Object,
     arrayElem: Boolean,
     level: Number,
     readOnly: {
@@ -16,10 +16,16 @@ export default {
       default: undefined
 
     },
-    singleLine: Boolean,
     hideReadOnly: Boolean,
-    variant: String,
-    compact: Boolean,
+    variant: {
+      type: String,
+      default: 'underlined'
+    },
+    density: {
+      type: String,
+      default: 'compact'
+    },
+    singleLine: Boolean,
     byPath: Boolean,
     type: {
       type: String,
@@ -29,7 +35,6 @@ export default {
   data: function () {
     return {
       value: this.elemValue,
-      test: 0
     }
   },
   watch: {
@@ -39,11 +44,14 @@ export default {
       } else {
         this.value = value
       }
+      if (value === undefined && this.schema.default) {
+        this.onChange(this.value)
+      }
     }
   },
   methods: {
     onChange(value) {
-      // console.log('oc2' + this.path + '-' + value)
+      // console.log('oc2' + this.path + '-' + JSON.stringify(value))
       this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, value}})
     },
     // onInput(value) {
@@ -76,12 +84,12 @@ export default {
     <v-select
       v-if="Object.prototype.hasOwnProperty.call(schema, 'enum')"
       :label="schema.title || elemName"
-      :placeholder="schema.description || ''"
-      :title="schema.description || ''"
       :items="schema.enum"
+      :placeholder="schema['description']"
       :readonly="(readOnly ? readOnly : schema.readOnly)"
-      flat
-      :density="compact || arrayElem?'compact':undefined"
+      :density="density"
+      :variant="variant"
+      :single-line="singleLine"
       hide-details
       :model-value="value"
       @update:modelValue="onChange"
@@ -91,12 +99,12 @@ export default {
       v-else-if="Object.prototype.hasOwnProperty.call(schema, 'format') && schema.format==='datetime'"
       :label="schema.title || elemName"
       :placeholder="schema.description || ''"
-      :title="schema.description || ''"
       :readonly="(readOnly ? readOnly : schema.readonly)"
-      :density="compact || arrayElem?'compact':undefined"
+      :density="density"
+      :variant="variant"
+      :single-line="singleLine"
       hide-details
       :value="value?value.toLocaleString('sv'):''"
-      :variant="variant"
       type="datetime-local"
       @update:modelValue="convertToTime">
 
@@ -105,14 +113,13 @@ export default {
       v-else
       :label="schema.title || elemName"
       :placeholder="schema.description || ''"
-      :title="schema.description || ''"
       :readonly="(readOnly ? readOnly : schema.readonly)"
-      :density="compact || arrayElem?'compact':undefined"
       hide-details
       :model-value="value"
+      :density="density"
       :variant="variant"
-      :type="type"
       :single-line="singleLine"
+      :type="type"
       @keydown.escape.stop="cancelInput"
       @update:modelValue="onChange"
     />

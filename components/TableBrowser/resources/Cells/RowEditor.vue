@@ -1,13 +1,13 @@
 <script>
-import { jsonClone } from '../../../../../Helpers/clone'
+import { jsonClone } from '@/Helpers/clone'
 import ActionMixin from '../../../../helpers/mixinTemplate/action'
-
+import {defineAsyncComponent} from "vue"
 
 export default {
   name: 'RowEditor',
   components: {
-    'Default': () => import('./RowCellDefault'),
-    'FieldLink': () => import('./RowCellFieldLink'),
+    'Default': defineAsyncComponent(() => import('./RowCellDefault')),
+    'FieldLink': defineAsyncComponent(() => import('./RowCellFieldLink')),
   },
   mixins: [ActionMixin],
   props: {

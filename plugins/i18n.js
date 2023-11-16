@@ -10,7 +10,8 @@ export function setupI18n(options = {
   // allowComposition: true, // you need to specify that!
   locale: navigator.language.substr(0, 2).toLowerCase(), // set locale
   fallbackLocale: 'en',
-  silentTranslationWarn: true,
+  silentFallbackWarn: true,
+  silentTranslationWarn: true, // не показывать варнинги отсутствующих локализаций
   messages: undefined //loadLocaleMessages() // set locale messages
 
 }) {

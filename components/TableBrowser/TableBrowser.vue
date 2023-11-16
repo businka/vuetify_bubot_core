@@ -17,8 +17,8 @@ export default {
     OperationsPanel,
     RowViewer,
     RowEditor
-    // Headers: () => import('./resources/Headers'),
-    // FilterPanel: () => import('./resources/FilterPanel'),
+    // Headers: defineAsyncComponent(() => import('./resources/Headers')),
+    // FilterPanel: defineAsyncComponent(() => import('./resources/FilterPanel')),
   },
   mixins: [ActionMixin, BrowserActionMixin],
   props: {
@@ -129,14 +129,14 @@ export default {
       this.init()
       this.needUpdate = true
     },
-    filterConst: function () {
+    filterConst: function (filterConst) {
       // console.log(`Browser  ${this.dataSource.objName} watch filterConst 2, needUpdate ${this.needUpdate} `)
       this.needUpdate = true
-      this.source.changeProps({filterConst: this.filterConst})
+      this.source.changeProps({filterConst})
     },
-    options: function () {
+    options: function (options) {
       // console.log(`Browser  ${this.dataSource.objName} watch options ${JSON.stringify(this.options)}`)
-      this.source.changeProps(this.options)
+      this.source.changeProps(options)
       this.needUpdate = true
     },
     needUpdate: async function (value) {
@@ -194,6 +194,7 @@ export default {
       fixed-header
       hide-default-header
       hide-default-footer
+      :return-object="true"
       :items="source.rows"
       :itemsPerPage=0
       :item-value="source['keyProperty']"

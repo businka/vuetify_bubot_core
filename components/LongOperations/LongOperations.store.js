@@ -2,7 +2,7 @@
 // import { initForm, error } from '../../helpers/mixinStore/actions'
 // import { initStoreKey } from '../../helpers/mixinStore/mutations'
 // import { processInDataSource } from '../../helpers/mixinStore'
-import {app} from '@/main'
+import app from '@/main'
 // import { objHasOwnProperty } from '../../../Helpers/BaseHelper'
 import { findIndexInArrayObj, findInArrayObj } from '@/Helpers/ArrayHelper'
 import { v4 as uuidv4 } from 'uuid'
@@ -36,7 +36,7 @@ export default {
       state.operations.push(operation)
       // Vue.set(state.operations, uid, operation)
       if (operation.show)
-        state.executed++;
+        state.executed = state.executed + 1;
       if (state.executed)
         state.showList = true
     },
@@ -80,7 +80,12 @@ export default {
       state.showList = false
     },
     showOperation (state, uid) {
-      state.currentUid = uid
+      if (state.currentUid === uid && state.showCurrent) {
+        state.showCurrent = false
+        return
+      } else {
+        state.currentUid = uid
+      }
       state.showCurrent = true
     },
     hideOperation (state) {
@@ -96,13 +101,16 @@ export default {
       operation.status = 'cancel'
     },
     delete (state, uid) {
-      let index = findIndexInArrayObj(state.operations, uid, 'uid')
-      let operation = state.operations[index]
-      state.operations.splice(index, 1)
-
-      if (operation.show)
-        state.executed--;
-
+      if (uid) {
+        let index = findIndexInArrayObj(state.operations, uid, 'uid')
+        let operation = state.operations[index]
+        state.operations.splice(index, 1)
+        if (operation.show)
+          state.executed = state.executed - 1;
+      } else {
+        state.operations = []
+        state.executed = 0
+      }
       if (!state.executed) {
         state.currentUid = ''
         state.showCurrent = false
@@ -112,7 +120,7 @@ export default {
   },
   actions: {
     cancel: ({ commit }, uid) => {
-      app.$socket.sendObj({
+      app.config.globalProperties.$socket.sendObj({
         uid,
         type: 'cancel'
       }, { root: true })
@@ -124,11 +132,11 @@ export default {
       let operation = state.operations.uid
       if (operation && (operation.status === 'pending' || operation.status === 'run'))
         return uid
-      app.$socket.sendObj({
+      app.config.globalProperties.$socket.sendObj({
         uid,
         type: 'call',
-        name: payload.actionName,
-        data: payload.actionData
+        name: payload.method,
+        data: payload.data
       })
       operation = new_operation
       operation.uid = uid
@@ -161,7 +169,8 @@ export default {
     },
     on_error: (store, payload) => {
       const uid = payload.uid
-      const operation = store.state.operations[uid]
+      let operation = store.getters.find(payload.uid)
+      // const operation = store.state.operations[uid]
       if (operation === undefined) {
         console.warn('long operation not found')
         return

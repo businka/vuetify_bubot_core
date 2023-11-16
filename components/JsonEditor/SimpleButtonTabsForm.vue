@@ -5,15 +5,16 @@ import JsonEditorMixin from './JsonEditor.mixin'
 // import {initDataSource} from '../DataSource/DataSourceLoader'
 // import {objHasOwnProperty} from '../../helpers/baseHelper'
 // import schemaStorage from './ObjSchema.store'
+import {defineAsyncComponent} from "vue"
 
 
 export default {
     name: "SimpleTabsForm",
     components: {
-        ParamEditor: () => import('../ParamsEditor/ParamsEditor'),
-        JsonString: () => import('./JsonString'),
-        // JsonObjectLink: () => import('/JsonObjectLink'),
-        FormViewer: () => import('../FormViewer/FormViewer'),
+        ParamEditor: defineAsyncComponent(() => import('../ParamsEditor/ParamsEditor')),
+        JsonString: defineAsyncComponent(() => import('./JsonString')),
+        // JsonObjectLink: defineAsyncComponent(() => import('/JsonObjectLink'),
+        FormViewer: defineAsyncComponent(() => import('../FormViewer/FormViewer')),
     },
     mixins: [JsonEditorMixin, ActionMixin],
     props: {
@@ -65,14 +66,14 @@ export default {
     <v-toolbar
       height="30"
       flat
-      dense
+      density="compact"
       class="pa-0"
     >
       <JsonString
         v-if="schema && itemFull"
         :schema="schema.properties.title"
-        :elem-value="itemFull.title"
-        elem-name="title"
+        :elemValue="itemFull.title"
+        elemName="title"
         :read-only="false"
         path="title"
         solo
@@ -101,7 +102,7 @@ export default {
       <v-toolbar-items>
         <v-btn
           icon
-          dense
+          density="compact"
           small
           @click="onClose"
         >
@@ -112,7 +113,7 @@ export default {
     <v-toolbar
       v-if="tabs"
       flat
-      dense
+      density="compact"
       height="36"
       class="form-toolbar"
     >

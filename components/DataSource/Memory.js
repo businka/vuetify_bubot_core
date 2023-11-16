@@ -53,8 +53,8 @@ const conditions = {
 
 // module.exports = class Memory extends DataSource {
 export default class Memory extends Source {
-  constructor(props) {
-    super(props);
+  constructor(props, store) {
+    super(props, store);
     this.data = []
   }
 

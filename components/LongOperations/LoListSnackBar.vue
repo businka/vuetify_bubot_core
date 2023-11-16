@@ -2,21 +2,22 @@
 // import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 // import storage from './store'
 import ActionMixin from '../../helpers/mixinTemplate/action'
+import {defineAsyncComponent} from "vue"
 // import { ObjectId } from 'bson'
 
 export default {
     name: 'LoListSnackBar',
     components: {
-        'LoListSnackBarElem': () => import('./LoListSnackBarElem')
+        'LoListSnackBarElem': defineAsyncComponent(() => import('./LoListSnackBarElem'))
     },
     mixins: [ActionMixin],
-    props: ['lo'],
+    props: ['nameStorageModule'],
     data: function () {
         return {}
     },
     computed: {
         operations() {
-            return this.lo.operations || []
+          return this.$store.state[this.nameStorageModule].operations
         }
     },
     mounted() {
@@ -47,7 +48,7 @@ export default {
 }
 </script>
 <style lang="scss">
-  .v-snack--vertical .v-snack__content {
+.v-snackbar__content {
     padding: 0;
   }
 
@@ -64,19 +65,24 @@ export default {
 </style>
 <template>
   <v-snackbar
-    :value="true"
+    :model-value="true"
     vertical
     :timeout="-1"
     outlined
+    location="bottom end"
     right
     color="white"
   >
-    <v-card>
-      <v-system-bar>
+    <v-container class="pa-0">
+      <v-toolbar density="compact" class="pl-2 pr-2">
         <span>Long operations</span>
         <v-spacer></v-spacer>
+        <v-icon
+          class="pr-2"
+          @click="$store.commit('LongOperations/delete', null, {root: true})"
+        >mdi-delete</v-icon>
         <v-icon @click="$store.commit('LongOperations/hideList', null, {root: true})">mdi-chevron-down</v-icon>
-      </v-system-bar>
+      </v-toolbar>
       <v-list
         style="max-height: 400px; min-width: 350px;"
         class="pa-0 overflow-y-auto"
@@ -88,6 +94,6 @@ export default {
           @action="onAction"
         ></lo-list-snack-bar-elem>
       </v-list>
-    </v-card>
+    </v-container>
   </v-snackbar>
 </template>

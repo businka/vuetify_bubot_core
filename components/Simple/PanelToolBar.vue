@@ -51,10 +51,12 @@ export default {
 
 <style lang="scss">
   div .PanelHeader {
-    .v-text-field > .v-input__control > .v-input__slot:before {
-      border-style: none;
+    //.v-text-field > .v-input__control > .v-input__slot:before {
+    //  border-style: none;
+    //}
+    .v-text-field input.v-field__input {
+      padding-top: 0;
     }
-
     input {
       font-size: x-large;
     }
@@ -68,9 +70,7 @@ export default {
 
 <template>
   <v-toolbar
-    height="30"
-    flat
-    dense
+    density="compact"
     class="header1_bg pa-0 justify-end"
   >
     <JsonString
@@ -78,7 +78,10 @@ export default {
       :schema="headerSchema"
       :array-elem="true"
       :elem-value="headerValue"
-      class="PanelHeader"
+      density="compact"
+      variant="plain"
+      single-line
+      class="PanelHeader pl-4"
       @action="emitAction('UpdateHeader', $event)">
     </JsonString>
     <v-toolbar-items

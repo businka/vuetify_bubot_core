@@ -1,8 +1,10 @@
 <script>
+import {defineAsyncComponent} from "vue"
 
 export default {
+  name: 'JsonArray',
   components: {
-    'JsonElem': () => import('./JsonElem.vue')
+    JsonElem: defineAsyncComponent(() => import('./JsonElem.vue'))
   },
   props: {
     schema: Object,
@@ -20,6 +22,7 @@ export default {
     readOnly: Boolean,
     hideReadOnly: Boolean
   },
+  emits: ['action'],
   data: () => ({
     show: false,
     delimiter: '.'
@@ -95,7 +98,7 @@ export default {
 <template>
   <v-card
     class="pa-0 ma-0"
-    flat
+    variant="flat"
   >
     <!--//todo.обработчики добавления / удаления элементов-->
     <v-card-actions
@@ -104,7 +107,7 @@ export default {
       <div class="pa-0 ma-0 pt-4">
         <v-btn
           icon
-          dense
+          density="compact"
           @click="show = !show"
         >
           <v-icon>{{ show ? 'mdi-minus-box-outline' : 'mdi-plus-box-outline' }}</v-icon>
@@ -113,7 +116,8 @@ export default {
       <v-text-field
         :label="`${schema.title || elemName} [${elemValue.length}]`"
         :placeholder="schema['description']"
-        flat
+        density="compact"
+        variant="underlined"
         hide-details
         disabled
         :value="title"
@@ -124,7 +128,7 @@ export default {
       >
         <v-btn
           v-if="show"
-          dense
+          density="compact"
           icon
           :disabled="readOnly"
           @click="addItem()"
@@ -138,7 +142,7 @@ export default {
         v-show="show"
         class="ml-4 pb-1 pl-2"
         style="border-left: 1px solid var(--v-delimiter-base)"
-        flat
+        variant="flat"
         tile
       >
         <span
@@ -155,8 +159,8 @@ export default {
               <JsonElem
                 class="flex-grow-1 flex-shrink-0"
                 style="min-width: 100px; max-width: 100%;"
-                :elem-value="_elemValue"
-                elem-name=""
+                :elemValue="_elemValue"
+                elemName=""
                 :schema="schema.items"
                 :path="(path?path+delimiter:'')+index"
                 :input-listeners="inputListeners"
@@ -168,7 +172,7 @@ export default {
               <v-btn
                 v-if="!readOnly"
                 class="flex-grow-0 flex-shrink-1"
-                dense
+                density="compact"
                 icon
                 :disabled="readOnly"
               >

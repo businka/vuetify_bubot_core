@@ -3,6 +3,7 @@ import NavDrawer from '../NavDrawer/NavDrawer'
 import LongOperations from '../LongOperations/LongOperations'
 import LangSelector from '../Simple/LangSelector'
 import LongOperationsBadge from '../LongOperations/LongOperationBadge'
+import LongOperationResult from "../LongOperations/LongOperationResult"
 import CurrentUser from '../Session/CurrentUserInToolbar'
 import TableBrowser from "@/BubotCore/components/TableBrowser/TableBrowser"
 
@@ -14,7 +15,8 @@ export default {
     CurrentUser,
     LangSelector,
     LongOperations,
-    LongOperationsBadge
+    LongOperationsBadge,
+    LongOperationResult
   },
   computed: {
     uid() {
@@ -95,8 +97,8 @@ export default {
       <NavDrawer class="height100"/>
       <v-toolbar class="px-0" height="24">
         <v-spacer/>
-        <LongOperationsBadge/>
         <v-toolbar-items>
+          <LongOperationsBadge/>
           <CurrentUser/>
           <v-divider vertical/>
           <LangSelector/>
@@ -114,12 +116,13 @@ export default {
           :xs="form.col_xs || '12'"
         >
           <component
+            v-if="form"
             :is="form.template"
             v-bind="form"
           />
         </v-col>
-        <LongOperations/>
       </v-row>
+      <LongOperations/>
     </v-main>
   </v-app>
 </template>

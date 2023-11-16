@@ -7,8 +7,8 @@ import ActionMixin from '../../helpers/mixinTemplate/action'
 export default {
   name: 'ParamEditor',
   components: {
-    // ParamsString: () => import('./ParamsString'),
-    // ParamsLink: () => import('./ParamsLink'),
+    // ParamsString: defineAsyncComponent(() => import('./ParamsString'),
+    // ParamsLink: defineAsyncComponent(() => import('./ParamsLink'),
   },
   //todo.чтение схем и данных
   //todo.локализация схем

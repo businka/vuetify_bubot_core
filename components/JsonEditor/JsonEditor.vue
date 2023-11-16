@@ -46,8 +46,8 @@ export default {
   >
     <JsonElem
       :schema="schema"
-      :elem-value="edit_value"
-      elem-name=""
+      :elemValue="edit_value"
+      elemName=""
       :read-only="false"
       path=""
       @change-value="onChange"

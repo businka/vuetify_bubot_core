@@ -2,18 +2,19 @@
 // import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import JsonEditorMixin from './JsonEditor.mixin'
-import {objHasOwnProperty} from '../../../Helpers/BaseHelper'
+import {objHasOwnProperty} from '@/Helpers/BaseHelper'
 import storage from './store'
 // import schemaStorage from './ObjSchema.store'
+import {defineAsyncComponent} from "vue"
 
 
 export default {
     name: 'JsonForm',
     components: {
-        JsonElem: () => import('./JsonElem'),
-        ActionBtn: () => import('../ActionButtons/ActionBtn'),
+        JsonElem: defineAsyncComponent(() => import('./JsonElem')),
+        ActionBtn: defineAsyncComponent(() => import('../ActionButtons/ActionBtn')),
 
-        // JsonEditor: () => import('./JsonEditor'),
+        // JsonEditor: defineAsyncComponent(() => import('./JsonEditor'),
     },
     mixins: [JsonEditorMixin, ActionMixin],
     props: {
@@ -164,7 +165,7 @@ export default {
         <v-toolbar
                 height="30"
                 flat
-                dense
+                density="compact"
                 class="header1_bg pa-0"
         >
             <v-spacer/>
@@ -189,7 +190,7 @@ export default {
             <v-toolbar-items>
                 <v-btn
                         icon
-                        dense
+                        density="compact"
                         small
                         @click="onClose"
                 >
@@ -200,7 +201,7 @@ export default {
         <v-toolbar
                 v-if="tabs"
                 flat
-                dense
+                density="compact"
                 height="30"
                 class="header1_bg"
         >
@@ -238,8 +239,8 @@ export default {
         >
             <JsonElem
                     :schema="schema"
-                    :elem-value="itemFull"
-                    elem-name=""
+                    :elemValue="itemFull"
+                    elemName=""
                     :read-only="false"
                     path=""
                     @action="onAction"

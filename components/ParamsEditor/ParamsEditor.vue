@@ -2,14 +2,15 @@
 // import BaseTemplateMixin from '../../jay/mixinTemplate/baseForm'
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import Vue from 'vue'
+import {defineAsyncComponent} from "vue"
 // import storage from './store'
 
 export default {
     name: 'ParamEditor',
     components: {
-        ParamsString: () => import('./ParamsString'),
-        ParamsSelect: () => import('./ParamsSelect'),
-        ParamsLink: () => import('./ParamsLink'),
+        ParamsString: defineAsyncComponent(() => import('./ParamsString')),
+        ParamsSelect: defineAsyncComponent(() => import('./ParamsSelect')),
+        ParamsLink: defineAsyncComponent(() => import('./ParamsLink')),
     },
     //todo.чтение схем и данных
     //todo.локализация схем

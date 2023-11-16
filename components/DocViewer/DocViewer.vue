@@ -2,12 +2,13 @@
 import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import storage from './store'
+import {defineAsyncComponent} from "vue"
 
 export default {
   name: 'DocViewer',
   components: {
-    DocHeader: () => import('./DocHeader'),
-    BtnOrgLink: () => import('./BtnOrgLink'),
+    DocHeader: defineAsyncComponent(() => import('./DocHeader')),
+    BtnOrgLink: defineAsyncComponent(() => import('./BtnOrgLink')),
   },
   mixins: [BaseTemplateMixin, ActionMixin],
   data() {

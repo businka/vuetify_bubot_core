@@ -1,4 +1,5 @@
 <script>
+import {defineAsyncComponent} from "vue"
 
 export default {
   name: 'TagBrowser',
@@ -7,8 +8,8 @@ export default {
     browserOptions: {}
   }),
   components: {
-    TagTreeView: () => import('../Simple/TagTreeView'),
-    Browser: () => import('./TableBrowser'),
+    TagTreeView: defineAsyncComponent(() => import('../Simple/TagTreeView')),
+    Browser: defineAsyncComponent(() => import('./TableBrowser')),
   },
   methods: {
     getBrowserSource () {

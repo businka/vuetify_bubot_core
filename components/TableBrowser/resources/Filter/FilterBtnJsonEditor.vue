@@ -1,12 +1,13 @@
 <script>
 import ActionMixin from '../../../../helpers/mixinTemplate/action'
+import {defineAsyncComponent} from "vue"
 
 export default {
   name: 'FilterBtn',
   components: {
-    'FilterCheckBox': () => import('./FilterCheckBox'),
-    'FilterFieldLink': () => import('./FilterFieldLink'),
-    'FilterDateInterval': () => import('./FilterDateInterval')
+    FilterCheckBox: defineAsyncComponent(() => import('./FilterCheckBox')),
+    FilterFieldLink: defineAsyncComponent(() => import('./FilterFieldLink')),
+    FilterDateInterval: defineAsyncComponent(() => import('./FilterDateInterval'))
   },
   mixins: [ActionMixin],
   props: ['params', 'filter'],

@@ -13,23 +13,20 @@ export default {
 }
 </script>
 <template>
-  <v-badge
-    v-if="count"
-    :content="count"
-    inline
+  <v-btn
+    class="pa-0"
+    :title="$t('Long operations')"
+    density="compact"
     @click="$store.commit('LongOperations/showList', null, {root: true})"
   >
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on }">
-        <v-icon
-          class="mr-0"
-          v-on="on"
-          @click="$store.commit('LongOperations/showList', null, {root: true})"
-        >
-          mdi-timer-sand
-        </v-icon>
-      </template>
-      <span>{{ $t('Long operations') }}</span>
-    </v-tooltip>
-  </v-badge>
+    <template v-slot:append>
+      <v-badge
+        v-if="count"
+        inline
+        :content="count"
+      >
+        <v-icon>mdi-timer-sand</v-icon>
+      </v-badge>
+    </template>
+  </v-btn>
 </template>

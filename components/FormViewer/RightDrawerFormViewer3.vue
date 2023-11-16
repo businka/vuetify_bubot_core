@@ -24,6 +24,7 @@ export default {
     :width="width"
     class="elevation-6"
     :temporary="true"
+    :scrim="false"
     :model-value="formVisible"
   >
     <v-progress-linear

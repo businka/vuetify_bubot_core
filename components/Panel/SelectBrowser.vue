@@ -2,11 +2,12 @@
 // import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 import ActionMixin from '../../helpers/mixinTemplate/action'
 // import storage from '../Dialog/SelectBrowser/store'
+import {defineAsyncComponent} from "vue"
 
 export default {
     name: 'SelectBrowser',
     components: {
-        PanelToolBar: () => import('../Simple/PanelToolBar'),
+        PanelToolBar: defineAsyncComponent(() => import('../Simple/PanelToolBar')),
     },
     mixins: [ActionMixin],
     props: {

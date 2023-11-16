@@ -89,8 +89,8 @@ export default {
         class="pl-0 pr-2 data-table-select"
         density="compact"
         hide-details
-        :model-value="isSelected({value:item[keyProperty]})"
-        @update:modelValue="toggleSelect({value: item[keyProperty]})"
+        :model-value="isSelected({value:item})"
+        @update:modelValue="toggleSelect({value: item})"
       />
       <component
         v-else

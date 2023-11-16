@@ -22,7 +22,7 @@ export default {
   components: {
     ParamEditor: defineAsyncComponent(() => import('../ParamsEditor/ParamsEditor')),
     JsonString: defineAsyncComponent(() => import('./JsonString')),
-    // JsonObjectLink: () => import('/JsonObjectLink'),
+    // JsonObjectLink: defineAsyncComponent(() => import('/JsonObjectLink'),
     FormViewer: defineAsyncComponent(() => import('../FormViewer/FormViewer')),
   },
   mixins: [JsonEditorMixin, ActionMixin],
@@ -99,8 +99,8 @@ export default {
       <JsonString
         v-if="schema && itemFull && schema.properties"
         :schema="schema.properties.title"
-        :elem-value="itemFull.title"
-        elem-name="title"
+        :elemValue="itemFull.title"
+        elemName="title"
         single-line
         path="title"
         variant="plain"

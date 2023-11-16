@@ -1,10 +1,12 @@
 <script>
 import ActionBtn from "@/BubotCore/components/ActionButtons/ActionBtn"
+import {defineAsyncComponent} from "vue"
+
 export default {
   name: 'BrowserOperationsPanel',
   components: {
     ActionBtn,
-    SearchField: () => import('./Filter/SearchField'),
+    SearchField: defineAsyncComponent(() => import('./Filter/SearchField')),
   },
   props: {
 

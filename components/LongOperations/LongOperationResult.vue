@@ -31,11 +31,11 @@ export default {
 
 <template>
   <v-navigation-drawer
-    right
     :width="width"
-    absolute
+    location="right"
+    :temporary="true"
     class="elevation-6"
-    permanent
+    :model-value="true"
   >
     <v-progress-linear
       v-if="status==='pending' || status==='run'"
@@ -44,9 +44,7 @@ export default {
       height="2"
     />
     <v-toolbar
-      height="30"
-      flat
-      dense
+      density="compact"
       class="header1_bg pa-0"
     >
       <v-toolbar-title>{{ title }}</v-toolbar-title>

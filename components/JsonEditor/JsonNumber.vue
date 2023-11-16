@@ -1,6 +1,8 @@
 <script>
 // import {getPropByPath} from "@/BubotCore/components/JsonEditor/JsonHelper"
 
+import {getPropByPath} from "@/BubotCore/components/JsonEditor/JsonHelper"
+
 export default {
   props: {
     schema: Object,
@@ -9,7 +11,6 @@ export default {
     path: String,
     inputListeners: Object,
     arrayElem: Boolean,
-    singleLine: Boolean,
     level: Number,
     readOnly: {
       type: Boolean,
@@ -17,49 +18,68 @@ export default {
 
     },
     hideReadOnly: Boolean,
-    variant: String,
-    density: String
+    variant: {
+      type: String,
+      default: 'underlined'
+    },
+    density: {
+      type: String,
+      default: 'compact'
+    },
+    singleLine: Boolean,
+  },
+  data: function () {
+    return {
+      value: this.elemValue,
+    }
   },
   watch: {
     elemValue: function (value) {
-      console.log('vak', value)
+      if (this.byPath) {
+        this.value = getPropByPath(value, this.path)
+      } else {
+        this.value = value
+      }
       if (value === undefined && this.schema.default) {
-        this.$emit('action', {name: 'UpdateProp', data:{ action:'change', path: this.path, value: Number(this.schema.default)}})
+        this.onChange(this.value)
       }
     }
   },
   methods: {
-    onChange (value) {
-      console.log('oc2' + this.path + '-' + JSON.stringify(value))
-      this.$emit('action', {name: 'UpdateProp', data:{ action:'change', path: this.path, value: Number(value)}})
+    onChange(value) {
+      // console.log('oc2' + this.path + '-' + JSON.stringify(value))
+      this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, value: Number(value)}})
 
     }
   }
 }
 </script>
+<style lang="scss">
+
+</style>
 <template>
   <div>
     <v-select
       v-if="Object.prototype.hasOwnProperty.call(schema, 'enum')"
-      :label="elemName"
+      :label="schema.title || elemName"
       :items="schema.enum"
       :placeholder="schema['description']"
-      :disabled="readOnly || schema.readOnly"
-      :single-line="arrayElem"
-      :dense="arrayElem"
+      :readonly="(readOnly ? readOnly : schema.readOnly)"
+      :density="density"
+      :variant="variant"
+      :single-line="singleLine"
       hide-details
-      :model-value="elemValue"
+      :model-value="value"
       @update:modelValue="onChange"
     />
     <v-text-field
       v-else
       :label="schema.title || elemName"
       :placeholder="schema.description || ''"
-      :title="schema.description || ''"
       :readonly="(readOnly ? readOnly : schema.readonly)"
-      :density="density || arrayElem"
       hide-details
-      :model-value="elemValue || schema.default"
+      :model-value="value"
+      :density="density"
       :variant="variant"
       :single-line="singleLine"
       @update:modelValue="onChange"

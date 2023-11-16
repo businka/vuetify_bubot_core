@@ -1,25 +1,29 @@
 <script>
+import {defineAsyncComponent} from "vue"
+
 export default {
   name: 'JsonObject',
+  components: {
+    JsonElem: defineAsyncComponent(() => import('./JsonElem.vue'))
+  },
   props: {
     schema: Object,
     elemValue: {
       validator: function (value) {
         const result = (typeof value === 'object')
         if (!result)
-          console.warn(value)
+          console.warn(`JsonObject validator warn:${value}`)
         return result
       }
     },
     elemName: String,
     path: String,
-    inputListeners: Object,
     arrayElem: Boolean,
     level: Number,
     readOnly: Boolean,
     hideReadOnly: Boolean
   },
-  data () {
+  data() {
     return {
       linkListData: null,
       options: null,
@@ -28,7 +32,7 @@ export default {
     }
   },
   computed: {
-    _elemName () {
+    _elemName() {
       let _value = this.elemValue
       if (this.arrayElem || this.path) { // если показываем объект являющийся элементом массива, показываем узел name или значения первого из схемы
         if (Object.prototype.hasOwnProperty.call(this.elemValue, 'title')) {
@@ -46,32 +50,31 @@ export default {
       return _value
     },
     value: {
-      get () {
+      get() {
         return this.elemValue.title
       },
-      set (value) {
+      set(value) {
         this.$emit('action', {
           name: 'UpdateProp',
-          data: { action: 'change', path: this.path, value: this.linkListData[value] }
+          data: {action: 'change', path: this.path, value: this.linkListData[value]}
         })
       }
     }
   },
-  mounted () {
+  mounted() {
     if (this.schema && this.elemValue === undefined) {
-
-      this.$emit('action', { name: 'UpdateProp', data: { action: 'change', path: this.path, value: {} } })
+      this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, value: {}}})
     }
   },
-  beforeCreate: function () {
-    this.$options.components.JsonElem = require('./JsonElem.vue').default
-  },
+  // beforeCreate: function () {
+  //   this.$options.components.JsonElem = require('./JsonElem.vue').default
+  // },
   methods: {
-    onChange (value) {
+    onChange(value) {
       console.log('oc2' + this.path + '-' + value)
-      this.$emit('action', { name: 'UpdateProp', data: { action: 'change', path: this.path, value } })
+      this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, value}})
     },
-    filterFn (val, update) {
+    filterFn(val, update) {
       if (this.options !== null) {
         update()
         return
@@ -107,7 +110,7 @@ export default {
     <v-card
       v-if="path"
       class="pa-0 ma-0"
-      flat
+      variant="flat"
     >
       <v-card-actions
         class="pa-0 ma-0 pb-1"
@@ -115,7 +118,7 @@ export default {
         <div class="pa-0 ma-0 pt-4">
           <v-btn
             icon
-            dense
+            density="compact"
             @click="show = !show"
           >
             <v-icon>{{ show ? 'mdi-minus-box-outline' : 'mdi-plus-box-outline' }}</v-icon>
@@ -124,11 +127,10 @@ export default {
         <v-text-field
           :label="schema.title || elemName"
           :placeholder="schema.description || null"
-          solo
-          flat
+          density="compact"
+          variant="underlined"
           hide-details
           disabled
-          :dense="arrayElem"
         />
       </v-card-actions>
       <!--<v-divider v-if="show" />-->
@@ -137,19 +139,19 @@ export default {
           v-show="show"
           class="ml-4 pl-2"
           style="border-left: 1px solid"
-          flat
+          variant="flat"
           tile
         >
           <JsonElem
             v-for="(_schema, _propName ) in schema['properties']"
             :key="(path?path+delimiter:'')+_propName"
-            :elem-name="_propName"
-            :elem-value="elemValue[_propName]"
+            :elemName="_propName"
+            :elemValue="elemValue[_propName]"
             :schema="_schema"
             :path="(path?path+delimiter:'')+_propName"
-            :input-listeners="inputListeners"
             :read-only="readOnly ? readOnly : schema.readOnly"
             :hide-read-only="hideReadOnly"
+            v-bind="$attrs"
           ></JsonElem>
         </v-card>
       </v-expand-transition>
@@ -159,13 +161,14 @@ export default {
       <JsonElem
         v-for="(_schema, _propName ) in schema['properties']"
         :key="(path?path+delimiter:'')+_propName"
-        :elem-name="_propName"
-        :elem-value="elemValue[_propName]"
+        :elemName="_propName"
+        :elemValue="elemValue[_propName]"
         :schema="_schema"
         :path="(path?path+delimiter:'')+_propName"
-        :input-listeners="inputListeners"
         :read-only="readOnly ? readOnly : schema.readOnly"
         :hide-read-only="hideReadOnly"
+        v-bind="$attrs"
+        class="pb-1"
       ></JsonElem>
     </span>
   </span>

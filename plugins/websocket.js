@@ -1,4 +1,4 @@
-import VueNativeSock from 'vue-native-websocket'
+import VueNativeSock from 'vue-native-websocket-vue3'
 import Vue from 'vue'
 import AppConst from '../../AppConst'
 // import store from '../../store'
