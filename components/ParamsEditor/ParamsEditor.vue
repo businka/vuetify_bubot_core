@@ -1,7 +1,7 @@
 <script>
 // import BaseTemplateMixin from '../../jay/mixinTemplate/baseForm'
 import ActionMixin from '../../helpers/mixinTemplate/action'
-import Vue from 'vue'
+
 import {defineAsyncComponent} from "vue"
 // import storage from './store'
 

@@ -17,7 +17,7 @@ export default {
     'RowColorProgress': defineAsyncComponent(() => import('./RowColorProgress')),
   },
   mixins: [ActionMixin],
-  props: ['columns', 'item', 'index', 'editMode', 'isSelected', 'toggleSelect', 'store', 'rowActions', 'rowActionsField', 'keyProperty'],
+  props: ['columns', 'item', 'index', 'editMode', 'isSelected', 'toggleSelect', 'store', 'rowActions', 'rowActionsField', 'keyProperty' , 'items'],
   data: function () {
     return {
       row: {},
@@ -97,6 +97,8 @@ export default {
         :is="col.template||'RowCellDefault'"
         v-model="row"
         :edit-mode="editMode"
+        :items="items"
+        :index="index"
         :autofocus="i===0"
         :field="col.key"
         v-bind="col"

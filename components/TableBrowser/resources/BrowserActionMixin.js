@@ -220,6 +220,6 @@ export default {
         uid: this.store.uid,
         filter: this.modeParams.filter
       })
-    },
+    }
   }
 }

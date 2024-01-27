@@ -7,9 +7,8 @@ export default class Source {
 
 
   constructor(props, store) {
-    this.props = {
+    this._props = {
       rows: [],
-      has_more: false,
       page: 1,
       filter: {},
       filterConst: {},
@@ -20,6 +19,7 @@ export default class Source {
       filterFields: [],
       keyProperty: 'id'
     }
+    this.has_more = false
     this.last_nav = undefined
     this.total = 0
     this.rawData = []
@@ -35,13 +35,19 @@ export default class Source {
     this.rawData = []
     this.changeProps(props)
   }
-
+  get props() {return this._props}
+  set props(x) {this._props = x}
   changeProps(props) {
     if (objHasOwnProperty(props, 'rows')) {
       this.rawData = props.rows
     }
     this.props = updateObject(this.props, props)
     this.keyProperty = this.props.keyProperty || 'id'
+  }
+
+  async nextPage(){
+    this.props.page += 1
+    await this.fetchRows()
   }
 
   async changeFilter(filter) {
@@ -76,7 +82,7 @@ export default class Source {
       let resp = await this.list(this.props.filter, nav)
       let new_rows = resp.rows || []
       this.last_nav = resp.nav || undefined
-      if (this.last_nav && objHasOwnProperty(this.last_nav, 'gggggggggggggggggggg_more')) {
+      if (this.last_nav && objHasOwnProperty(this.last_nav, 'has_more')) {
         this.has_more = this.last_nav.has_more
       } else {
         this.has_more = nav.limit && new_rows.length && new_rows.length >= nav.limit
