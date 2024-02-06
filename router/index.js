@@ -1,8 +1,8 @@
 export const coreRoutes = [
-  {
-    path: '/',
-    component: () => import('../components/FormViewer/LayoutFormViewer')
-  },
+  // {
+  //   path: '/',
+  //   component: () => import('../components/FormViewer/LayoutFormViewer')
+  // },
 
   {
     path: '/:objName/:subtype/:objForm',
