@@ -2,7 +2,7 @@ export default {
   emits: ['action'],
   methods: {
     onAction (action, component) {
-      console.log(`${this.$options.name} on action ${action.name} component ${component}`)
+      // console.log(`${this.$options.name} on action ${action.name} component ${component}`)
       let _action = `action${action.name}`
       if (Object.prototype.hasOwnProperty.call(this, _action)) {
         this[_action](action.data, component)
@@ -21,7 +21,7 @@ export default {
       // } else {
       let namespace = data.namespace || this.store.namespace
 
-      console.log(`${this.$options.name} dispatch action ${namespace}/${action.name}`)
+      // console.log(`${this.$options.name} dispatch action ${namespace}/${action.name}`)
       await this.$store.dispatch(
         `${namespace}/${action.name}`,
         {
