@@ -20,7 +20,7 @@ export default {
     },
     methods: {
         init() {
-            // console.log(`Browser init ${this.dataSource.objName} filterConst ${JSON.stringify(this.filterConst)} options ${JSON.stringify(this.options)}`)
+            console.log(`Browser init ${this.dataSource.objName} filterConst ${JSON.stringify(this.filterConst)} options ${JSON.stringify(this.options)}`)
             this.selected = []
             this.editForm = {}
             this.actionForm = {}
@@ -44,56 +44,6 @@ export default {
                 data: data.value
             }, {root: true})
         },
-        // async list () {
-        //   this.emitAction({ name: 'Loading', data: { value: true } })
-        //   try {
-        //     await this.$store.dispatch(`${this.namespace}/list`, {
-        //       store: this.store,
-        //       params: this.params,
-        //       data: this.data
-        //     }, { root: true })
-        //   } finally {
-        //     this.emitAction({ name: 'Loading', data: { value: false } })
-        //   }
-        //
-        // },
-        // async actionChangeFilter (data) {
-        //   await this.$store.commit(`${this.namespace}/setFilter`, {
-        //     uid: this.store.uid,
-        //     filter: data,
-        //   }, { root: true })
-        //   this.list()
-        // },
-        // getSelected() {
-        //   return this.$refs[this.store.uid].selection
-        //   return
-        // },
-        // onChangeSelect (event) {
-        //   let find = this.selected.indexOf(event['item'])
-        //   if (event['value']) {
-        //     if (find < 0)
-        //       this.selected.push(event['item'])
-        //   } else {
-        //     this.selectAll = false;
-        //     if (find < 0)
-        //       return;
-        //     this.selected.splice(find, 1)
-        //   }
-        // },
-        // onChangeSelectAll (event) {
-        //   if (event['value']) {
-        //     this.selectAll = true
-        //     this.selected = event['items']
-        //   } else {
-        //     this.selectAll = false
-        //     this.selected = []
-        //   }
-        // },
-        // actionRemoteItemAction: function (actionData) {
-        //   // const payload = updateObject({}, actionData.data, {item: this.deviceLink, })
-        //   const source = objHasOwnProperty(actionData, 'dataSource')? initDataSource(actionData.dataSource.type, this.dataSource): this.source
-        //   source.call(actionData.name, this.deviceLink)
-        // },
         actionReload: async function () {
             // console.log('actionReload')
             this.source.props.page = 1
@@ -218,5 +168,36 @@ export default {
                 filter: this.modeParams.filter
             })
         },
-    }
+    },
+    watch: {
+        dataSource: function () {
+            // console.log(`Browser  ${this.dataSource.objName} watch dataSource needUpdate ${this.needUpdate}`)
+            if (this.options) {
+                this.options.page = 1
+            }
+            this.init()
+            this.needUpdate = true
+        },
+        filterConst: function () {
+            // console.log(`Browser  ${this.dataSource.objName} watch filterConst 2, needUpdate ${this.needUpdate} `)
+            this.needUpdate = true
+            this.source.changeProps({filterConst: this.filterConst})
+        },
+        options: function () {
+            // console.log(`Browser  ${this.dataSource.objName} watch options ${JSON.stringify(this.options)}`)
+            this.source.changeProps(this.options)
+            this.needUpdate = true
+        },
+        needUpdate: async function (value) {
+            // await this.$nextTick()
+            // console.log(`needUpdate ${value}`)
+            if (value) {
+                this.needUpdate = false
+                await this.source.fetchRows()
+            }
+        }
+    },
+    beforeMount() {
+        this.init()
+    },
 }

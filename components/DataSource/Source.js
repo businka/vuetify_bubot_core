@@ -1,6 +1,6 @@
 const {updateObject, objHasOwnProperty} = require('../../../Helpers/BaseHelper')
 const {findIndexInArrayObj} = require('../../../Helpers/ArrayHelper')
-const {ExtException} = require('../../../Helpers/ExtException')
+const ExtException = require('../../../Helpers/ExtException').default
 const Vue = require('vue').default
 
 module.exports = class Source {
@@ -25,6 +25,7 @@ module.exports = class Source {
     // keyProperty = ""
     loading = false
     error = {}
+    selected = []
 
     constructor(props, store) {
         if (store) {
@@ -90,6 +91,7 @@ module.exports = class Source {
         } catch (err) {
             let err1 = new ExtException({parent: err})
             this.error = err1.toDict()
+            console.error(err1.toString())
             this.rows = []
         }
         this.loading = false

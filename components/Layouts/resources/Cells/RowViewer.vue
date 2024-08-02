@@ -96,7 +96,9 @@ export default {
         v-model="row"
         :edit-mode="editMode"
         :autofocus="i===0"
-        v-bind="col"
+        :field="col.value"
+        :index="i"
+        :title="col.title"
         @action="onAction"
       />
     </td>

@@ -113,37 +113,7 @@ export default {
             return this.rowActions || this.rowActionsField ? 1 : 0
         }
     },
-    watch: {
-        dataSource: function () {
-            // console.log(`Browser  ${this.dataSource.objName} watch dataSource needUpdate ${this.needUpdate}`)
-            if (this.options) {
-                this.options.page = 1
-            }
-            this.init()
-            this.needUpdate = true
-        },
-        filterConst: function () {
-            // console.log(`Browser  ${this.dataSource.objName} watch filterConst 2, needUpdate ${this.needUpdate} `)
-            this.needUpdate = true
-            this.source.changeProps({filterConst: this.filterConst})
-        },
-        options: function () {
-            // console.log(`Browser  ${this.dataSource.objName} watch options ${JSON.stringify(this.options)}`)
-            this.source.changeProps(this.options)
-            this.needUpdate = true
-        },
-        needUpdate: async function (value) {
-            // await this.$nextTick()
-            // console.log(`needUpdate ${value}`)
-            if (value) {
-                this.needUpdate = false
-                await this.source.fetchRows()
-            }
-        }
-    },
-    beforeMount() {
-        this.init()
-    },
+
     methods: {}
 }
 </script>
