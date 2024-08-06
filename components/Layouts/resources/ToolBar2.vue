@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'BrowserToolbar',
+  name: 'BrowserToolbar2',
   components: {
     ActionBtn: () => import('../../ActionButtons/ActionBtn'),
     SearchField: () => import('./Filter/SearchField'),

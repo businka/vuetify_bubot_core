@@ -45,7 +45,7 @@ export default {
       <v-row
         class="body-2 pl-3"
       >
-        {{ $t(`ErrorMsg.${value.message}`) }}
+        {{ value.message? $t(`${value.__name__}.${value.message}`): $t(value.__name__)}}
       </v-row>
       <v-row
         class="caption pl-3 pt-1"
