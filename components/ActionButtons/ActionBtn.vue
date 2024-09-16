@@ -13,6 +13,9 @@ export default {
             type: String,
             default: ''
         },
+        action: {
+          type: String,
+        },
         data: {
             type: Object,
         },
@@ -58,7 +61,7 @@ export default {
     :rounded="rounded"
     small
     :text="!icon"
-    @click.stop="emitAction(name, data)"
+    @click.stop="emitAction(action || name, data)"
   >
     <v-icon v-if="icon">
       {{ icon }}

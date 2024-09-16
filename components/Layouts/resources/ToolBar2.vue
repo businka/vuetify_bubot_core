@@ -74,6 +74,8 @@ export default {
       v-for="(item, i) in items"
       :key="i"
       v-bind="item"
+      class="pl-2"
+      @changeFilter="$emit('changeFilter', $event)"
       @action="$emit('action', $event)"
     />
     <v-btn
