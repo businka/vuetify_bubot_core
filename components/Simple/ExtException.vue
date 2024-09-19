@@ -23,50 +23,55 @@ export default {
 }
 </script>
 <style lang="scss">
-  /*.linkField .v-input__append-outer {*/
-  /*margin-left: 0px;*/
-  /*margin-right: 0px;*/
-  /*}*/
+/*.linkField .v-input__append-outer {*/
+/*margin-left: 0px;*/
+/*margin-right: 0px;*/
+/*}*/
 
 </style>
 
 <template>
   <div v-if="value">
     <v-snackbar
-      v-if="dialog"
-      multi-line
-      color="error"
-      top
-      absolute
-      timeout="-1"
-      :value="true"
-      class="pa-0 ma-0"
+        v-if="dialog"
+        multi-line
+        color="error"
+        top
+        absolute
+        timeout="-1"
+        :value="true"
+        class="pa-0 ma-0"
     >
       <v-row
-        class="body-2 pl-3"
+          class="body-2 pl-3"
       >
-        {{ value.message? $t(`${value.__name__}.${value.message}`): $t(value.__name__)}}
+        {{ value.message ? $t(`${value.__name__}.${value.message}`) : $t(value.__name__) }}
       </v-row>
       <v-row
-        class="caption pl-3 pt-1"
+          class="caption pl-3 pt-1"
       >
         {{ value.detail }}
       </v-row>
+      <v-row
+          class="caption pl-3 pt-1"
+      >
+        {{ JSON.stringify(value, null, 2) }}
+      </v-row>
       <template v-slot:action="{ attrs }">
         <v-btn
-          dense
-          small
-          icon
-          v-bind="attrs"
-          @click="$emit('input', undefined)"
+            dense
+            small
+            icon
+            v-bind="attrs"
+            @click="$emit('input', undefined)"
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </template>
     </v-snackbar>
     <div
-      v-else
-      class="pa-0 ma-0"
+        v-else
+        class="pa-0 ma-0"
     >
       <div :class="`error--text ${messageTypography}`">
         {{ $t(`ErrorMsg.${value.message}`) }}
