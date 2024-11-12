@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {EJSON} from 'bson'
 import {redirectToSignIn, getAppUrl} from '../components/Session/session'
-import {navigate} from '../../Helpers/UrlParam'
+import {navigate} from '@/Helpers/UrlParam'
 import ExtException from '../../Helpers/ExtException'
 
 

@@ -16,6 +16,9 @@
   "FilterSelected": "Отбираются",
   "FilterSelect": "Отобрать",
   "SelectItem": "Выбрать",
+  "Auth": {
+    "SignOut": "Выход"
+  },
   "NavDrawer": {
     "Title": "СОЙКА",
     "Disk": "Документы",
