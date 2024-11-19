@@ -1,0 +1,14 @@
+{
+  "name": "bubot_core",
+  "version": "2.2.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/businka/vuetify_bubot_core.git"
+  },
+  "keywords": [],
+  "author": "Razgovorov Mikhail",
+  "license": "",
+  "dependencies": {
+    "bubot_js_helpers": "https://github.com/businka/js_helpers.git#v2.2.0"  }
+}
