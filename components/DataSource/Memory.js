@@ -1,6 +1,6 @@
 let Source = require('./Source')
 const uuid = require('uuid')
-const {getType, objHasOwnProperty, updateObject, getPropValueByPath} = require('../../../Helpers/BaseHelper')
+const {getType, objHasOwnProperty, updateObject, getPropValueByPath} = require('bubot-helpers/BaseHelper')
 
 const conditions = {
     'equals': function (filterField, filterValue, row) {

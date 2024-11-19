@@ -1,6 +1,6 @@
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
-import {isEmptyObject} from '../../../Helpers/BaseHelper'
+import {isEmptyObject} from 'bubot-helpers/BaseHelper'
 
 export default {
     name: 'FieldLink',

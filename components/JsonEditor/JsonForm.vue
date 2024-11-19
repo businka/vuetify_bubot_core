@@ -2,7 +2,7 @@
 // import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import JsonEditorMixin from './JsonEditor.mixin'
-import {objHasOwnProperty} from '../../../Helpers/BaseHelper'
+import {objHasOwnProperty} from 'bubot-helpers/BaseHelper'
 import storage from './store'
 // import schemaStorage from './ObjSchema.store'
 

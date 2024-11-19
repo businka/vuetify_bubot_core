@@ -1,4 +1,4 @@
-import { objHasOwnProperty, isEmptyObject } from '../../../Helpers/BaseHelper'
+import { objHasOwnProperty, isEmptyObject } from 'bubot-helpers/BaseHelper'
 
 import Memory from './Memory'
 import Service from './Service'

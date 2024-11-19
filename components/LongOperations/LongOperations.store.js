@@ -3,8 +3,8 @@
 // import { initStoreKey } from '../../helpers/mixinStore/mutations'
 // import { processInDataSource } from '../../helpers/mixinStore'
 import Vue from 'vue'
-// import { objHasOwnProperty } from '../../../Helpers/BaseHelper'
-import { findIndexInArrayObj, findInArrayObj } from '../../../Helpers/ArrayHelper'
+// import { objHasOwnProperty } from 'bubot-helpers/BaseHelper'
+import { findIndexInArrayObj, findInArrayObj } from 'bubot-helpers/ArrayHelper'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {

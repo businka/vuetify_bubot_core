@@ -1,5 +1,5 @@
 let Memory = require('./Memory')
-import { updateObject } from '../../../Helpers/BaseHelper'
+import { updateObject } from 'bubot-helpers/BaseHelper'
 
 export default class WebSocket extends Memory {
   data = []

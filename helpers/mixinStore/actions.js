@@ -1,4 +1,4 @@
-import { jsonClone } from '../../../Helpers/clone'
+import { jsonClone } from 'bubot-helpers/clone'
 
 export async function error (store, { storeKey, error }) {
   // console.error(`${store.state.namespace}: ${error.message} (${error.detail})`)

@@ -1,5 +1,5 @@
 <script>
-import {updateObject} from '../../../Helpers/BaseHelper'
+import {updateObject} from 'bubot-helpers/BaseHelper'
 import ActionMixin from '../../helpers/mixinTemplate/action'
 
 export default {

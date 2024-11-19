@@ -1,7 +1,7 @@
 <script>
-import {jsonClone} from '../../../../../Helpers/clone'
+import {jsonClone} from 'bubot-helpers/clone'
 import ActionMixin from '../../../../helpers/mixinTemplate/action'
-import {updateObject} from '../../../../../Helpers/BaseHelper'
+import {updateObject} from 'bubot-helpers/BaseHelper'
 
 
 export default {

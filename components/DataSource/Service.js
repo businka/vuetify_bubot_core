@@ -1,8 +1,8 @@
 let Source = require('./Source')
 import buxios from '../../helpers/buxios'
 import {EJSON} from 'bson'
-import {updateObject} from '@/Helpers/BaseHelper'
-import ExtException from '@/Helpers/ExtException'
+import {updateObject} from 'bubot-helpers/BaseHelper'
+import ExtException from 'bubot-helpers/ExtException'
 
 export default class Service extends Source {
     getAll() {

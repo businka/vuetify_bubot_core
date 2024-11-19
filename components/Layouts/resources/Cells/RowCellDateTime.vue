@@ -1,6 +1,6 @@
 <script>
 import RowCellMixin from './RowCell.mixin'
-import {zeroPad} from '../../../../../Helpers/BaseHelper'
+import {zeroPad} from 'bubot-helpers/BaseHelper'
 
 export default {
     name: 'CellDateTime',

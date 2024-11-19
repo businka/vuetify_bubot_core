@@ -1,7 +1,7 @@
-// import { processInDataSource } from '../../Helpers/mixinStore/index'
-// import { initForm, error } from '../../Helpers/mixinStore/actions'
-// import { initStoreKey, updateItemProps } from '../../Helpers/mixinStore/mutations'
-// import { mode, getProps } from '../../Helpers/mixinStore/getters'
+// import { processInDataSource } from 'bubot-helpers/mixinStore/index'
+// import { initForm, error } from 'bubot-helpers/mixinStore/actions'
+// import { initStoreKey, updateItemProps } from 'bubot-helpers/mixinStore/mutations'
+// import { mode, getProps } from 'bubot-helpers/mixinStore/getters'
 import axios from 'axios'
 import Vue from 'vue'
 

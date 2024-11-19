@@ -15,7 +15,6 @@
 </template>
 
 <script>
-// import ActionMixin from '@/BubotCore/helpers/mixinTemplate/action'
 
 export default {
   name: 'SearchField',

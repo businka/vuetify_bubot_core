@@ -1,7 +1,7 @@
 <script>
 
 // import { getSession } from './session'
-import ActionMixin from '@/BubotCore/helpers/mixinTemplate/action'
+import ActionMixin from '../../helpers/mixinTemplate/action'
 import {redirectToSignIn} from './session'
 
 export default {

@@ -1,6 +1,6 @@
 <script>
 import ActionMixin from '../../../../helpers/mixinTemplate/action'
-import {getPropValueByPath} from '../../../../../Helpers/BaseHelper'
+import {getPropValueByPath} from 'bubot-helpers/BaseHelper'
 
 export default {
   name: 'RowCellTitle',

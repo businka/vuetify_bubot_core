@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { commandTo1C } from '../c1/connector1C'
-import UrlParam from '../../../Helpers/UrlParam'
+import UrlParam from 'bubot-helpers/UrlParam'
 
 async function list_ie(store, payload, method, config) {
 

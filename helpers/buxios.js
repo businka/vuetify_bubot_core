@@ -1,8 +1,8 @@
 import axios from 'axios'
 import {EJSON} from 'bson'
 import {redirectToSignIn, getAppUrl} from '../components/Session/session'
-import {navigate} from '@/Helpers/UrlParam'
-import ExtException from '../../Helpers/ExtException'
+import {navigate} from 'bubot-helpers/UrlParam'
+import ExtException from 'bubot-helpers/ExtException'
 
 
 function bson_deserialize(config) {

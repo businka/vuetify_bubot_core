@@ -1,13 +1,13 @@
 <script>
-// import buxios from '../../Helpers/buxios'
+// import buxios from 'bubot-helpers/buxios'
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import BrowserActionMixin from '../Layouts/resources/BrowserActionMixin'
 import { initDataSource } from '../DataSource/DataSourceLoader'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
 
-const { objHasOwnProperty } = require('../../../Helpers/BaseHelper')
-const { findIndexInArrayObj } = require('../../../Helpers/ArrayHelper')
+const { objHasOwnProperty } = require('bubot-helpers/BaseHelper')
+const { findIndexInArrayObj } = require('bubot-helpers/ArrayHelper')
 
 export default {
   name: 'TagBrowser',

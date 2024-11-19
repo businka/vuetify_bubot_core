@@ -1,6 +1,6 @@
 {
-  "name": "bubot_core",
-  "version": "3.2.0",
+  "name": "bubot-core",
+  "version": "2.2.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -10,5 +10,5 @@
   "author": "Razgovorov Mikhail",
   "license": "",
   "dependencies": {
-    "bubot_js_helpers": "https://github.com/businka/js_helpers.git#v3.2.0"  }
+    "bubot-helpers": "https://github.com/businka/js_helpers.git"  }
 }

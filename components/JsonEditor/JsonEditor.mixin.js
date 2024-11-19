@@ -1,4 +1,4 @@
-import {objHasOwnProperty, updateObject} from '../../../Helpers/BaseHelper'
+import {objHasOwnProperty, updateObject} from 'bubot-helpers/BaseHelper'
 import {updateProp} from './JsonHelper'
 import schemaStorage from './ObjSchema.store'
 import {initDataSource} from '../DataSource/DataSourceLoader'

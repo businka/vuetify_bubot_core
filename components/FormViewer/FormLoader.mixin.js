@@ -1,5 +1,5 @@
 import ActionMixin from '../../helpers/mixinTemplate/action'
-import {updateObject, isEmptyObject} from '../../../Helpers/BaseHelper';
+import {updateObject, isEmptyObject} from 'bubot-helpers/BaseHelper';
 
 export default {
     mixins: [ActionMixin],

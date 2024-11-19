@@ -1,6 +1,6 @@
-const {updateObject, objHasOwnProperty} = require('../../../Helpers/BaseHelper')
-const {findIndexInArrayObj} = require('../../../Helpers/ArrayHelper')
-const ExtException = require('../../../Helpers/ExtException').default
+const {updateObject, objHasOwnProperty} = require('bubot-helpers/BaseHelper')
+const {findIndexInArrayObj} = require('bubot-helpers/ArrayHelper')
+const ExtException = require('bubot-helpers/ExtException').default
 const Vue = require('vue').default
 
 module.exports = class Source {

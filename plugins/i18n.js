@@ -2,8 +2,7 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 // import messages from '@/lang/en'
 import axios from 'axios'
-import { updateObject} from '@/Helpers/BaseHelper'
-import AppConst from '../../AppConst'
+import { updateObject} from 'bubot-helpers/BaseHelper'
 
 
 Vue.use(VueI18n)
@@ -42,7 +41,7 @@ function setI18nLanguage (lang) {
   return lang
 }
 
-export async function loadLanguageAsync (lang) {
+export async function loadLanguageAsync (appName, lang ) {
   if (!lang)
     lang = navigator.language.substr(0, 2).toLowerCase()
   // If the same language and If the language was already loaded
@@ -53,7 +52,7 @@ export async function loadLanguageAsync (lang) {
   // If the language hasn't been loaded yet
   let resp
   try {
-    resp = await axios.get(`/${AppConst.appName}/i18n/${lang}.json`)
+    resp = await axios.get(`/${appName}/i18n/${lang}.json`)
   } catch (err) {
     resp = {data:{}}
   }

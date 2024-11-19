@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { navigate } from '@/Helpers/UrlParam'
+import { navigate } from 'bubot-helpers/UrlParam'
 
 export function getSession() {
   return Vue.$cookies.get('session')
