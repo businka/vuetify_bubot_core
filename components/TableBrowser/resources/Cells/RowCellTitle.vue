@@ -1,46 +1,22 @@
 <script>
 import ActionMixin from '../../../../helpers/mixinTemplate/action'
 import {getPropValueByPath} from '../../../../../Helpers/BaseHelper'
+import RowCellMixin from "./RowCell.mixin"
 
 export default {
   name: 'RowCellTitle',
-  mixins: [ActionMixin],
+  mixins: [ActionMixin, RowCellMixin],
   props: {
-    titleField: {
-      type: String,
-      default: 'title'
-    },
-    subtitleField: {
-      type: String,
-      default: 'subtitle'
-    },
-    infoField: {
-      type: String,
-      default: 'info'
-    },
-    modelValue: {
-      type: Object,
-      default: () => {
-      }
-    },
-    editMode: {
-      type: Boolean,
-      default: false
-    },
-    autofocus: {
-      type: Boolean,
-      default: false
-    }
   },
   computed: {
     title: function () {
-      return getPropValueByPath(this.modelValue, this.titleField)
+      return getPropValueByPath(this.modelValue, this.col.field)
     },
     subtitle: function () {
-      return getPropValueByPath(this.modelValue, this.subtitleField)
+      return getPropValueByPath(this.modelValue, this.col.subtitleField)
     },
     info: function () {
-      return getPropValueByPath(this.modelValue, this.infoField)
+      return getPropValueByPath(this.modelValue, this.col.infoField)
     }
   }
 }
@@ -54,13 +30,13 @@ export default {
             class="text-body-1 pa-0 ma-0 "
             v-text="title"
             :title="title"
-        ></div>
+        />
         <div
             v-if="subtitle"
             :title="subtitle"
             class="text-caption  pa-0 ma-0 ml-1 text--secondary"
             v-text="subtitle"
-        ></div>
+        />
       </v-col>
     </v-row>
     <v-row
@@ -70,8 +46,9 @@ export default {
       <div
           class="text-caption pa-0 ma-0 text--secondary"
           :title="info"
-          v-text="info">
-      </div>
+          v-text="info"
+      />
+
     </v-row>
   </div>
 </template>

@@ -79,7 +79,7 @@ export default {
   <tr>
     <td
       v-for="(col, i) in columns"
-      :key="col.key"
+      :key="i"
       class="px-2 truncate"
       :style="getTdStyle(col)"
       @click="onClickRow(col)"
@@ -100,8 +100,7 @@ export default {
         :items="items"
         :index="index"
         :autofocus="i===0"
-        :field="col.key"
-        v-bind="col"
+        :col="col"
         @action="onAction"
       />
     </td>

@@ -14,11 +14,11 @@ export default {
     >
       <v-text-field
         :value="_value"
-        :label="title"
+        :label="col.title"
         hide-details
-        :placeholder="title"
+        :placeholder="col.title"
         :autofocus="autofocus"
-        :type="type"
+        :type="col.type"
         @input="onChange"
         @keydown.enter="emitAction({name:'UpdateRow'})"
         @keydown.escape="emitAction({name:'CancelEdit'})"

@@ -6,10 +6,10 @@ export default {
   name: 'CellDateTime',
   mixins: [RowCellMixin],
   props: {
-    hideTime: {
-      type: Boolean,
-      default: false
-    }
+  //   hideTime: {
+  //     type: Boolean,
+  //     default: false
+  //   }
   },
   methods: {
     getDateString(date) {
@@ -31,6 +31,9 @@ export default {
       return this.getPreviousValue()
     },
     _date: function () {
+      if (!this._value) {
+        return undefined
+      }
       switch (typeof this._value) {
         case "object":
           return this._value
@@ -49,7 +52,11 @@ export default {
       }
     },
     time: function () {
-      return this.getTimeString(this._date)
+      if (this._date) {
+        return this.getTimeString(this._date)
+      } else {
+        return ''
+      }
     },
     showDate: function () {
       return this.date !== this.getDateString(this.previousDate)
@@ -67,7 +74,7 @@ export default {
       {{ date }}
     </div>
     <div
-      v-if="!hideTime && date && showTime"
+      v-if="!col.hideTime && date && showTime"
       class="text-grey text-caption text-right"
       style="margin-top: -6px">
       {{ time }}

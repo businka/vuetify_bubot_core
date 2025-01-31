@@ -34,7 +34,7 @@ export default class Service extends Source {
         this.loading = true
         let resp
         try {
-            let url = `/${this.props.appName}/api/${this.props.objName}/read`
+            let url = `${this.get_obj_url()}/read`
             resp = await buxios.get(url, {params: {id}})
             this.loading = false
             return resp.data
@@ -46,12 +46,12 @@ export default class Service extends Source {
     }
 
     async update(payload) {
-        let url = `/${this.props.appName}/api/${this.props.objName}/update`
+        let url = `${this.get_obj_url()}/update`
         return this.post(url, payload.data)
     }
 
     async create(payload) {
-        let url = `/${this.props.appName}/api/${this.props.objName}/create`
+        let url = `${this.get_obj_url()}/create`
         return this.post(url, payload.data)
     }
 

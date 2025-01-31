@@ -60,7 +60,7 @@ export default {
     <v-toolbar
       height="30"
       flat
-      density="compact"
+      density="default"
       class="form-toolbar pa-0"
     >
       <v-spacer/>

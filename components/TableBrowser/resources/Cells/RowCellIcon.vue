@@ -5,9 +5,9 @@ export default {
     name: 'CellIcon',
     mixins: [RowCellMixin],
     props: {
-        icons: {
-            type: Object,
-        },
+        // icons: {
+        //     type: Object,
+        // },
     },
 
   computed: {
@@ -27,13 +27,13 @@ export default {
         default:
           _value = this._value.toString()
       }
-      if (this.icons && _value) {
-        if (this.icons[_value]) {
-          _res.name = this.icons[_value].name || ''
-          _res.color = this.icons[_value].color || ''
-        } else if (this.icons._other) {
-            _res.name = this.icons._other.name || ''
-            _res.color = this.icons._other.color || ''
+      if (this.col.icons && _value) {
+        if (this.col.icons[_value]) {
+          _res.name = this.col.icons[_value].name || ''
+          _res.color = this.col.icons[_value].color || ''
+        } else if (this.col.icons._other) {
+            _res.name = this.col.icons._other.name || ''
+            _res.color = this.col.icons._other.color || ''
         }
       } else {
         _res.name = _value
@@ -62,8 +62,9 @@ export default {
         v-else
     >
       <v-icon
+        v-if="icon.name"
           :color="icon.color"
-          :title="`${title||''}: ${_value}`"
+          :title="`${col.title||''}: ${_value}`"
           :icon="icon.name"
           size="small"
       >
