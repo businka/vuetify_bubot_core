@@ -1,4 +1,4 @@
-import {updateObject, objHasOwnProperty} from '@/Helpers/BaseHelper'
+import {updateObject, objHasOwnProperty, isEmptyObject} from '@/Helpers/BaseHelper'
 import {findIndexInArrayObj} from '@/Helpers/ArrayHelper'
 import ExtException from '@/Helpers/ExtException'
 // import   Vue = require('vue').default
@@ -9,6 +9,7 @@ export default class Source {
   constructor(props, store) {
     this._props = {
       rows: [],
+      hasMore: false,
       page: 1,
       filter: {},
       filterConst: {},
@@ -17,10 +18,11 @@ export default class Source {
       objName: '',
       dataTableOptions: {},
       filterFields: [],
-      keyProperty: 'id'
+      keyProperty: 'id',
+      pagination: {}
     }
     this.has_more = false
-    this.last_nav = undefined
+    this.lastPagination = undefined
     this.total = 0
     this.rawData = []
     this.rows = []
@@ -73,25 +75,25 @@ export default class Source {
     this.loading = true
     try {
       let nav = {}
-      if (this.props.page !== 1 && this.last_nav && this.last_nav.page
-        && this.props.page !== this.last_nav.page) {
-        updateObject(nav, this.last_nav)
-      }
-      nav.limit = this.props.itemsPerPage
-      nav.page = this.props.page
-      let resp = await this.list(this.props.filter, nav)
-      let new_rows = resp.rows || []
-      this.last_nav = resp.nav || undefined
-      if (this.last_nav && objHasOwnProperty(this.last_nav, 'has_more')) {
-        this.has_more = this.last_nav.has_more
+      // if (this.props.page !== 1 && this.last_nav && this.last_nav.page
+      //     && this.props.page !== this.last_nav.page) {
+      //     updateObject(nav, this.last_nav)
+      // }
+      this.props.pagination.PageSize = this.props.itemsPerPage
+      this.props.pagination.Page = this.props.page
+      let resp = await this.list(this.props.filter, this.props.pagination)
+      let newRows = resp['Rows'] || []
+      this.lastPagination = resp['Pagination'] || undefined
+      if (this.lastPagination && objHasOwnProperty(this.lastPagination, 'HasMore')) {
+        this.hasMore = this.lastPagination['HasMore']
       } else {
-        this.has_more = nav.limit && new_rows.length && new_rows.length >= nav.limit
+        this.hasMore = this.props.pagination.PageSize && newRows.length && newRows.length >= this.props.pagination.PageSize
       }
 
-      if (nav.page === 1) {
-        this.rows = new_rows//.splice(0,this.rows.length)
+      if (isEmptyObject(this.props.pagination)) {
+        this.rows = newRows//.splice(0,this.rows.length)
       } else {
-        this.rows.push.apply(this.rows, new_rows)
+        this.rows.push.apply(this.rows, newRows)
       }
       this.total = this.rows.length
 
@@ -100,6 +102,7 @@ export default class Source {
     } catch (err) {
       let err1 = new ExtException({parent: err})
       this.error = err1.toDict()
+      console.error(err1.toString())
       this.rows = []
     }
     this.loading = false
