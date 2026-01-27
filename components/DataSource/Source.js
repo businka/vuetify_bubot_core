@@ -1,6 +1,6 @@
-import {updateObject, objHasOwnProperty, isEmptyObject} from '@/Helpers/BaseHelper'
-import {findIndexInArrayObj} from '@/Helpers/ArrayHelper'
-import ExtException from '@/Helpers/ExtException'
+import {updateObject, objHasOwnProperty, isEmptyObject} from 'bubot-helper/BaseHelper'
+import {findIndexInArrayObj} from 'bubot-helper/ArrayHelper'
+import ExtException from 'bubot-helper/ExtException'
 // import   Vue = require('vue').default
 
 export default class Source {

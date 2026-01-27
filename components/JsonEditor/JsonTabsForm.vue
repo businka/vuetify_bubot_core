@@ -3,7 +3,7 @@
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import JsonEditorMixin from './JsonEditor.mixin'
 // import {initDataSource} from '../DataSource/DataSourceLoader'
-import {objHasOwnProperty} from '@/Helpers/BaseHelper'
+import {objHasOwnProperty} from 'bubot-helper/BaseHelper'
 // import schemaStorage from './ObjSchema.store'
 import {defineAsyncComponent} from "vue"
 

@@ -1,5 +1,5 @@
 import Memory from './Memory'
-import { updateObject } from '../../../Helpers/BaseHelper'
+import { updateObject } from 'bubot-helper/BaseHelper'
 
 export default class WebSocket extends Memory {
 

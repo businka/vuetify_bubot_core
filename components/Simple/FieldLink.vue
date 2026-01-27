@@ -1,6 +1,6 @@
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
-import {isEmptyObject} from '../../../Helpers/BaseHelper'
+import {isEmptyObject} from 'bubot-helper/BaseHelper'
 import {defineAsyncComponent} from "vue"
 
 export default {

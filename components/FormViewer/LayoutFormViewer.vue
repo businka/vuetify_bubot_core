@@ -5,7 +5,7 @@ import LangSelector from '../Simple/LangSelector'
 import LongOperationsBadge from '../LongOperations/LongOperationBadge'
 import LongOperationResult from "../LongOperations/LongOperationResult"
 import CurrentUser from '../Session/CurrentUserInToolbar'
-import TableBrowser from "@/BubotCore/components/TableBrowser/TableBrowser"
+import TableBrowser from "../TableBrowser/TableBrowser"
 
 export default {
   name: 'LayoutFormViewer',

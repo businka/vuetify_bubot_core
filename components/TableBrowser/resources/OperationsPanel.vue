@@ -1,5 +1,5 @@
 <script>
-import ActionBtn from "@/BubotCore/components/ActionButtons/ActionBtn"
+import ActionBtn from "../../ActionButtons/ActionBtn"
 import {defineAsyncComponent} from "vue"
 
 export default {

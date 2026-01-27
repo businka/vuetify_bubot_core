@@ -1,9 +1,9 @@
-// import { processInDataSource } from '../../Helpers/mixinStore/index'
-// import { initForm, error } from '../../Helpers/mixinStore/actions'
-// import { initStoreKey, updateItemProps } from '../../Helpers/mixinStore/mutations'
-// import { mode, getProps } from '../../Helpers/mixinStore/getters'
+// import { processInDataSource } from 'bubot-helper/mixinStore/index'
+// import { initForm, error } from 'bubot-helper/mixinStore/actions'
+// import { initStoreKey, updateItemProps } from 'bubot-helper/mixinStore/mutations'
+// import { mode, getProps } from 'bubot-helper/mixinStore/getters'
 import axios from 'axios'
-import {initStoreKey} from "@/BubotCore/helpers/mixinStore/mutations"
+import {initStoreKey} from "../../helpers/mixinStore/mutations"
 // import Vue from 'vue'
 
 export default {

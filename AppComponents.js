@@ -41,7 +41,7 @@ export default function registerComponents(app) {
 
 // app.component('ActionBtnDefault', defineAsyncComponent(() => import('./components/ActionButtons/ActionBtnDefault')))
   app.component('ActionTitle', defineAsyncComponent(() => import('./components/ActionButtons/ActionTitle')))
-  app.component('ActionBtn', defineAsyncComponent(() => import('@/BubotCore/components/ActionButtons/ActionBtn')))
+  app.component('ActionBtn', defineAsyncComponent(() => import('./components/ActionButtons/ActionBtn')))
   app.component('ActionBtnMenu', defineAsyncComponent(() => import('./components/ActionButtons/ActionBtnMenu')))
 }
 

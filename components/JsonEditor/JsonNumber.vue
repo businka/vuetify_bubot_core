@@ -1,7 +1,7 @@
 <script>
-// import {getPropByPath} from "@/BubotCore/components/JsonEditor/JsonHelper"
+// import {getPropByPath} from "@/components/JsonEditor/JsonHelper"
 
-import {getPropByPath} from "@/BubotCore/components/JsonEditor/JsonHelper"
+import {getPropByPath} from "./JsonHelper"
 
 export default {
   props: {

@@ -1,5 +1,5 @@
 import {initDataSource} from '../../DataSource/DataSourceLoader'
-import {updateObject, objHasOwnProperty} from '@/Helpers/BaseHelper'
+import {updateObject, objHasOwnProperty} from 'bubot-helper/BaseHelper'
 // import Vue from 'vue'
 
 export default {

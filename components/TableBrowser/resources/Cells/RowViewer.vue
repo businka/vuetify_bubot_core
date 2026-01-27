@@ -1,7 +1,7 @@
 <script>
-import {jsonClone} from '@/Helpers/clone'
-import ActionMixin from '@/BubotCore/helpers/mixinTemplate/action'
-import {updateObject} from '@/Helpers/BaseHelper'
+import {jsonClone} from 'bubot-helper/clone'
+import ActionMixin from '../../../../helpers/mixinTemplate/action'
+import {updateObject} from 'bubot-helper/BaseHelper'
 import {defineAsyncComponent} from "vue"
 
 

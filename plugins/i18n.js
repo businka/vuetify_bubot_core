@@ -2,8 +2,7 @@ import {createI18n} from 'vue-i18n/dist/vue-i18n.cjs'
 import {nextTick} from 'vue'
 
 import axios from 'axios'
-import {updateObject} from '@/Helpers/BaseHelper'
-import AppConst from '@/AppConst'
+import {updateObject} from 'bubot-helper/BaseHelper'
 
 
 export function setupI18n(options = {
@@ -30,7 +29,7 @@ function setI18nLanguage(i18n, lang) {
   return lang
 }
 
-export async function loadLocaleMessages(i18n, locale) {
+export async function loadLocaleMessages(i18n, appName, locale) {
 
   if (!locale) {
     locale = navigator.language.substr(0, 2).toLowerCase()
@@ -38,13 +37,21 @@ export async function loadLocaleMessages(i18n, locale) {
   // console.log('loadLocaleMessages', locale)
 
   // If the language hasn't been loaded yet
-  let resp = await axios.get(`/${AppConst.appName}/i18n/${locale}.json`)
-  let messages = await loadLocale(locale, resp.data)
-  i18n.setLocaleMessage(locale, messages)
-  loadedLanguages.push(locale)
-  // return setI18nLanguage(locale)
+  try {
+    let resp = await axios.get(`/${appName}/i18n/${locale}.json`)
+    if (typeof resp.data !== 'object') {
+      console.error('Bad locale data')
+      return
+    }
+    let messages = await loadLocale(locale, resp.data)
+    i18n.setLocaleMessage(locale, messages)
+    loadedLanguages.push(locale)
+    return nextTick()
+    // return setI18nLanguage(locale)
+  }  catch (err) {
+    console.error(err)
+  }
 
-  return nextTick()
 }
 
 const loadedLanguages = [] // our default language that is preloaded

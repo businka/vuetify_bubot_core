@@ -1,0 +1,32 @@
+{
+  "name": "bubot-core",
+  "version": "2.2.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/razgovorov/bubot-vue-core.git"
+  },
+  "keywords": [],
+  "author": "Razgovorov Mikhail",
+  "license": "",
+  "dependencies": {
+    "bubot-helper": "https://gitlab.com/razgovorov/bubot-vue-helper.git",
+    "@mdi/font": "7.0.96",
+    "bson": "^4.7.0",
+    "core-js": "^3.29.0",
+    "highcharts": "11.1.0",
+    "highcharts-vue": "^1.4.3",
+    "moment-timezone": "^0.5.39",
+    "roboto-fontface": "*",
+    "typeface-roboto": "^0.0.75",
+    "uuid": "^8.0.0",
+    "vue": "^3.2.0",
+    "vue-cookies": "^1.8.3",
+    "vue-i18n": "^9.2.2",
+    "vue-native-websocket-vue3": "^3.1.7",
+    "vue-router": "^4.0.0",
+    "vuetify": "^3.5.1",
+    "vuex": "^4.0.0",
+    "webfontloader": "^1.0.0"
+  }
+}

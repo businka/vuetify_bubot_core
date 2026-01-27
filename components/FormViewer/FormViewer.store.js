@@ -1,6 +1,5 @@
 import axios from 'axios'
-import {initStoreKey} from "@/BubotCore/helpers/mixinStore/mutations"
-// import { initStoreKey } from '../../helpers/mixinStore/mutations'
+import { initStoreKey } from '../../helpers/mixinStore/mutations'
 
 export default {
   namespaced: true,

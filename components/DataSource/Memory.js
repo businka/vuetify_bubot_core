@@ -1,6 +1,6 @@
 import Source from './Source'
 import { v4 as uuidv4 } from 'uuid'
-import {getType, objHasOwnProperty, updateObject, getPropValueByPath} from '@/Helpers/BaseHelper'
+import {getType, objHasOwnProperty, updateObject, getPropValueByPath} from 'bubot-helper/BaseHelper'
 
 const conditions = {
     'equals': function (filterField, filterValue, row) {

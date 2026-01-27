@@ -2,7 +2,7 @@
 // import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
 import storage from './LongOperations.store'
 import ActionMixin from '../../helpers/mixinTemplate/action'
-import {objHasOwnProperty} from '@/Helpers/BaseHelper'
+import {objHasOwnProperty} from 'bubot-helper/BaseHelper'
 // import { ObjectId } from 'bson'
 import {defineAsyncComponent} from "vue"
 

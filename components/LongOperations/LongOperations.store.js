@@ -2,9 +2,9 @@
 // import { initForm, error } from '../../helpers/mixinStore/actions'
 // import { initStoreKey } from '../../helpers/mixinStore/mutations'
 // import { processInDataSource } from '../../helpers/mixinStore'
-import app from '@/main'
-// import { objHasOwnProperty } from '../../../Helpers/BaseHelper'
-import { findIndexInArrayObj, findInArrayObj } from '@/Helpers/ArrayHelper'
+// import app from '@/main'
+// import { objHasOwnProperty } from 'bubot-helper/BaseHelper'
+import { findIndexInArrayObj, findInArrayObj } from 'bubot-helper/ArrayHelper'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {

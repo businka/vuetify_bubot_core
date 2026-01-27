@@ -1,5 +1,5 @@
 // import { xml } from './TestXmlSerializer/XmlJsonSerializer'
-import UrlParam from '../../../Helpers/UrlParam'
+import UrlParam from 'bubot-helper/UrlParam'
 
 
 export function initConnector() {
