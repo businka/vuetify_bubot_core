@@ -1,144 +1,192 @@
 <script>
-import BaseTemplateMixin from '../../helpers/mixinTemplate/baseForm'
-import storage from './store'
-import ActionMixin from '../../helpers/mixinTemplate/action'
-// import DataGridMixin from '../DataGrid/DataGrid.mixin'
-import axios from 'axios'
+import {defineComponent, inject} from 'vue'
+import Service from "../DataSource/Service"
+import { updateObject } from "bubot-helper/BaseHelper"
 
-export default {
-  name: 'Tree',
-  mixins: [BaseTemplateMixin, ActionMixin],
-  data: function() {
+export default defineComponent({
+  name: 'TreeBrowser',
+
+  props: {
+    dataSource: {
+      type: Object,
+      default: () => ({})
+    },
+    modelValue: {
+      type: Array,
+      default: () => []
+    },
+    active: {
+      type: Object,
+    }
+  },
+
+  emits: ['update:modelValue', 'update:active'],
+
+  data() {
     return {
       editRow: null,
-      massOperationVisible: true,
-      items: []
+      massOperationVisible: false,
+      items: [],
+      source: null,
+      options: {},
+      needUpdate: false
     }
   },
-  computed: {
-  },
-  mounted() {
-    this.init()
-    this.fetch(null)
-  },
-  beforeMount() {
-    if (!Object.prototype.hasOwnProperty.call(this.$store.state, this.$options.name)) {
-      this.$store.registerModule(this.$options.name, storage)
-    }
-  },
-  methods: {
-    actionMassOperationsBarVisible(action) {
-      this.$store.commit(
-        `${this.store.namespace}/massOperationsBarVisible`, {
-          uid: this.store.uid,
-          value: action
-        })
-    },
-    getSelected() {
-      return this.$refs[this.store.uid].selection
-    },
-    async actionMassDelete() {
-      const selected = this.getSelected()
-      for (let elem in selected) {
-        if (Object.prototype.hasOwnProperty.call(selected, elem)){
-          await this.$store.dispatch(`${this.namespace}/delete`, {
-            store: this.store,
-            params: this.params,
-            data: elem
-          }, { root: true })
-        }
-      }
-      await this.list()
 
+  computed: {
+    internalSelected: {
+      get() {
+        return this.modelValue || []
+      },
+      set(val) {
+        this.$emit('update:modelValue', val)
+      }
     },
-    async fetch(item){
+    internalActive: {
+      get() {
+        return this.active
+      },
+      set(val) {
+        this.$emit('update:active', val)
+      }
+    }
+  },
+
+  beforeMount() {
+    this.init()
+  },
+
+  watch: {
+    dataSource: function () {
+      this.init()
+      this.needUpdate = true
+    }
+  },
+
+  methods: {
+    init() {
+      this.items = []
+      this.options = {}
+
+      const dataSource = updateObject(
+          {appName: inject('appName')},
+          {filterConst: {}},
+          this.dataSource,
+          this.options
+      )
+
+      this.source = new Service(dataSource, this.$store)
+      this.fetch(null)
+      this.internalActive = [{"_id": "1C"}]
+    },
+    async fetch(item) {
       let filter = {}
       let result
+
       if (item) {
-        filter.parent_id = item._id
+        filter['ParentId'] = item._id
         result = item.children
       } else {
-        filter.parent_id = null
         result = this.items
       }
-      const res = await axios.post(`/${this.store.mode.objType}/api/${this.store.mode.objName}/list`, {
-        filter: filter
-      })
-      let index, len;
-      for (index = 0, len = res.data.result.rows.length; index < len; ++index) {
-        let item = res.data.result.rows[index]
-        item.children = []
-        result.push(item)
+
+      const res = await this.source.list(filter)
+
+      for (let index = 0; index < res['Rows'].length; index++) {
+        let row = res['Rows'][index]
+        if (row['IsFolder']) {
+          row.children = []
+        }
+        result.push(row)
       }
     },
-    async actionCreate(data) {
-      await this.$store.dispatch(`${this.namespace}/create`, {
-        store: this.store,
-        params: this.params,
-        data
-      }, { root: true })
-      await this.list()
 
-    },
-    async actionUpdateRow(data) {
-      console.log('update row ' + data.index)
-      this.editRow = null
-      await this.$store.dispatch(`${this.namespace}/updateRow`, {
-        store: this.store,
-        params: this.params,
-        data: data
-      }, { root: true })
-      await this.list()
+    // actionMassOperationsBarVisible(action) {
+    //   this.$store.commit(`${this.store.namespace}/massOperationsBarVisible`, {
+    //     uid: this.store.uid,
+    //     value: action
+    //   })
+    // },
 
-    }
+    // getSelected() {
+    //   return this.$refs[this.store.uid].selection
+    // },
+
+    // async actionMassDelete() {
+    //   const selected = this.getSelected()
+    //   for (let elem in selected) {
+    //     if (Object.prototype.hasOwnProperty.call(selected, elem)) {
+    //       await this.$store.dispatch(`${this.namespace}/delete`, {
+    //         store: this.store,
+    //         params: this.params,
+    //         data: elem
+    //       }, {root: true})
+    //     }
+    //   }
+    // },
+
+    // async actionCreate(data) {
+    //   await this.$store.dispatch(`${this.namespace}/create`, {
+    //     store: this.store,
+    //     params: this.params,
+    //     data
+    //   }, {root: true})
+    // },
+
+    // async actionUpdateRow(data) {
+    //   console.log('update row ' + data.index)
+    //   this.editRow = null
+    //   await this.$store.dispatch(`${this.namespace}/updateRow`, {
+    //     store: this.store,
+    //     params: this.params,
+    //     data: data
+    //   }, {root: true})
+    // }
   }
-
-}
+})
 </script>
 
-<style lang="scss">
-  .v-toolbar__content {
-    padding-left: 0;
-  }
-
-  .jay-space-right {
-    margin-right: 8px;
-  }
-
-  .bordered {
-    border-bottom: 1px solid var(--v-delimiter-base);
-  }
-</style>
-
 <template>
-  <v-row
-    v-if="data"
-    class="pa-0 ma-0"
-  >
-    <v-col
-      class="pa-0 ma-0"
-      :xl="params.xl || '7'"
-      :lg="params.xl || '9'"
-      :sm="params.xl || '12'"
-      :xs="params.xl || '12'"
-    >
+  <div class="fill-height d-flex flex-column">
+<!--    <div class="toolbar mb-2">-->
+<!--      1234-->
+<!--      &lt;!&ndash; Тулбар здесь &ndash;&gt;-->
+<!--    </div>-->
       <v-treeview
-        :items="items"
-        :dense="true"
-        :selectable="massOperationVisible"
-        :load-children="fetch"
-        item-key="_id.$oid"
-        item-text="title"
-        :activatable="true"
-        :hoverable="true"
-        :open-on-click="false"
-      ></v-treeview>
-    </v-col>
-    <RightDrawerFormViewer
-      v-if="data.editForm && data.editForm.visible && data.editForm.handler==='RightDrawerFormViewer'"
-      name="editForm"
-      :params="data.editForm"
-      @action="onAction"
-    />
-  </v-row>
+          v-model:active="internalActive"
+          v-model:selected="internalSelected"
+          :items="items"
+          density="compact"
+          :return-object="true"
+          :selectable="massOperationVisible"
+          :load-children="fetch"
+          item-title="Title"
+          item-value="_id"
+          :open-on-click="false"
+          class="fill-height pt-0"
+      >
+        <template #prepend="{ item, open }">
+          <v-icon
+              v-if="item.children !== undefined"
+              :icon="open ? 'mdi-folder-open' : 'mdi-folder'"
+              size="small"
+              class="mr-2"
+          />
+        </template>
+      </v-treeview>
+  </div>
 </template>
+
+<style lang="scss">
+.v-toolbar__content {
+  padding-left: 0;
+}
+
+.jay-space-right {
+  margin-right: 8px;
+}
+
+.bordered {
+  border-bottom: 1px solid var(--v-delimiter-base);
+}
+</style>

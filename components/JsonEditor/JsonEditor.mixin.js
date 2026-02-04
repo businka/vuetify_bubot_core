@@ -111,7 +111,7 @@ export default {
             if (_id) {
                 this.itemFull = await this.source.read(_id)
             } else {
-                this.itemFull = await this.source.create(this.source.filterConst)
+                this.itemFull = await this.source.create({data: this.source.filterConst})
             }
         },
         actionUpdateProp: function ({path, action, value}) {

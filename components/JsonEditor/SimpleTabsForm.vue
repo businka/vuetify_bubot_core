@@ -86,7 +86,7 @@ export default {
 </script>
 
 <template>
-  <v-container class="pa-0 ma-0 h100">
+  <v-container class="pa-0 ma-0 h100  d-flex flex-column">
     <v-progress-linear
       :indeterminate="loading"
       height="2"

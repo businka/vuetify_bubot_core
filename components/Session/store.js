@@ -10,7 +10,7 @@ export default {
     namespaced: true,
     state: {
         _id: null,
-        user: {},
+        user_: {},
         account: {},
         accounts: [],
         available: true
@@ -19,13 +19,13 @@ export default {
     mutations: {
         set(state, data) {
             state._id = data._id
-            state.user = data.user
+            state.user_ = data.user_
             state.account = data.account
             state.accounts = data.accounts
         },
         clear(state) {
             state._id = null
-            state.user = null
+            state.user_ = null
             state.account = null
             state.accounts = []
         },
@@ -43,13 +43,16 @@ export default {
                 // this.title = ''
                 // this.loading = true
                 const session = getSession()
+                if (!session) {
+                    return false
+                }
                 const response = await buxios.get(
                     '/AuthService/public_api/User/read_session_info',
                     {params: {session}}
                     )
                 store.commit('set', {
                     _id: response.data.session,
-                    user: response.data.user,
+                    user_: response.data.user_,
                     account: response.data.account,
                     accounts: response.data.accounts
                 })

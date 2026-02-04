@@ -7,6 +7,8 @@ import BrowserToolBar from './resources/ToolBar'
 import OperationsPanel from './resources/OperationsPanel'
 import RowViewer from './resources/Cells/RowViewer'
 import RowEditor from './resources/Cells/RowEditor'
+import {isEmptyObject} from "bubot-helper/BaseHelper";
+import {findInArrayObj, findIndexInArrayObj} from "bubot-helper/ArrayHelper";
 
 export default {
   name: 'TableBrowser',
@@ -56,13 +58,7 @@ export default {
     externalRowActivateHandler: {
       type: Function
     },
-    toolbarItemsBeforeSearch: {
-      type: Array,
-      default: function () {
-        return []
-      }
-    },
-    toolbarItemsBeforeFilter: {
+    toolbar: {
       type: Array,
       default: function () {
         return []
@@ -88,10 +84,6 @@ export default {
       type: Boolean,
       default: false
     },
-    hideSearchString: {
-      type: Boolean,
-      default: false
-    },
     showColumnHeaders: {
       type: Boolean,
       default: false
@@ -112,11 +104,28 @@ export default {
         return []
       }
     },
-    height: {type: String}
+    height: {type: String},
+    active: {
+      type: Object,
+    },
+    selected: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    autoActivate: {
+      type: Object,
+      default: function () {
+        return {}
+      }
+    },
+
   },
+
   data() {
     return {
-      dataTableHeight: 0
+      dataTableHeight: 0,
     }
   },
   computed: {
@@ -143,12 +152,15 @@ export default {
       this.source.changeProps(options)
       this.needUpdate = true
     },
+
     needUpdate: async function (value) {
       // await this.$nextTick()
       // console.log(`needUpdate ${value}`)
       if (value) {
         this.needUpdate = false
         await this.source.fetchRows()
+        this.autoActivateRow()
+
       }
     }
   },
@@ -193,45 +205,44 @@ export default {
   <v-container class="pa-0 ma-0 fill-height flex" style='display: block' v-resize="updateDataTableHeight">
     <div ref="parentDiv" style="height: 100%">
       <v-data-table
-        v-if="source"
-        v-model="selected"
-        density="compact"
-        disable-sort
-        :headers="columns"
-        :height="dataTableHeight"
-        hover
-        fixed-header
-        hide-default-header
-        hide-default-footer
-        :return-object="true"
-        :items="source.rows"
-        :itemsPerPage=0
-        :item-value="source['keyProperty']"
-        loading-text=""
-        :loading="source.loading"
-        :v-model:page="source.page"
-        :show-select="true"
-        :server-items-length="source.total"
-        class="browser"
-        @update:options="options"
+          v-if="source"
+          v-model="internalSelected"
+          density="compact"
+          disable-sort
+          :headers="columns"
+          :height="dataTableHeight"
+          hover
+          fixed-header
+          :hide-default-header="hideToolbar"
+          hide-default-footer
+          :return-object="true"
+          :items="source.rows"
+          :itemsPerPage=0
+          :item-value="source['keyProperty']"
+          loading-text=""
+          :loading="source.loading"
+          :v-model:page="source.page"
+          :show-select="true"
+          :server-items-length="source.total"
+          class="browser"
+          @update:options="onOptionsUpdate"
       >
         <template v-slot:headers="{ columns, someSelected, allSelected, selectAll}">
+
           <tr>
             <td :colspan="columns.length+1" class="pa-0">
 
               <BrowserToolBar
-                :items-before-search="toolbarItemsBeforeSearch"
-                :items-before-filter="toolbarItemsBeforeFilter"
-                :filter-fields="filterFields"
-                :filter="source.filter"
-                :operations-panel-items="operationsPanelItems"
-                :select-all="{selectAll, someSelected, allSelected}"
-                :hide-search-string="hideSearchString"
-                :show-operations-panel-btn="!hideOperationsPanel || alwaysShowOperationsPanel"
-                :show-operations-panel="showOperationsPanel"
-                @changeOperationPanelState="showOperationsPanel = !showOperationsPanel"
-                @changeFilter="source.changeFilter($event)"
-                @action="onAction"
+                  :items="toolbar"
+                  :filter-fields="filterFields"
+                  :filter="source.filter"
+                  :operations-panel-items="operationsPanelItems"
+                  :select-all="{selectAll, someSelected, allSelected}"
+                  :show-operations-panel-btn="!hideOperationsPanel || alwaysShowOperationsPanel"
+                  :show-operations-panel="showOperationsPanel"
+                  @changeOperationPanelState="showOperationsPanel = !showOperationsPanel"
+                  @changeFilter="source.changeFilter($event)"
+                  @action="onAction"
               />
               <!--            <OperationsPanel-->
               <!--              :items="operationsPanelItems"-->
@@ -246,13 +257,13 @@ export default {
           <tr v-if="source.has_more">
             <td :colspan="columns.length+1" class="pa-0 text-center">
               <v-progress-circular
-                v-if="source.loading"
-                indeterminate
+                  v-if="source.loading"
+                  indeterminate
               ></v-progress-circular>
               <v-btn
-                v-else
-                variant="plain"
-                @click="source.nextPage()"
+                  v-else
+                  variant="plain"
+                  @click="source.nextPage()"
               >
                 Загрузить ещё
               </v-btn>
@@ -260,69 +271,69 @@ export default {
           </tr>
         </template>
         <template
-          v-slot:item="{ item, columns, index, isSelected, toggleSelect }"
+            v-slot:item="{ item, columns, index, isSelected, toggleSelect }"
         >
           <component
-            :is="editForm.handler"
-            v-if="editForm && editForm.inline && index===editForm.index"
-            :columns="columns"
-            :item="item"
-            :items="source.rows"
-            :index="index"
-            @action="onAction"
+              :is="editForm.handler"
+              v-if="editForm && editForm.inline && index===editForm.index"
+              :columns="columns"
+              :item="item"
+              :items="source.rows"
+              :index="index"
+              @action="onAction"
           />
           <component
-            :is="rowTemplate"
-            v-else
-            :columns="columns"
-            :row-actions="rowActions"
-            :row-actions-field="rowActionsField"
-            :item="item"
-            :items="source.rows"
-            :index="index"
-            :key-property="source['keyProperty']"
-            :is-selected="isSelected"
-            :toggle-select="toggleSelect"
-            :edit-mode="editForm && editForm.handler==='inline' && index===editForm.formData.index"
-            @action="onAction"
+              :is="rowTemplate"
+              v-else
+              :columns="columns"
+              :row-actions="rowActions"
+              :row-actions-field="rowActionsField"
+              :item="item"
+              :items="source.rows"
+              :index="index"
+              :key-property="source['keyProperty']"
+              :is-selected="isSelected"
+              :toggle-select="toggleSelect"
+              :edit-mode="editForm && editForm.handler==='inline' && index===editForm.formData.index"
+              @action="onAction"
           />
         </template> <!-- item !-->
 
         <template
-          v-slot:no-data=""
+            v-slot:no-data=""
         >
           <v-container
-            v-if="source.error"
-            class="error--text"
+              v-if="source.error"
+              class="error--text"
           >
             {{ source.error.message }}
             <span v-if="source.error.detail">: {{ source.error.detail }}</span>
           </v-container>
           <v-container
-            v-else
+              v-else
           >
             {{ $t('$vuetify.noDataText') }}
           </v-container>
         </template>  <!-- No data!-->
       </v-data-table>
       <component
-        :is="editForm.handler"
-        v-if="editForm && editForm.formVisible && editForm.handler!=='inline'"
-        :formUid="editForm.formUid"
-        :formVisible="editForm.formVisible"
-        :formData="editForm.formData"
-        @action="onAction($event, 'editForm')"
+          :is="editForm.handler"
+          v-if="editForm && editForm.formVisible && editForm.handler!=='inline'"
+          :formUid="editForm.formUid"
+          :formVisible="editForm.formVisible"
+          :formData="editForm.formData"
+          @action="onAction($event, 'editForm')"
       />
       <component
-        :is="actionForm.handler"
-        v-if="actionForm && actionForm.visible"
-        v-bind="actionForm"
-        @action="onAction($event, 'actionForm')"
+          :is="actionForm.handler"
+          v-if="actionForm && actionForm.visible"
+          v-bind="actionForm"
+          @action="onAction($event, 'actionForm')"
       />
       <ExtException
-        v-if="actionError"
-        v-model="actionError"
-        :dialog="true"
+          v-if="actionError"
+          v-model="actionError"
+          :dialog="true"
       ></ExtException>
     </div>
   </v-container>

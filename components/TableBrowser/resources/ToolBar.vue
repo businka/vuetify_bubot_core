@@ -8,13 +8,7 @@ export default {
     FilterBtn: defineAsyncComponent(() => import('./Filter/FilterBtn'))
   },
   props: {
-    itemsBeforeSearch: {
-      type: Array,
-      default: function () {
-        return []
-      }
-    },
-    itemsBeforeFilter: {
+    items: {
       type: Array,
       default: function () {
         return []
@@ -32,10 +26,6 @@ export default {
         return {}
       }
     },
-    hideSearchString: {
-      type: Boolean,
-      default: false
-    },
     showOperationsPanelBtn: {
       type: Boolean,
       default: false
@@ -50,7 +40,14 @@ export default {
         return []
       }
     },
-
+    borderedTop: {
+      type: Boolean,
+      default: false
+    },
+    borderedBottom: {
+      type: Boolean,
+      default: false
+    },
     hideSelectAll: {
       type: Boolean,
       default: false
@@ -68,11 +65,11 @@ export default {
 </script>
 
 <style scoped>
-.bordered-top {
+.borderedTop1 {
   border-top: thin solid #cccccc;
 }
 
-.bordered-bottom {
+.borderedBottom1 {
   border-bottom: thin solid #cccccc;
 }
 </style>
@@ -81,7 +78,7 @@ export default {
   <v-toolbar
     density="compact"
     variant="flat"
-    class="bordered-top bordered-bottom"
+    class="borderedTop, borderedBottom bg-grey-lighten-4"
   >
     <v-toolbar-items>
       <v-checkbox
@@ -95,38 +92,39 @@ export default {
       />
       <component
         :is="item.template || 'ActionBtn'"
-        v-for="(item, i) in itemsBeforeSearch"
+        v-for="(item, i) in items"
         :key="i"
+        density="compact"
         v-bind="item"
         @action="$emit('action', $event)"
       />
     </v-toolbar-items>
-    <SearchField
-      v-if="!hideSearchString"
-      class="mr-2"
-      :value="filter.searchString"
-      @changeFilter="$emit('changeFilter', $event)"
-    />
-    <v-toolbar-items>
-      <component
-        :is="item.template || 'ActionBtn'"
-        v-for="(item, i) in itemsBeforeFilter"
-        :key="i"
-        v-bind="item"
-        @action="$emit('action', $event)"
-      />
-      <template v-if="selectAll.someSelected">
-        <v-divider vertical></v-divider>
-        <component
-          :is="item.template || 'ActionBtn'"
+<!--    <SearchField-->
+<!--      v-if="!hideSearchString"-->
+<!--      class="mr-2"-->
+<!--      :value="filter.searchString"-->
+<!--      @changeFilter="$emit('changeFilter', $event)"-->
+<!--    />-->
+<!--    <v-toolbar-items>-->
+<!--      <component-->
+<!--        :is="item.template || 'ActionBtn'"-->
+<!--        v-for="(item, i) in itemsBeforeFilter"-->
+<!--        :key="i"-->
+<!--        v-bind="item"-->
+<!--        @action="$emit('action', $event)"-->
+<!--      />-->
+<!--      <template v-if="selectAll.someSelected">-->
+<!--        <v-divider vertical></v-divider>-->
+<!--        <component-->
+<!--          :is="item.template || 'ActionBtn'"-->
 
-          v-for="(item, i) in operationsPanelItems"
-          :key="i"
-          v-bind="item"
-          @action="$emit('action', $event)"
-        />
-      </template>
-    </v-toolbar-items>
+<!--          v-for="(item, i) in operationsPanelItems"-->
+<!--          :key="i"-->
+<!--          v-bind="item"-->
+<!--          @action="$emit('action', $event)"-->
+<!--        />-->
+<!--      </template>-->
+<!--    </v-toolbar-items>-->
     <v-spacer/>
     <FilterBtn
       v-if="filterFields.length"

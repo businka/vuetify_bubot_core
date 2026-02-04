@@ -22,49 +22,43 @@ export default {
     masterFieldInDetail: {
       type: String
     },
-    initialWidth: {
+    masterWidth: {
       type: Number,
-      default: 300
+      default: 250
     },
-    minWidth: {
+    masterWidthMin: {
       type: Number,
       default: 100
     },
-    maxWidth: {
+    masterWidthMax: {
+      type: Number,
+      default: null
+    },
+    resizing: {
+      type: Boolean,
+      default: false
+    },
+    resizingWidth: {
       type: Number,
       default: null
     }
   },
   data() {
     return {
-      masterWidth: this.initialWidth,
+      currentMasterWidth: this.masterWidth,
       isResizing: false,
       masterActive: undefined,
       masterSelected: [],
     };
   },
-  computed: {
-    masterFilterInDetail() {
-      if (isEmptyObject(this.masterActive)) return undefined
-      const active = this.masterActive
-      const masterKey = this.masterKeyForDetail ? this.masterKeyForDetail : this.master.dataSource.keyProperty
-      const detailFilter = this.masterFieldInDetail || this.detail.dataSource.keyProperty
-      const filter = active[masterKey]
-      if (typeof filter === 'object') {
-        return filter
-      }
-      return {
-        [detailFilter]: filter
-      }
-    },
-  },
+  computed: {},
   methods: {
     handleResizeStart() {
       this.isResizing = true;
     },
 
     handleResize(newWidth) {
-      this.masterWidth = newWidth;
+      this.currentMasterWidth = newWidth;
     },
 
     handleResizeEnd() {
@@ -73,7 +67,7 @@ export default {
   },
   watch: {
     initialWidth(newVal) {
-      this.masterWidth = newVal;
+      this.currentMasterWidth = newVal;
     }
   }
 };
@@ -83,21 +77,27 @@ export default {
 .split-container {
   position: relative;
   width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
 .split-pane {
   overflow: auto;
   position: relative;
+  height: 100%;
 }
 
 .master-pane {
   flex-shrink: 0;
   border-right: 1px solid #e0e0e0;
+  height: 100%;
 }
 
 .detail-pane {
   min-width: 0;
+  flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
 }
 
 .splitter {
@@ -134,7 +134,7 @@ export default {
     <div
         ref="masterPane"
         class="split-pane master-pane"
-        :style="{ width: masterWidth + 'px', 'min-width': minWidth + 'px' }"
+        :style="{ width: currentMasterWidth + 'px', 'min-width': masterWidthMin + 'px' }"
     >
       <template v-if="master.template" class="fill-height">
         <component
@@ -150,12 +150,14 @@ export default {
 
     <!-- Разделитель -->
     <ResizeHandle
+        v-if="resizing"
         :is-resizing="isResizing"
-        :min-width="minWidth"
-        :max-width="maxWidth"
+        :min-width="masterWidthMin"
+        :max-width="masterWidthMax"
         @resize-start="handleResizeStart"
         @resize="handleResize"
         @resize-end="handleResizeEnd"
+
     />
 
     <!-- Правая часть (Detail) -->
@@ -164,9 +166,9 @@ export default {
     >
       <template v-if="detail.template">
         <component
-            v-if="masterFilterInDetail"
+            v-if="masterActive"
             :is="detail.template"
-            :filterConst="masterFilterInDetail"
+            :item="masterActive"
             v-bind="detail"
             class="fill-height"
         />

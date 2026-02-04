@@ -1,5 +1,6 @@
-import {createI18n} from 'vue-i18n/dist/vue-i18n.cjs'
+import { createI18n } from 'vue-i18n'
 import {nextTick} from 'vue'
+
 
 import axios from 'axios'
 import {updateObject} from 'bubot-helper/BaseHelper'
@@ -29,7 +30,7 @@ function setI18nLanguage(i18n, lang) {
   return lang
 }
 
-export async function loadLocaleMessages(i18n, appName, locale) {
+export async function loadLanguageAsync(i18n, appName, locale) {
 
   if (!locale) {
     locale = navigator.language.substr(0, 2).toLowerCase()

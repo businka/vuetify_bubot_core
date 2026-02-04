@@ -1,5 +1,5 @@
 <script>
-import { loadLocaleMessages } from '../../plugins/i18n'
+import { loadLanguageAsync } from '../../plugins/i18n'
 export default {
   name: 'LangSelector',
     props: {
@@ -16,7 +16,7 @@ export default {
   methods: {
     changeLang (lang) {
       console.log('changeLang', lang)
-      loadLocaleMessages(this.$i18n, lang)
+      loadLanguageAsync(this.$i18n, lang)
       this.$i18n.locale = lang
     }
   }

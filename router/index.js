@@ -1,17 +1,16 @@
 import LayoutFormViewer from '../components/FormViewer/LayoutFormViewer.vue'
 
 export const coreRoutes = [
-  // {
-  //   path: '/',
-  //   component: () => import('../components/FormViewer/LayoutFormViewer')
-  // },
-
   {
-    path: '/:objName/:subtype/:objForm',
+    path: '/',
+    component: () => import('../components/FormViewer/LayoutFormViewer')
+  },
+  {
+    path: '/form/:objName/:subtype/:objForm',
     component: LayoutFormViewer
   },
   {
-    path: '/:objName/:objForm',
+    path: '/form/:objName/:objForm',
     component: LayoutFormViewer
   }
 ]

@@ -1,6 +1,6 @@
 <script>
 import ActionMixin from '../../../../helpers/mixinTemplate/action'
-import {getPropValueByPath} from '../../bubot-helper/BaseHelper'
+import {getPropValueByPath} from 'bubot-helper/BaseHelper'
 import RowCellMixin from "./RowCell.mixin"
 
 export default {
