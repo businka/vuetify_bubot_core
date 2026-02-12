@@ -1,6 +1,5 @@
 <script>
 import ActionMixin from '../../helpers/mixinTemplate/action'
-
 import BrowserActionMixin from './resources/BrowserActionMixin'
 import ExtException from '../Simple/ExtException'
 import BrowserToolBar from './resources/ToolBar'
@@ -18,11 +17,13 @@ export default {
     OperationsPanel,
     RowViewer,
     RowEditor
-    // Headers: defineAsyncComponent(() => import('./resources/Headers')),
-    // FilterPanel: defineAsyncComponent(() => import('./resources/FilterPanel')),
   },
   mixins: [ActionMixin, BrowserActionMixin],
   props: {
+    height: {
+      type: String,
+      default: '100%'
+    },
     hideOperationsPanel: {
       type: Boolean,
       default: false
@@ -33,15 +34,11 @@ export default {
     },
     operationsPanelItems: {
       type: Array,
-      default: function () {
-        return []
-      }
+      default: () => []
     },
     rowActions: {
       type: Array,
-      default: function () {
-        return []
-      }
+      default: () => []
     },
     rowActionsField: {
       type: String,
@@ -49,32 +46,22 @@ export default {
     },
     rowActivateHandler: {
       type: Object,
-      default: function () {
-        return {
-          name: '',
-        }
-      }
+      default: () => ({ name: '' })
     },
     externalRowActivateHandler: {
       type: Function
     },
     toolbar: {
       type: Array,
-      default: function () {
-        return []
-      }
+      default: () => []
     },
     filterFields: {
       type: Array,
-      default: function () {
-        return []
-      }
+      default: () => []
     },
     filterConst: {
       type: Object,
-      default: function () {
-        return {}
-      }
+      default: () => ({})
     },
     hideSelectAll: {
       type: Boolean,
@@ -94,33 +81,23 @@ export default {
     },
     dataSource: {
       type: Object,
-      default: function () {
-        return {}
-      }
+      default: () => ({})
     },
     columns: {
       type: Array,
-      default: function () {
-        return []
-      }
+      default: () => []
     },
-    height: {type: String},
     active: {
       type: Object,
     },
     selected: {
       type: Array,
-      default: function () {
-        return []
-      }
+      default: () => []
     },
     autoActivate: {
       type: Object,
-      default: function () {
-        return {}
-      }
+      default: () => ({})
     },
-
   },
 
   data() {
@@ -128,14 +105,15 @@ export default {
       dataTableHeight: 0,
     }
   },
+
   computed: {
     actionColumn() {
       return this.rowActions || this.rowActionsField ? 1 : 0
     }
   },
+
   watch: {
     dataSource: function () {
-      // console.log(`Browser  ${this.dataSource.objName} watch dataSource needUpdate ${this.needUpdate}`)
       if (this.options) {
         this.options.page = 1
       }
@@ -143,30 +121,26 @@ export default {
       this.needUpdate = true
     },
     filterConst: function (filterConst) {
-      // console.log(`Browser  ${this.dataSource.objName} watch filterConst 2, needUpdate ${this.needUpdate} `)
       this.needUpdate = true
       this.source.changeProps({filterConst})
     },
     options: function (options) {
-      // console.log(`Browser  ${this.dataSource.objName} watch options ${JSON.stringify(this.options)}`)
       this.source.changeProps(options)
       this.needUpdate = true
     },
-
     needUpdate: async function (value) {
-      // await this.$nextTick()
-      // console.log(`needUpdate ${value}`)
       if (value) {
         this.needUpdate = false
         await this.source.fetchRows()
         this.autoActivateRow()
-
       }
     }
   },
+
   beforeMount() {
     this.init()
   },
+
   methods: {
     updateDataTableHeight() {
       this.dataTableHeight = this.$refs.parentDiv.clientHeight;
@@ -181,43 +155,46 @@ export default {
 }
 
 .browser {
-  /*height: 100%;*/
-  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
 
-  .v-data-table__wrapper {
-    height: calc(100vh - 180px);
-
-    table {
-      thead {
-        tr {
-          th {
-            z-index: 0;
-            color: red;
-          }
-        }
-      }
-    }
+  .v-table__wrapper {
+    flex: 1 1 auto;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: auto !important;
   }
+}
+
+.table-browser-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
 
 <template>
-  <v-container class="pa-0 ma-0 fill-height flex" style='display: block' v-resize="updateDataTableHeight">
-    <div ref="parentDiv" style="height: 100%">
+  <v-container class="pa-0 ma-0 d-flex flex-column fill-height">
       <v-data-table
           v-if="source"
           v-model="internalSelected"
           density="compact"
           disable-sort
           :headers="columns"
-          :height="dataTableHeight"
+          :height="height"
           hover
           fixed-header
           :hide-default-header="hideToolbar"
           hide-default-footer
           :return-object="true"
           :items="source.rows"
-          :itemsPerPage=0
+          :itemsPerPage="0"
           :item-value="source['keyProperty']"
           loading-text=""
           :loading="source.loading"
@@ -228,10 +205,8 @@ export default {
           @update:options="onOptionsUpdate"
       >
         <template v-slot:headers="{ columns, someSelected, allSelected, selectAll}">
-
           <tr>
-            <td :colspan="columns.length+1" class="pa-0">
-
+            <td :colspan="columns.length + 1" class="pa-0">
               <BrowserToolBar
                   :items="toolbar"
                   :filter-fields="filterFields"
@@ -244,22 +219,19 @@ export default {
                   @changeFilter="source.changeFilter($event)"
                   @action="onAction"
               />
-              <!--            <OperationsPanel-->
-              <!--              :items="operationsPanelItems"-->
-              <!--              :select-all="{selectAll, someSelected, allSelected}"-->
-              <!--              @action="onAction"-->
-              <!--            />-->
             </td>
           </tr>
         </template>
+
         <template v-slot:bottom></template>
+
         <template v-slot:body.append="{ columns}">
           <tr v-if="source.has_more">
-            <td :colspan="columns.length+1" class="pa-0 text-center">
+            <td :colspan="columns.length + 1" class="pa-0 text-center">
               <v-progress-circular
                   v-if="source.loading"
                   indeterminate
-              ></v-progress-circular>
+              />
               <v-btn
                   v-else
                   variant="plain"
@@ -270,12 +242,11 @@ export default {
             </td>
           </tr>
         </template>
-        <template
-            v-slot:item="{ item, columns, index, isSelected, toggleSelect }"
-        >
+
+        <template v-slot:item="{ item, columns, index, isSelected, toggleSelect }">
           <component
               :is="editForm.handler"
-              v-if="editForm && editForm.inline && index===editForm.index"
+              v-if="editForm && editForm.inline && index === editForm.index"
               :columns="columns"
               :item="item"
               :items="source.rows"
@@ -294,14 +265,12 @@ export default {
               :key-property="source['keyProperty']"
               :is-selected="isSelected"
               :toggle-select="toggleSelect"
-              :edit-mode="editForm && editForm.handler==='inline' && index===editForm.formData.index"
+              :edit-mode="editForm && editForm.handler === 'inline' && index === editForm.formData.index"
               @action="onAction"
           />
-        </template> <!-- item !-->
+        </template>
 
-        <template
-            v-slot:no-data=""
-        >
+        <template v-slot:no-data>
           <v-container
               v-if="source.error"
               class="error--text"
@@ -309,32 +278,32 @@ export default {
             {{ source.error.message }}
             <span v-if="source.error.detail">: {{ source.error.detail }}</span>
           </v-container>
-          <v-container
-              v-else
-          >
+          <v-container v-else>
             {{ $t('$vuetify.noDataText') }}
           </v-container>
-        </template>  <!-- No data!-->
+        </template>
       </v-data-table>
+
       <component
           :is="editForm.handler"
-          v-if="editForm && editForm.formVisible && editForm.handler!=='inline'"
+          v-if="editForm && editForm.formVisible && editForm.handler !== 'inline'"
           :formUid="editForm.formUid"
           :formVisible="editForm.formVisible"
           :formData="editForm.formData"
           @action="onAction($event, 'editForm')"
       />
+
       <component
           :is="actionForm.handler"
           v-if="actionForm && actionForm.visible"
           v-bind="actionForm"
           @action="onAction($event, 'actionForm')"
       />
+
       <ExtException
           v-if="actionError"
           v-model="actionError"
           :dialog="true"
-      ></ExtException>
-    </div>
+      />
   </v-container>
 </template>

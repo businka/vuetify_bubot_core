@@ -23,8 +23,8 @@ export default class Service extends Source {
     async list(filter = {}, nav = {}) {
         this.loading = true
         let data = {
-            filter: updateObject({}, this.props.filterConst, filter),
-            nav
+            Filter: updateObject({}, this.props.filterConst, filter),
+            Pagination: nav
         }
         let url = `${this.get_obj_url()}/${this.props.list || 'list'}`
         return this.post(url, data)

@@ -90,7 +90,7 @@ export default class Source {
         this.hasMore = this.props.pagination.PageSize && newRows.length && newRows.length >= this.props.pagination.PageSize
       }
 
-      if (isEmptyObject(this.props.pagination)) {
+      if (isEmptyObject(this.props.pagination) || this.props.pagination.Page === 1) {
         this.rows = newRows//.splice(0,this.rows.length)
       } else {
         this.rows.push.apply(this.rows, newRows)

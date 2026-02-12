@@ -65,11 +65,11 @@ export default {
 </script>
 
 <style scoped>
-.borderedTop1 {
+.borderedTop {
   border-top: thin solid #cccccc;
 }
 
-.borderedBottom1 {
+.borderedBottom {
   border-bottom: thin solid #cccccc;
 }
 </style>
@@ -78,7 +78,7 @@ export default {
   <v-toolbar
     density="compact"
     variant="flat"
-    class="borderedTop, borderedBottom bg-grey-lighten-4"
+    class="borderedTop borderedBottom bg-grey-lighten-4"
   >
     <v-toolbar-items>
       <v-checkbox

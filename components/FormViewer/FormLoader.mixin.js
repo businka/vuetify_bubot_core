@@ -55,7 +55,12 @@ export default {
   watch: {
     formData: async function () {
       console.log(`FormLoader.mixin watch FormData ${this.formUid}`)
-      this.init()
+      if (this.form && this.form.template) {
+        this.updateForm() // только обновляем данные, не перезагружаем
+      } else {
+        await this.init()
+      }
+      // this.init()
     }
   },
   mounted: async function () {

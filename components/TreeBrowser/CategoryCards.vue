@@ -84,9 +84,8 @@ export default defineComponent({
       // Создаем сервис для работы с API
       this.source = new Service(dataSource)
 
-      // Загружаем корневые элементы
       await this.fetch(null)
-
+      this.checkRouteQuery()
     },
 
     async fetch(item) {
@@ -155,13 +154,20 @@ export default defineComponent({
       } else {
         formUid = formName
       }
+
       this.editForm = {
         handler: this.rowActivateHandler['formViewer'],
         formUid: formUid,
         formVisible: true,
-        formData: {item: data.row, index: data.index, filterConst: this.source.props.filterConst},
+        _updateKey: Date.now(),
+        formData: {
+          item: data.row,
+          index: data.index,
+          filterConst: this.source.props.filterConst
+        },
       }
-      // console.log(`BrowserActionMixin RowActivateHandlerShowForm ${JSON.stringify(this.editForm)}`)
+
+      this.addIdToRouteQuery([this.source.props.keyProperty], data.row[this.source.props.keyProperty])
     },
 
   }
@@ -183,7 +189,6 @@ export default defineComponent({
       ></v-progress-circular>
       <div class="mt-4">Загрузка категорий...</div>
     </div>
-
     <!-- Пустое представление -->
     <div v-else-if="showEmptyState" class="text-center py-16">
       <v-icon
@@ -289,6 +294,7 @@ export default defineComponent({
     <component
         :is="editForm.handler"
         v-if="editForm && editForm.formVisible && editForm.handler!=='inline'"
+        :key="editForm._updateKey || Date.now()"
         :formUid="editForm.formUid"
         :formVisible="editForm.formVisible"
         :formData="editForm.formData"

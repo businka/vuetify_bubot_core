@@ -51,53 +51,101 @@ export default {
       masterSelected: [],
     };
   },
-  computed: {},
+  computed: {
+    masterPaneStyle() {
+      return {
+        width: this.currentMasterWidth + 'px',
+        'min-width': this.masterWidthMin + 'px'
+      }
+    }
+  },
   methods: {
     handleResizeStart() {
       this.isResizing = true;
     },
-
     handleResize(newWidth) {
       this.currentMasterWidth = newWidth;
     },
-
     handleResizeEnd() {
       this.isResizing = false;
     }
   },
   watch: {
-    initialWidth(newVal) {
+    masterWidth(newVal) {
       this.currentMasterWidth = newVal;
     }
   }
 };
 </script>
 
+<template>
+  <div class="split-container d-flex flex-column fill-height overflow-hidden">
+    <div class="d-flex flex-grow-1 overflow-hidden">
+      <!-- Master панель -->
+      <div
+          ref="masterPane"
+          class="master-pane d-flex flex-column flex-shrink-0 overflow-hidden"
+          :style="{ width: currentMasterWidth + 'px', minWidth: masterWidthMin + 'px' }"
+      >
+        <component
+            v-if="master.template"
+            :is="master.template"
+            :autoActivate="{index:0}"
+            v-model:selected="masterSelected"
+            v-model:active="masterActive"
+            v-bind="master"
+            class="flex-fill d-flex flex-column overflow-hidden"
+            style="min-height: 0;"
+        />
+      </div>
+
+      <!-- Разделитель -->
+      <ResizeHandle
+          v-if="resizing"
+          :is-resizing="isResizing"
+          :min-width="masterWidthMin"
+          :max-width="masterWidthMax"
+          @resize-start="handleResizeStart"
+          @resize="handleResize"
+          @resize-end="handleResizeEnd"
+      />
+
+      <!-- Detail панель -->
+      <div
+          v-if="detail.template"
+          class="detail-pane d-flex flex-column flex-grow-1 overflow-hidden" style="min-width: 0;"
+      >
+        <component
+            v-if="masterActive"
+            :is="detail.template"
+            :item="masterActive"
+            v-bind="detail"
+
+            class="flex-fill d-flex flex-column overflow-hidden"
+            style="min-height: 0;"
+        />
+        <div v-else>
+          Пусто
+        </div>
+        <!-- Плейсхолдер когда ничего не выбрано -->
+      </div>
+    </div>
+  </div>
+</template>
+
 <style scoped>
 .split-container {
-  position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.split-pane {
-  overflow: auto;
-  position: relative;
-  height: 100%;
-}
-
 .master-pane {
-  flex-shrink: 0;
   border-right: 1px solid #e0e0e0;
-  height: 100%;
 }
 
 .detail-pane {
   min-width: 0;
-  flex-grow: 1;
-  height: 100%;
-  overflow: hidden;
 }
 
 .splitter {
@@ -127,52 +175,3 @@ export default {
   background-color: #1976d2;
 }
 </style>
-
-<template>
-  <div class="split-container d-flex fill-height">
-    <!-- Левая часть (Master) -->
-    <div
-        ref="masterPane"
-        class="split-pane master-pane"
-        :style="{ width: currentMasterWidth + 'px', 'min-width': masterWidthMin + 'px' }"
-    >
-      <template v-if="master.template" class="fill-height">
-        <component
-            :is="master.template"
-            :autoActivate="{index:0}"
-            v-model:selected="masterSelected"
-            v-model:active="masterActive"
-            v-bind="master"
-            class="fill-height"
-        />
-      </template>
-    </div>
-
-    <!-- Разделитель -->
-    <ResizeHandle
-        v-if="resizing"
-        :is-resizing="isResizing"
-        :min-width="masterWidthMin"
-        :max-width="masterWidthMax"
-        @resize-start="handleResizeStart"
-        @resize="handleResize"
-        @resize-end="handleResizeEnd"
-
-    />
-
-    <!-- Правая часть (Detail) -->
-    <div
-        class="split-pane detail-pane flex-grow-1"
-    >
-      <template v-if="detail.template">
-        <component
-            v-if="masterActive"
-            :is="detail.template"
-            :item="masterActive"
-            v-bind="detail"
-            class="fill-height"
-        />
-      </template>
-    </div>
-  </div>
-</template>
