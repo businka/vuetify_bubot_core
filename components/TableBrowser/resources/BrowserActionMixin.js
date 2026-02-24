@@ -3,7 +3,7 @@ import {updateObject, objHasOwnProperty, isEmptyObject} from 'bubot-helper/BaseH
 import {findIndexInArrayObj} from "bubot-helper/ArrayHelper";
 
 export default {
-    emits: ['update:selected', 'update:active'],
+
     data() {
         return {
             singleSelect: false,
@@ -48,6 +48,7 @@ export default {
                 filterFields: (this.filterFields || {}),
                 filterConst: (this.filterConst || {})
             }, this.dataSource, this.options)
+            console.log(`Browser  ${this.dataSource.objName} init needUpdate set true`)
             this.needUpdate = true
             try {
                 this.source = initDataSource(dataSource, this.$store)

@@ -68,6 +68,9 @@ export default {
     },
     handleResizeEnd() {
       this.isResizing = false;
+    },
+    onAction(event) {
+      this.$emit('action', event);
     }
   },
   watch: {
@@ -77,14 +80,13 @@ export default {
   }
 };
 </script>
-
 <template>
-  <div class="split-container d-flex flex-column fill-height overflow-hidden">
-    <div class="d-flex flex-grow-1 overflow-hidden">
+  <div class="split-container">
+    <div class="split-content">
       <!-- Master панель -->
       <div
           ref="masterPane"
-          class="master-pane d-flex flex-column flex-shrink-0 overflow-hidden"
+          class="master-pane"
           :style="{ width: currentMasterWidth + 'px', minWidth: masterWidthMin + 'px' }"
       >
         <component
@@ -94,8 +96,8 @@ export default {
             v-model:selected="masterSelected"
             v-model:active="masterActive"
             v-bind="master"
-            class="flex-fill d-flex flex-column overflow-hidden"
-            style="min-height: 0;"
+            class="master-component"
+            @action="onAction"
         />
       </div>
 
@@ -113,42 +115,78 @@ export default {
       <!-- Detail панель -->
       <div
           v-if="detail.template"
-          class="detail-pane d-flex flex-column flex-grow-1 overflow-hidden" style="min-width: 0;"
+          class="detail-pane"
       >
         <component
             v-if="masterActive"
             :is="detail.template"
             :item="masterActive"
             v-bind="detail"
-
-            class="flex-fill d-flex flex-column overflow-hidden"
-            style="min-height: 0;"
+            class="detail-component"
+            @action="onAction"
         />
-        <div v-else>
+        <div v-else class="empty-state">
           Пусто
         </div>
-        <!-- Плейсхолдер когда ничего не выбрано -->
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
+
+<style lang="scss" scoped>
 .split-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.split-content {
+  display: flex;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
 .master-pane {
+  height: 100%;
+  overflow: hidden;
   border-right: 1px solid #e0e0e0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .detail-pane {
+  flex: 1 1 auto;
   min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.splitter {
+.master-component,
+.detail-component {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(0, 0, 0, 0.6);
+  flex: 1 1 auto;
+}
+
+// Стили для разделителя (оставляем оригинальные)
+:deep(.splitter) {
   width: 10px;
   flex-shrink: 0;
   display: flex;
@@ -161,17 +199,17 @@ export default {
   touch-action: none;
 }
 
-.splitter:hover {
+:deep(.splitter:hover) {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.splitter-line {
+:deep(.splitter-line) {
   width: 2px;
   height: 100%;
   background-color: #e0e0e0;
 }
 
-.splitter:hover .splitter-line {
+:deep(.splitter:hover .splitter-line) {
   background-color: #1976d2;
 }
 </style>

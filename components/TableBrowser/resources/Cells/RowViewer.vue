@@ -17,7 +17,7 @@ export default {
     'RowColorProgress': defineAsyncComponent(() => import('./RowColorProgress')),
   },
   mixins: [ActionMixin],
-  props: ['columns', 'item', 'index', 'editMode', 'isSelected', 'toggleSelect', 'store', 'rowActions', 'rowActionsField', 'keyProperty' , 'items'],
+  props: ['columns', 'item', 'index', 'editMode', 'isSelected', 'toggleSelect', 'store', 'rowActions', 'rowActionsField', 'keyProperty' , 'items', 'active'],
   data: function () {
     return {
       row: {},
@@ -76,7 +76,7 @@ export default {
 </script>
 
 <template>
-  <tr>
+  <tr :class="{ 'v-data-table__tr--active': active }">
     <td
       v-for="(col, i) in columns"
       :key="i"
@@ -142,4 +142,10 @@ tr:hover .data-table-select {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.v-data-table__tr--active {
+   background-color: rgba(var(--v-theme-on-surface-variant), 1) !important;
+ }
+
+
 </style>
