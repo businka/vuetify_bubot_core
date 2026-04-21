@@ -7,62 +7,57 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+    },
+    text: {
+      type: String,
     },
     name: {
       type: String,
-      default: ''
+    },
+    color: {
+      type: String,
     },
     data: {
       type: Object,
     },
     icon: {
       type: String,
-      default: ''
     },
     primary: {
       type: Boolean,
       default: false
     },
-    density: String,
-    rounded: {
-      type: Boolean,
-      default: false
-    }
+    variant: String,
+    size: String,
+    density: {
+      type: String,
+      default: 'compact'
+    },
+    rounded: String,
+    elevation: String,
+    prependIcon: String,
+    appendIcon: String
   },
 }
 </script>
 
 <style lang="scss" scoped>
-/*.theme--light.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined).default-btn-action  {*/
-/*  border: thin solid #FF7033;*/
-/*  background-color: transparent;*/
-
-/*  &:hover {*/
-/*    background-color: #FDECD9;*/
-/*  }*/
-/*}*/
-.v-btn__content {
-  span {
-    text-transform: none !important;
-  }
-}
 </style>
 
 <template>
   <v-btn
-    :icon="!!icon"
-    :variant="!!primary?'outlined':undefined"
-    :color="primary?'primary':undefined"
-    :density="density"
-    :title="title"
-    :rounded="rounded"
-    small
-    @click.stop="emitAction(name, data)"
-  >
-    <v-icon v-if="icon">
-      {{ icon }}
-    </v-icon>
-    <span v-else>{{ $t(title) }}</span>
-  </v-btn>
+      :variant="variant"
+      :color="color"
+      :density="density"
+      :title="title"
+      :rounded="rounded"
+      :elevation="elevation"
+      :size="size"
+      :icon="icon"
+      :prepend-icon="prependIcon"
+      :append-icon="appendIcon"
+      :text="text"
+      class="text-none font-weight-regular"
+      @click.stop="emitAction(name, data)"
+  />
 </template>

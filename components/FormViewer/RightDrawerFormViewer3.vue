@@ -20,7 +20,7 @@ export default {
 
 <template>
   <v-navigation-drawer
-      v-if="formVisible"
+      v-if="visible"
       :key="Date.now()"
       location="right"
       :width="width"

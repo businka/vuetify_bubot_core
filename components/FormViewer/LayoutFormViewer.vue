@@ -93,8 +93,8 @@ export default {
 
 <template>
   <v-app class="height100">
+    <NavDrawer class="height100"/>
     <v-main>
-      <NavDrawer class="height100"/>
       <v-toolbar class="px-0" height="24">
         <v-spacer/>
         <v-toolbar-items>

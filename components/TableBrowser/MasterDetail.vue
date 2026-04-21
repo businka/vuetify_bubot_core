@@ -1,9 +1,11 @@
 <script>
 import {isEmptyObject, objHasOwnProperty} from "bubot-helper/BaseHelper";
+import ActionMixin from '../../helpers/mixinTemplate/action'
 import ResizeHandle from './resources/MasterDetailResizeHandle.vue'
 
 export default {
   name: "MasterDetail",
+  mixins: [ActionMixin],
   components: {
     ResizeHandle
   },
@@ -41,23 +43,37 @@ export default {
     resizingWidth: {
       type: Number,
       default: null
-    }
+    },
+    masterActive: Object
   },
+  emits: ['update:masterActive'],
   data() {
     return {
       currentMasterWidth: this.masterWidth,
       isResizing: false,
-      masterActive: undefined,
+      internalMasterActive: this.masterActive,
       masterSelected: [],
     };
   },
   computed: {
+    activeValue: {
+      get() {
+        return this.masterActive !== undefined
+            ? this.masterActive
+            : this.internalMasterActive;
+      },
+      set(value) {
+        this.internalMasterActive = value;
+        this.$emit('update:masterActive', value);
+      }
+    },
     masterPaneStyle() {
       return {
         width: this.currentMasterWidth + 'px',
         'min-width': this.masterWidthMin + 'px'
       }
-    }
+    },
+
   },
   methods: {
     handleResizeStart() {
@@ -69,13 +85,15 @@ export default {
     handleResizeEnd() {
       this.isResizing = false;
     },
-    onAction(event) {
-      this.$emit('action', event);
-    }
   },
   watch: {
     masterWidth(newVal) {
       this.currentMasterWidth = newVal;
+    },
+    masterActive(newVal) {
+      if (newVal !== undefined) {
+        this.internalMasterActive = newVal;
+      }
     }
   }
 };
@@ -94,7 +112,7 @@ export default {
             :is="master.template"
             :autoActivate="{index:0}"
             v-model:selected="masterSelected"
-            v-model:active="masterActive"
+            v-model:active="activeValue"
             v-bind="master"
             class="master-component"
             @action="onAction"

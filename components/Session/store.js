@@ -46,8 +46,9 @@ export default {
                 if (!session) {
                     return false
                 }
+                const authService =  store.rootState.appConst.authService || '/AuthService'
                 const response = await buxios.get(
-                    '/AuthService/public_api/User/read_session_info',
+                    `${authService}/public_api/User/read_session_info`,
                     {params: {session}}
                     )
                 store.commit('set', {

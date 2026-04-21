@@ -18,6 +18,9 @@ export default {
             needUpdate: false,
         }
     },
+    beforeMount() {
+        this.init()
+    },
     computed: {
         internalSelected: {
             get() {
@@ -36,6 +39,38 @@ export default {
             }
         }
     },
+    watch: {
+        dataSource: function () {
+            if (this.options) {
+                this.options.page = 1
+            }
+            this.init()
+        },
+        filterConst: function (filterConst) {
+            // console.log(`Browser  ${this.dataSource.objName} watch filterConst, needUpdate ${this.needUpdate} `)
+            this.source.changeProps({
+                page: 1,
+                filterConst
+            })
+            // console.log(`Browser  ${this.dataSource.objName} watch filterConst needUpdate set true`)
+            this.needUpdate = true
+        },
+        options: function (options) {
+            this.source.changeProps(options)
+            // console.log(`Browser  ${this.dataSource.objName} watch options needUpdate set true`)
+            this.needUpdate = true
+        },
+        needUpdate: async function (value) {
+            // console.log(`needUpdate ${value}`)
+            if (value) {
+                await this.source.fetchRows()
+                this.autoActivateRow()
+            }
+            this.needUpdate = false
+            // console.log(`needUpdate end ${this.needUpdate}`)
+        }
+    },
+
     methods: {
         init() {
             this.internalSelected = []
@@ -44,14 +79,14 @@ export default {
             this.actionForm = {}
             this.actionError = undefined
             this.selectAll = false
-            let dataSource = updateObject({}, {
+            let source = updateObject({}, {
                 filterFields: (this.filterFields || {}),
                 filterConst: (this.filterConst || {})
             }, this.dataSource, this.options)
             console.log(`Browser  ${this.dataSource.objName} init needUpdate set true`)
             this.needUpdate = true
             try {
-                this.source = initDataSource(dataSource, this.$store)
+                this.source = initDataSource(source, this.$store)
             } catch (err) {
                 this.source = initDataSource({type: 'Memory'}, this.$store)
                 this.source.error = err
@@ -71,27 +106,29 @@ export default {
         actionCallDataSourceForSelectedItems: async function (actionData) {
             await this.actionCallDataSource(actionData, true)
         },
-
+        prepareCallDataSource: function (actionData) {
+            let source
+            let payload = updateObject({data: {}}, actionData, {data: {Filter: this.source.props.filterConst}})
+            if (objHasOwnProperty(actionData, 'dataSource')) {
+                source = initDataSource(actionData.dataSource, this.$store)
+            } else {
+                source = this.source
+            }
+            if (objHasOwnProperty(payload.data, 'items')) {
+                // payload.data.filter = null
+            } else {
+                if (this.selectAll || !this.internalSelected.length) {
+                    Object.assign(payload.data.Filter, this.source.props.filter);
+                } else {
+                    payload.data.items = this.internalSelected
+                    // payload.data.filter = null
+                }
+            }
+            return [source, payload]
+        },
         actionCallDataSource: async function (actionData, addSelectionItems) {
             try {
-                let source
-                let payload = updateObject({data: {}}, actionData, {data: {filter: this.source.props.filterConst}})
-                if (objHasOwnProperty(actionData, 'dataSource')) {
-                    source = initDataSource(actionData.dataSource, this.$store)
-                } else {
-                    source = this.source
-                }
-                if (objHasOwnProperty(payload.data, 'items')) {
-                    // payload.data.filter = null
-                } else {
-                    if (this.selectAll) {
-                        payload.data.items = this.source.listAll()
-                        payload.data.filter = this.source.filter
-                    } else {
-                        payload.data.items = this.internalSelected
-                        // payload.data.filter = null
-                    }
-                }
+                const [source, payload ] = this.prepareCallDataSource(actionData)
                 await source.call(payload)
                 await this.source.fetchRows()
             } catch (err) {
@@ -129,9 +166,9 @@ export default {
             this.$nextTick(() => {
                 // Создаем новую форму
                 this.editForm = {
-                    handler: this.rowActivateHandler['formViewer'],
+                    template: this.rowActivateHandler['formViewer'],
                     formUid: formUid,
-                    formVisible: true,
+                    visible: true,
                     _updateKey: Date.now(),
                     _id: Math.random().toString(36).substring(2), // Уникальный ID
                     formData: {
@@ -168,9 +205,9 @@ export default {
 
             this.$nextTick(() => {
                 this.editForm = {
-                    handler: data.handler,
+                    template: data.template,
                     formUid: data.formUid,
-                    formVisible: true,
+                    visible: true,
                     _updateKey: Date.now(),
                     _id: Math.random().toString(36).substring(2),
                     formData: {
@@ -186,7 +223,11 @@ export default {
         // Обновляем query через pushState - БЕЗ ПЕРЕЗАГРУЗКИ
         addIdToRouteQuery: function (name, value) {
             const url = new URL(window.location.href)
-            url.searchParams.set(name, value)
+            if (!value) {
+                url.searchParams.delete(name);
+            } else {
+                url.searchParams.set(name, value);
+            }
             window.history.replaceState({}, '', url) // replaceState вместо pushState
         },
 
@@ -198,7 +239,7 @@ export default {
 
         actionCloseForm: async function (data, panelName) {
             // Закрываем форму
-            this[panelName].formVisible = false
+            this[panelName].visible = false
 
             // Получаем ID из закрываемой формы
             const closedForm = this[panelName]
@@ -227,8 +268,15 @@ export default {
 
         // Проверка query параметров при загрузке
         checkRouteQuery() {
-            const keyProperty = this.source?.props?.keyProperty
-            const id = this.$route.query[keyProperty]
+            let objName
+            let keyProperty
+            try {
+                objName = this.source.props.objName
+                keyProperty = this.source.props.keyProperty
+            } catch {
+                return
+            }
+            const id = this.$route.query[objName]
 
             if (id && this.items) {
                 // Ищем элемент по ID
@@ -262,10 +310,10 @@ export default {
             if (findKey) {
                 findIndex = findIndexInArrayObj(this.source.rows, findKey, this.source.props.keyProperty)
             }
-            if (findIndex !== undefined) {
+            if (findIndex !== undefined && this.source.rows.length >= findIndex) {
                 let data = {
-                    row: this.source.rows[this.autoActivate.index],
-                    index: this.autoActivate.index
+                    row: this.source.rows[findIndex],
+                    index: findIndex
                 }
                 this.actionRowActivate(data)
             }
@@ -280,6 +328,7 @@ export default {
 
         onOptionsUpdate(newOptions) {
             this.options = newOptions
-        }
+        },
+
     }
 }

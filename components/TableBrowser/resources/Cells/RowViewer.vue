@@ -13,6 +13,7 @@ export default {
     'RowCellIcon': defineAsyncComponent(() => import('./RowCellIcon')),
     'RowCellTitleSimple': defineAsyncComponent(() => import('./RowCellTitleSimple')),
     'RowCellDateTime': defineAsyncComponent(() => import('./RowCellDateTime')),
+    'RowCellDateNumber': defineAsyncComponent(() => import('./RowCellDateNumber')),
     'RowCellDefault': defineAsyncComponent(() => import('./RowCellDefault')),
     'RowColorProgress': defineAsyncComponent(() => import('./RowColorProgress')),
   },
@@ -62,7 +63,7 @@ export default {
     getTdStyle: function (col) {
       let style = `text-align:${(col.align || 'left')}; vertical-align:${(col.vAlign || 'middle')};`;
       if (col.key === 'data-table-select') {
-        style += 'min-width:40px;'
+        style += 'min-width:40px; width:40px;'
       } else {
         style += `width:${col.width};`
       }

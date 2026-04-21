@@ -1,5 +1,5 @@
 import Source from './Source'
-import { v4 as uuidv4 } from 'uuid'
+import {v4 as uuidv4} from 'uuid'
 import {getType, objHasOwnProperty, updateObject, getPropValueByPath} from 'bubot-helper/BaseHelper'
 
 const conditions = {
@@ -53,10 +53,12 @@ const conditions = {
 
 // module.exports = class Memory extends DataSource {
 export default class Memory extends Source {
-  constructor(props, store) {
-    super(props, store);
-    this.data = []
-  }
+    constructor(props, store) {
+        super(props, store);
+        this.data = []
+        if (this.rawData === undefined)
+            this.rawData = []
+    }
 
 
     // constructor (props) {

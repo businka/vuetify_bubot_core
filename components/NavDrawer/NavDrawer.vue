@@ -116,10 +116,9 @@ export default {
     v-model="visible"
     class="nav1_bg"
     app
+    permanent
     theme="dark"
     :width="200"
-    permanent
-
   >
     <!--<v-toolbar>{{$t('NavDrawer.Title')}}</v-toolbar>-->
     <v-list

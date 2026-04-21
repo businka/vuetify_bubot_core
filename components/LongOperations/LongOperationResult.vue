@@ -1,6 +1,6 @@
 <script>
 import FormLoader from '../FormViewer/FormLoader.mixin'
-import ExtException from '../Simple/ExtException'
+import ExtException from '../Simple/ExtExceptionSnackbar'
 
 export default {
   name: 'LongOperationResult',

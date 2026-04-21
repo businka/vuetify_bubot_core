@@ -1,14 +1,28 @@
 // import { app } from '@/main.js'
 // import { reactive } from 'vue'
+import {objHasOwnProperty} from "bubot-helper/BaseHelper";
 
 export function updateProp(result, {action, path, value}) {
     if (!result) {
         return
     }
-    const _path = path.split('.')
+    const _path = path instanceof String ? path.split('.') : path
     let i
     for (i = 0; i < _path.length - 1; i++) {
-        if (Object.prototype.hasOwnProperty.call(result, _path[i])) {
+        if (objHasOwnProperty(result, _path[i])) {
+            let _value = result[_path[i]]
+            if (_value === undefined || _value === null) {
+                switch (action) {
+                    case 'change':
+                        result[_path[i]] = {}
+                        break
+                    case 'extend':
+                    case 'append':
+                        result[_path[i]] = i === _path.length - 1 ? [] : {}
+                        break
+                }
+
+            }
             result = result[_path[i]]
         } else {
             if (i === _path.length - 1) {  // мы добавляем этот элемент

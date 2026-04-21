@@ -1,16 +1,11 @@
 <script>
 import RowCellMixin from './RowCell.mixin'
-import {zeroPad} from 'bubot-helper/BaseHelper'
+import {getPropValueByPath, zeroPad} from 'bubot-helper/BaseHelper'
 
 export default {
-  name: 'CellDateTime',
+  name: 'CellDateNumber',
   mixins: [RowCellMixin],
-  props: {
-  //   hideTime: {
-  //     type: Boolean,
-  //     default: false
-  //   }
-  },
+  props: {},
   methods: {
     getDate(date) {
       if (!date) {
@@ -30,13 +25,6 @@ export default {
         return `${zeroPad(date.getDate(), 2)}.${zeroPad(date.getMonth() + 1, 2)}.${String(date.getFullYear()).substring(2, 4)}`
       }
       return ''
-
-    },
-    getTimeString(date) {
-      if (date) {
-        return `${zeroPad(date.getHours(), 2)}:${zeroPad(date.getMinutes(), 2)}`
-      }
-      return ''
     }
   },
   computed: {
@@ -53,18 +41,11 @@ export default {
         return ''
       }
     },
-    time: function () {
-      if (this._date) {
-        return this.getTimeString(this._date)
-      } else {
-        return ''
-      }
+    number: function () {
+      return getPropValueByPath(this.modelValue, this.col.fieldNumber, '')
     },
     showDate: function () {
       return this.date !== this.getDateString(this.previousDate)
-    },
-    showTime: function () {
-      return this.showDate || this.time !== this.getTimeString(this.previousDate)
     }
   }
 }
@@ -76,10 +57,9 @@ export default {
       {{ date }}
     </div>
     <div
-      v-if="!col.hideTime && date && showTime"
-      class="text-grey text-caption text-right"
-      style="margin-top: -6px">
-      {{ time }}
+        class="text-grey text-caption text-right"
+        style="margin-top: -6px">
+      {{ number }}
     </div>
   </v-container>
 </template>

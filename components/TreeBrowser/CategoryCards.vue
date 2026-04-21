@@ -158,7 +158,7 @@ export default defineComponent({
       this.editForm = {
         handler: this.rowActivateHandler['formViewer'],
         formUid: formUid,
-        formVisible: true,
+        visible: true,
         _updateKey: Date.now(),
         formData: {
           item: data.row,
@@ -167,7 +167,7 @@ export default defineComponent({
         },
       }
 
-      this.addIdToRouteQuery([this.source.props.keyProperty], data.row[this.source.props.keyProperty])
+      this.addIdToRouteQuery([this.source.props.objName], data.row[this.source.props.keyProperty])
     },
 
   }
@@ -175,7 +175,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.multi-line-ellipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Количество строк до обрезания */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>
 
 <template>
@@ -266,6 +272,7 @@ export default defineComponent({
                     rounded="lg"
                     hover
                     link
+                    height="100"
                     @click.stop="actionRowActivate({row: item})"
                 >
                   <div class="pa-4 d-flex flex-no-wrap justify-space-between">
@@ -280,8 +287,8 @@ export default defineComponent({
                         class="mr-3 flex-shrink-0"
                     />
                     <div>
-                      <v-card-title class="text-h6 pa-0"> {{ item['Title'] }}</v-card-title>
-                      <v-card-text class="text-caption pa-0 text-grey-darken-1">{{ item['Description'] }}</v-card-text>
+                      <v-card-title class="text-h6 pa-0 mt-n2"> {{ item['Title'] }}</v-card-title>
+                      <v-card-text class="text-caption pa-0 mt-n1 text-grey-darken-1 multi-line-ellipsis">{{ item['Description'] }}</v-card-text>
                     </div>
                   </div>
                 </v-card>
@@ -293,10 +300,10 @@ export default defineComponent({
     </div>
     <component
         :is="editForm.handler"
-        v-if="editForm && editForm.formVisible && editForm.handler!=='inline'"
+        v-if="editForm && editForm.visible && editForm.handler!=='inline'"
         :key="editForm._updateKey || Date.now()"
         :formUid="editForm.formUid"
-        :formVisible="editForm.formVisible"
+        :visible="editForm.visible"
         :formData="editForm.formData"
         @action="onAction($event, 'editForm')"
     />

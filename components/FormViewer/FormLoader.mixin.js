@@ -19,7 +19,7 @@ export default {
         return {}
       }
     },
-    formVisible: {
+    visible: {
       type: Boolean,
       default: false
     }

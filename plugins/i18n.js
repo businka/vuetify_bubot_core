@@ -12,8 +12,11 @@ export function setupI18n(options = {
   fallbackLocale: 'en',
   silentFallbackWarn: true,
   silentTranslationWarn: true, // не показывать варнинги отсутствующих локализаций
-  messages: undefined //loadLocaleMessages() // set locale messages
-
+  messages: undefined, //loadLocaleMessages() // set locale messages
+  missing: (locale, key, instance) => {
+    // Возвращаем последнюю часть ключа вместо полного ключа
+    return key.split('.').pop();
+  }
 }) {
   // console.log(options.locale)
   const i18n = createI18n(options)
