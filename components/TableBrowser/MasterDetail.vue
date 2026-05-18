@@ -110,7 +110,6 @@ export default {
         <component
             v-if="master.template"
             :is="master.template"
-            :autoActivate="{index:0}"
             v-model:selected="masterSelected"
             v-model:active="activeValue"
             v-bind="master"

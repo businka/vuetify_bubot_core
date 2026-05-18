@@ -101,6 +101,7 @@ export default {
             this.needUpdate = true
             try {
                 this.source = initDataSource(source, this.$store)
+                this.checkRouteQuery()
             } catch (err) {
                 this.source = initDataSource({type: 'Memory'}, this.$store)
                 this.source.error = err
@@ -193,7 +194,7 @@ export default {
                 }
 
                 // Обновляем query
-                this.addIdToRouteQuery(this.source.props.keyProperty, data.row[this.source.props.keyProperty])
+                this.addIdToRouteQuery(this.source.props.objName, data.row[this.source.props.keyProperty])
             })
         },
 
@@ -236,6 +237,9 @@ export default {
 
         // Обновляем query через pushState - БЕЗ ПЕРЕЗАГРУЗКИ
         addIdToRouteQuery: function (name, value) {
+            if (!this.source.props.activateFromUrl)
+                return true
+
             const url = new URL(window.location.href)
             if (!value) {
                 url.searchParams.delete(name);
@@ -246,6 +250,8 @@ export default {
         },
 
         removeIdFromRouteQuery: function (name) {
+            if (!this.source.props.activateFromUrl)
+                return true
             const url = new URL(window.location.href)
             url.searchParams.delete(name)
             window.history.replaceState({}, '', url) // replaceState вместо pushState
@@ -282,6 +288,8 @@ export default {
 
         // Проверка query параметров при загрузке
         checkRouteQuery() {
+            if (!this.source.props.activateFromUrl)
+                return true
             let objName
             let keyProperty
             try {
@@ -300,10 +308,12 @@ export default {
         },
 
         autoActivateRow: function () {
-            if (isEmptyObject(this.autoActivate) || this.internalActive) {
+            const autoActivateFirstRow = this.source.props.autoActivateFirstRow
+            if ((isEmptyObject(this.autoActivate) && !autoActivateFirstRow) || this.internalActive) {
                 return
             }
-            let findIndex = this.autoActivate.index
+
+            let findIndex = autoActivateFirstRow ? 0 : undefined
             let findKey = this.autoActivate[this.source.props.keyProperty]
             if (findKey) {
                 findIndex = findIndexInArrayObj(this.source.rows, findKey, this.source.props.keyProperty)

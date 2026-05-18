@@ -73,10 +73,6 @@ export default {
         selected: {
             type: Array,
             default: () => []
-        },
-        autoActivate: {
-            type: Object,
-            default: () => ({})
-        },
+        }
     },
 }
