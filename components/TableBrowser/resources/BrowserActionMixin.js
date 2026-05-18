@@ -310,7 +310,7 @@ export default {
             if (findKey) {
                 findIndex = findIndexInArrayObj(this.source.rows, findKey, this.source.props.keyProperty)
             }
-            if (findIndex !== undefined && this.source.rows.length >= findIndex) {
+            if (findIndex !== undefined && this.source.rows.length && this.source.rows.length >= findIndex) {
                 let data = {
                     row: this.source.rows[findIndex],
                     index: findIndex

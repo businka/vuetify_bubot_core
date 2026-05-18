@@ -143,6 +143,30 @@ export default {
         @update:modelValue="convertToTime">
 
     </v-text-field>
+    <span
+        v-else
+    >
+    <v-text-field
+        v-if="type==='password' && !autofill"
+        ref="textField"
+        :label="schema.title || elemName"
+        :placeholder="schema.description || ''"
+        :readonly="(autofillDeception || (readOnly ? readOnly : schema.readonly))"
+        hide-details
+        :model-value="value"
+        :density="density"
+        :variant="variant"
+        :single-line="singleLine"
+        :name="'pwd_' + Math.random().toString(36).substr(2, 5)"
+        autocomplete="new-password"
+        :type="type"
+        :class="{
+          'autofill-fix': autofillDetect,
+          'autofill-complete': autofillComplete
+        }"
+        @keydown.escape.stop="cancelInput"
+        @update:modelValue="onChange"
+    />
     <v-text-field
         v-else
         ref="textField"
@@ -162,6 +186,8 @@ export default {
         @keydown.escape.stop="cancelInput"
         @update:modelValue="onChange"
     />
+
+    </span>
   </v-container>
 </template>
 

@@ -6,18 +6,40 @@ export default {
   // mixins: [ActionMixin],
   data() {
     return {
-      text: ''
+      text: '',
+      searchTimeout: null,
+      lastSearchText: ''
+    }
+  },
+  watch: {
+    text(newVal, oldVal) {
+      // Очищаем предыдущий таймер
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout);
+      }
+
+      // Если символов больше 3
+      if (newVal.length > 3) {
+        this.searchTimeout = setTimeout(() => {
+          // Проверяем, что текст не изменился за время ожидания
+          if (this.text === newVal) {
+            this.onSearch();
+          }
+        }, 2000); // 2 секунды
+      }
     }
   },
   methods: {
     onSearch() {
-      this.$emit('changeFilter', {_search: this.text})
+      if (this.text === this.lastSearchText) return
+      this.lastSearchText = this.text
+      this.$emit('changeFilter', {Search: this.text})
     },
-    // onChange(value) {
-    //   this.$emit('changeFilter', {_search: value})
-    // },
     onClear() {
-      this.text = ''
+      this.text = undefined
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout);
+      }
       this.onSearch()
     }
   }
@@ -43,7 +65,6 @@ export default {
       @keydown.esc="onClear"
       @click:clear="onClear"
       @click:append="onSearch"
-    >
-    </v-text-field>
+    />
   </v-responsive>
 </template>

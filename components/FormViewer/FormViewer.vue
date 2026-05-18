@@ -25,7 +25,6 @@ export default {
             this.loadForm()
         }
     },
-    // computed: {},
     mounted() {
         this.loadForm()
     },

@@ -48,6 +48,10 @@ export default {
       type: Boolean,
       default: false
     },
+    hideSearchString: {
+      type: Boolean,
+      default: false
+    },
     hideSelectAll: {
       type: Boolean,
       default: false
@@ -99,12 +103,12 @@ export default {
         @action="$emit('action', $event)"
       />
     </v-toolbar-items>
-<!--    <SearchField-->
-<!--      v-if="!hideSearchString"-->
-<!--      class="mr-2"-->
-<!--      :value="filter.searchString"-->
-<!--      @changeFilter="$emit('changeFilter', $event)"-->
-<!--    />-->
+    <SearchField
+        v-if="!hideSearchString"
+        class="mr-2"
+        :value="filter.searchString"
+        @changeFilter="$emit('changeFilter', $event)"
+    />
 <!--    <v-toolbar-items>-->
 <!--      <component-->
 <!--        :is="item.template || 'ActionBtn'"-->

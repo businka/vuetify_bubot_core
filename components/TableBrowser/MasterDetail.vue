@@ -191,7 +191,8 @@ export default {
   min-height: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
 }
 
 .empty-state {

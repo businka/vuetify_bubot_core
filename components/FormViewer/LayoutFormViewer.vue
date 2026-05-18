@@ -45,6 +45,7 @@ export default {
   // }),
   watch: {
     $route: function () {
+      // console.log('LayoutFormViewer watch route')
       this.loadForm()
     },
     uid() {
@@ -53,15 +54,18 @@ export default {
       }
     }
   },
-  mounted() {
+  beforeMount() {
+    // console.log('LayoutFormViewer beforeMount')
     this.loadForm()
   },
   methods: {
     loadForm() {
+      // console.log('loadForm called, uid:', this.uid)
       if (this.uid && !this.$store.getters['storeData']('Form', this.uid)) {
         this.$store.dispatch(`Form/load`, {
           uid: this.uid
         }, {root: true})
+        // console.log('✅ Form loaded from API')
       }
     },
     // emitInternalAction(action){
@@ -105,7 +109,7 @@ export default {
         </v-toolbar-items>
       </v-toolbar>
       <v-row
-        v-if="form"
+        v-if="form && form.template"
         class="pa-0 ma-0 form"
       >
         <v-col
@@ -116,7 +120,6 @@ export default {
           :xs="form.col_xs || '12'"
         >
           <component
-            v-if="form"
             :is="form.template"
             v-bind="form"
           />

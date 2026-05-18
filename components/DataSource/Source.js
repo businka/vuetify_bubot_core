@@ -61,6 +61,11 @@ export default class Source {
 
     async changeFilter(filter) {
         // console.log('source changeFilter')
+        Object.keys(filter).forEach(key => {
+            if (filter[key] === undefined)
+                delete filter[key]
+                delete this.props.filter[key]
+        });
         this.props.filter = updateObject({}, this.props.filterConst, this.props.filter, filter)
         this.props.dataTableOptions.page = 1
         await this.fetchRows()

@@ -1,10 +1,11 @@
 <script>
 import {defineComponent, inject} from 'vue'
 import Service from "../DataSource/Service"
-import {objHasOwnProperty, updateObject} from "bubot-helper/BaseHelper"
+import {isEmptyObject, objHasOwnProperty, updateObject} from "bubot-helper/BaseHelper"
 import ActionMixin from '../../helpers/mixinTemplate/action'
 import BrowserActionMixin from "../TableBrowser/resources/BrowserActionMixin";
 import UrlParam from "bubot-helper/UrlParam";
+import {findIndexInArrayObj} from "bubot-helper/ArrayHelper";
 
 export default defineComponent({
   name: 'CategoryCards',
@@ -52,20 +53,11 @@ export default defineComponent({
     showEmptyState() {
       return !this.loading &&
           !this.error &&
-          (!this.items || this.items.length === 0)
+          (!this.source || this.source.rows.length === 0)
     }
   },
 
-  beforeMount() {
-    this.init()
-  },
-
-  watch: {
-    dataSource: function () {
-      this.init()
-      this.needUpdate = true
-    }
-  },
+  watch: {},
 
   methods: {
 
@@ -83,38 +75,8 @@ export default defineComponent({
 
       // Создаем сервис для работы с API
       this.source = new Service(dataSource)
-
-      await this.fetch(null)
+      this.needUpdate = true
       this.checkRouteQuery()
-    },
-
-    async fetch(item) {
-      try {
-        this.loading = true
-        this.error = null
-
-        let filter = {}
-        // let result
-
-
-        // Выполняем запрос через сервис
-        const res = await this.source.list(filter)
-        this.items = res['Rows']
-
-
-      } catch (error) {
-        console.error('Ошибка при загрузке категорий:', error)
-
-        // Форматируем ошибку для пользователя
-        const errorMessage = error.response?.data?.message ||
-            error.message ||
-            'Не удалось загрузить данные с сервера'
-
-        this.error = errorMessage
-
-      } finally {
-        this.loading = false
-      }
     },
 
     // Функция для форматирования названия категории
@@ -134,6 +96,28 @@ export default defineComponent({
       const prefix = import.meta.env.BASE_URL || ''
       return `${prefix}/images/${this.source.props.objName}Logo/${imageName}.svg`.replace(/\/\/+/g, '/')
     },
+
+    autoActivateRow: function () {
+      if (isEmptyObject(this.autoActivate) || this.internalActive) {
+        return
+      }
+      let findKey = this.autoActivate[this.source.props.keyProperty]
+
+      if (findKey && this.source.rows) {
+
+        let foundItem = null
+        for (const category of this.source.rows) {
+          const foundItem = category.children?.find(child => child[this.source.props.keyProperty] === findKey)
+          if (foundItem) {
+            this.actionRowActivate({row: foundItem})
+            break
+          }
+        }
+
+      }
+
+    },
+
     actionRowActivate: function (data) {
       if (!data.row) {
         console.error('rowActivate - "row" not found')
@@ -181,6 +165,13 @@ export default defineComponent({
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.category-image {
+  min-width: 48px;
+  min-height: 48px;
+  max-width: 48px;
+  max-height: 48px;
+  border-radius: 8px;
 }
 </style>
 
@@ -247,7 +238,7 @@ export default defineComponent({
 
     <!-- Данные -->
     <div v-else>
-      <div v-for="category in items" :key="category._id" class="mb-8">
+      <div v-for="category in source.rows" :key="category._id" class="mb-8">
         <div class="text-h6 font-weight-bold pl-2">{{ formatCategoryName(category._id) }}</div>
         <v-container fluid class="pa-2">
           <v-row dense>
@@ -284,11 +275,13 @@ export default defineComponent({
                         rounded
                         contain
                         :title="item['Title']"
-                        class="mr-3 flex-shrink-0"
+                        class="mr-3 flex-shrink-0 category-image"
                     />
-                    <div>
+                    <div class="flex-grow-1" >
                       <v-card-title class="text-h6 pa-0 mt-n2"> {{ item['Title'] }}</v-card-title>
-                      <v-card-text class="text-caption pa-0 mt-n1 text-grey-darken-1 multi-line-ellipsis">{{ item['Description'] }}</v-card-text>
+                      <v-card-text class="text-caption pa-0 mt-n1 text-grey-darken-1 multi-line-ellipsis">
+                        {{ item['Description'] }}
+                      </v-card-text>
                     </div>
                   </div>
                 </v-card>
