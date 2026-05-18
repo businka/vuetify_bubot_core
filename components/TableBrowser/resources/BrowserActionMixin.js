@@ -40,11 +40,25 @@ export default {
         }
     },
     watch: {
-        dataSource: function () {
-            if (this.options) {
-                this.options.page = 1
+        dataSource: {
+            deep: true,
+            handler(newVal, oldVal) {
+                console.log('DataTable watch datasource', this.dataSource.objName, needInit, oldVal, newVal)
+                // Проверяем, действительно ли изменились данные
+                let needInit = false
+                if (newVal && oldVal) {
+                    const newHash = JSON.stringify(newVal)
+                    const oldHash = JSON.stringify(oldVal)
+                    needInit = newHash !== oldHash
+                } else {
+                    needInit = true
+                }
+
+                if (needInit) {
+                    // console.log('👁️ CategoryCards dataSource changed, reinitializing', newHash, oldHash)
+                    this.needUpdate = true
+                }
             }
-            this.init()
         },
         filterConst: function (filterConst) {
             // console.log(`Browser  ${this.dataSource.objName} watch filterConst, needUpdate ${this.needUpdate} `)
@@ -128,7 +142,7 @@ export default {
         },
         actionCallDataSource: async function (actionData, addSelectionItems) {
             try {
-                const [source, payload ] = this.prepareCallDataSource(actionData)
+                const [source, payload] = this.prepareCallDataSource(actionData)
                 await source.call(payload)
                 await this.source.fetchRows()
             } catch (err) {
@@ -216,7 +230,7 @@ export default {
                         filterConst: this.source.props.filterConst
                     },
                 }
-                this.addIdToRouteQuery(this.source.props.keyProperty, data.row[this.source.props.keyProperty])
+                this.addIdToRouteQuery([this.source.props.objName], data.row[this.source.props.keyProperty])
             })
         },
 
@@ -248,7 +262,7 @@ export default {
 
             // Удаляем query параметр
             if (itemId) {
-                this.removeIdFromRouteQuery(keyProperty)
+                this.removeIdFromRouteQuery(this.source.props.objName)
             }
 
             // Очищаем форму
@@ -277,24 +291,8 @@ export default {
                 return
             }
             const id = this.$route.query[objName]
-
-            if (id && this.items) {
-                // Ищем элемент по ID
-                let foundItem = null
-                for (const category of this.items) {
-                    const item = category.children?.find(child => child[keyProperty] === id)
-                    if (item) {
-                        foundItem = item
-                        break
-                    }
-                }
-
-                if (foundItem) {
-                    this.$nextTick(() => {
-                        this.actionRowActivate({row: foundItem})
-                    })
-                }
-            }
+            if (!id) return
+            this.autoActivate = {[this.source.props.keyProperty]: id}
         },
 
         onDrop: async function (event) {
