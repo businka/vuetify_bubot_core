@@ -42,7 +42,7 @@ export default {
             }
         },
     },
-
+    emits: ['change-value'],
     data() {
         return {
             loading: false,
@@ -50,6 +50,7 @@ export default {
             error: {},
             source: undefined,
             itemFull: undefined,
+            itemChanged: false,
         }
     },
     beforeMount() {
@@ -116,6 +117,7 @@ export default {
         },
         actionUpdateProp: function ({path, action, value}) {
             updateProp(this.itemFull, {action, path, value})
+            this.itemChanged = true
             this.$emit('change-value', this.itemFull)
         },
 

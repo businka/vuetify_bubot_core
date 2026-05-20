@@ -5,6 +5,20 @@ import FormLoader from './FormLoader.mixin'
 export default {
   name: 'RightDrawerFormViewer3',
   mixins: [FormLoader],
+  data() {
+    return {
+      drawerVisible: true  // ← добавить
+    }
+
+  },
+  watch: {
+    visible: {
+      immediate: true,
+      handler(val) {
+        this.drawerVisible = val
+      }
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -27,7 +41,7 @@ export default {
       class="elevation-6"
       :temporary="true"
       :scrim="false"
-      :model-value="true"
+      :model-value="drawerVisible"
       :mobile="false"
       style="height: 100vh; max-height: 100vh;"
   >
@@ -40,6 +54,7 @@ export default {
         :is="form.template"
         v-if="form && !loading"
         v-bind="form"
+
         @action="onAction"
     />
     <v-container

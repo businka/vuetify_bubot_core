@@ -38,6 +38,14 @@ export default {
     prependIcon: String,
     appendIcon: String
   },
+  data() {
+    return {
+      color_: this.primary? 'primary':this.color,
+      variant_: this.primary ? 'elevated': this.variant,
+      rounded_: this.primary ? 'xl': this.rounded,
+      elevation_: this.primary ? "0": this.elevation,
+    }
+  },
 }
 </script>
 
@@ -46,12 +54,12 @@ export default {
 
 <template>
   <v-btn
-      :variant="variant"
-      :color="color"
+      :variant="variant_"
+      :color="color_"
       :density="density"
       :title="title"
-      :rounded="rounded"
-      :elevation="elevation"
+      :rounded="rounded_"
+      :elevation="elevation_"
       :size="size"
       :icon="icon"
       :prepend-icon="prependIcon"

@@ -6,7 +6,7 @@ export function updateProp(result, {action, path, value}) {
     if (!result) {
         return
     }
-    const _path = path instanceof String ? path.split('.') : path
+    const _path = typeof path === 'string' ? path.split('.') : path
     let i
     for (i = 0; i < _path.length - 1; i++) {
         if (objHasOwnProperty(result, _path[i])) {

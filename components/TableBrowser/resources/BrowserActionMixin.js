@@ -129,13 +129,13 @@ export default {
             } else {
                 source = this.source
             }
-            if (objHasOwnProperty(payload.data, 'items')) {
+            if (objHasOwnProperty(payload.data, 'Rows')) {
                 // payload.data.filter = null
             } else {
                 if (this.selectAll || !this.internalSelected.length) {
                     Object.assign(payload.data.Filter, this.source.props.filter);
                 } else {
-                    payload.data.items = this.internalSelected
+                    payload.data.Rows = this.internalSelected
                     // payload.data.filter = null
                 }
             }
@@ -164,6 +164,9 @@ export default {
 
         RowActivateHandlerEmitAction(data) {
             this.$emit('action', {name: 'RowActivate', data})
+        },
+        RowActivateHandlerSelectItem(data) {
+            this.$emit('action', {name: 'SelectItems', data:{'Rows':[data.row]}})
         },
 
         RowActivateHandlerShowForm(data) {
@@ -212,6 +215,8 @@ export default {
             let handler = `RowActivateHandler${this.rowActivateHandler.name}`
             if (objHasOwnProperty(this, handler)) {
                 this[handler](data)
+            } else {
+                console.warn(`${handler} not found`)
             }
         },
 

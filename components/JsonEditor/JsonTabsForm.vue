@@ -6,182 +6,196 @@ import JsonEditorMixin from './JsonEditor.mixin'
 import {objHasOwnProperty} from 'bubot-helper/BaseHelper'
 // import schemaStorage from './ObjSchema.store'
 import {defineAsyncComponent} from "vue"
+import ActionBtn from "../ActionButtons/ActionBtn.vue";
 
 export default {
-    name: "JsonTabsForm",
-    components: {
-        ParamEditor: defineAsyncComponent(() => import('../ParamsEditor/ParamsEditor')),
-        JsonString: defineAsyncComponent(() => import('./JsonString')),
-        // JsonObjectLink: defineAsyncComponent(() => import('/JsonObjectLink')),
-        FormViewer: defineAsyncComponent(() => import('../FormViewer/FormViewer')),
+  name: "JsonTabsForm",
+  components: {
+    ActionBtn,
+    ParamEditor: defineAsyncComponent(() => import('../ParamsEditor/ParamsEditor')),
+    JsonString: defineAsyncComponent(() => import('./JsonString')),
+    // JsonObjectLink: defineAsyncComponent(() => import('/JsonObjectLink')),
+    FormViewer: defineAsyncComponent(() => import('../FormViewer/FormViewer')),
+  },
+  mixins: [JsonEditorMixin, ActionMixin],
+  props: {
+    content: {
+      type: Object,
     },
-    mixins: [JsonEditorMixin, ActionMixin],
-    props: {
-        content: {
-            type: Object,
-        },
-        tabs: {
-            type: Array,
-        },
-        tabs_right: {
-            type: Boolean
-        },
-        tabs_vertical: {
-            type: Boolean
-        }
+    tabs: {
+      type: Array,
     },
-    data: () => ({
-        tabs_active_tab: 0,
-        tabs_bind: []
-
-    }),
-    computed: {},
-    methods: {
-        afterLoadData: async function () {
-            this.tabs_bind = this.tabs
-        },
-        emitInternalAction: function (action) {
-            const content = this.$refs['content']
-            content.onAction(action)
-        },
-        // async actionUpdate() {
-        //     for (let i = 0; i < this.tabs.length; ++i) {
-        //         await this.$refs[`tab${i}`].actionUpdate()
-        //     }
-        //     this.itemFull = await this.source.update(this.itemFull)
-        // },
-        actionDefaultAction: async function () {
-            for (let i = 0; i < this.tabs.length; ++i) {
-                if (this.$refs[`tab${i}`] && objHasOwnProperty(this.$refs[`tab${i}`][0], this.defaultAction.name)) {
-                    await this.$refs[`tab${i}`][0][this.defaultAction.name]()
-                }
-            }
-            await this.source[this.defaultAction.name](this.itemFull)
-            let _id = this.itemFull[this.dataSource.keyProperty]
-            if (_id) {
-                this.$emit('action', {name: 'CloseForm', data: {name: this.name, fetchRow: [_id]}})
-            } else {
-                this.$emit('action', {name: 'CloseForm', data: {name: this.name, fetchRows: true}})
-            }
-        },
+    tabsAlign: {
+      type: String,
+      default: 'end'
+    },
+    tabsDirection: {
+      type: String,
+      default: 'horizontal'
     }
+  },
+  data: () => ({
+    tabs_active_tab: 0,
+    tabs_bind: [],
+  }),
+  computed: {},
+  methods: {
+    afterLoadData: async function () {
+      this.tabs_bind = this.tabs
+    },
+    emitInternalAction: function (action) {
+      const content = this.$refs['content']
+      content.onAction(action)
+    },
+    // async actionUpdate() {
+    //     for (let i = 0; i < this.tabs.length; ++i) {
+    //         await this.$refs[`tab${i}`].actionUpdate()
+    //     }
+    //     this.itemFull = await this.source.update(this.itemFull)
+    // },
+    actionDefaultAction: async function () {
+      for (let i = 0; i < this.tabs.length; ++i) {
+        if (this.$refs[`tab${i}`] && objHasOwnProperty(this.$refs[`tab${i}`][0], this.defaultAction.name)) {
+          await this.$refs[`tab${i}`][0][this.defaultAction.name]()
+        }
+      }
+      await this.source.call(this.defaultAction.name, this.itemFull)
+      let _id = this.itemFull[this.dataSource.keyProperty]
+      if (_id) {
+        this.$emit('action', {name: 'CloseForm', data: {name: this.name, fetchRow: [_id]}})
+      } else {
+        this.$emit('action', {name: 'CloseForm', data: {name: this.name, fetchRows: true}})
+      }
+    },
+  }
 }
 </script>
 
 <template>
-  <v-container class="pa-0 ma-0 h100">
+  <div class="tabs-grid-container">
     <v-progress-linear
-      :indeterminate="loading"
-      height="2"
-      background-color="header1_bg h100"
+        :indeterminate="loading"
+        height="2"
+        class="progress-grid-area"
     />
     <v-toolbar
-      height="30"
-      flat
-      density="compact"
-      class="pa-0 justify-end form-toolbar"
-    >
+        height="30"
+        color="toolbar-bg"
+        class="toolbar-grid-area">
       <JsonString
-        v-if="schema && itemFull && schema.properties"
-        :schema="schema.properties.title"
-        :elemValue="itemFull.title"
-        elemName="title"
-        :read-only="false"
-        path="title"
-        solo
-        class=""
-        @action="onAction"
+          v-if="schema && itemFull && schema.properties"
+          :schema="schema.properties.title"
+          :elemValue="itemFull.title"
+          elemName="title"
+          :read-only="false"
+          path="title"
+          solo
+          class=""
+          @action="onAction"
       ></JsonString>
+      <v-spacer/>
       <v-toolbar-items
-        v-if="toolBar"
-        class="pa-0 justify-end "
+          v-if="toolBar"
+          class="pa-0"
       >
         <component
-          :is="item.template || 'ActionBtn'"
-          v-for="(item, i) in toolBar.items"
-          :key="i"
-          v-bind=item
-          class="mr-2"
-          @action="onAction"
+            :is="item.template || 'ActionBtn'"
+            v-for="(item, i) in toolBar.items"
+            :key="i"
+            v-bind=item
+            class="mr-2"
+            @action="onAction"
         />
       </v-toolbar-items>
-      <ActionBtn
-        v-if="defaultAction"
-        v-bind="defaultAction"
-        rounded
-        primary
-        @action="actionDefaultAction"
+      <component
+          v-if="defaultAction && itemChanged"
+          :is="defaultAction.template ||'ActionBtn'"
+          v-bind=defaultAction
+          name="DefaultAction"
+          primary
+          @action="onAction"
       />
       <v-toolbar-items>
         <v-btn
-          icon
-          @click="onClose"
+            icon
+            @click="onClose"
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
+
     <v-tabs
-      v-if="itemFull"
-      :right="tabs_right"
-      :vertical="tabs_vertical"
-      height="36"
-      class="Tab h100"
-    >
-      <v-tab
-        v-for="(tab, index) in tabs_bind"
-        :key="index"
-      >
+        v-model="tabs_active_tab"
+        align-tabs="end"
+        height="36"
+        bg-color="toolbar-bg"
+        class="tabs-grid-area">
+
+      <v-tab v-for="(tab, index) in tabs_bind" :key="index">
         {{ tab.title }}
       </v-tab>
-      <v-tab-item
-        v-for="(tab, index) in tabs_bind"
-        :key="index"
-        class="pa-0 ma-0 h100"
+    </v-tabs>
+
+    <v-tabs-window v-model="tabs_active_tab" class="content-grid-area">
+      <v-tabs-window-item
+          v-for="(tab, index) in tabs_bind"
+          :key="index"
+          class="h-100"
       >
         <component
-          :is="tabs_bind[index].template"
-          :ref="`tab${index}`"
-          v-bind="tabs_bind[index]"
-          :schema="schema"
-          :item="itemFull"
-          :key-property="dataSource.keyProperty"
-          class=""
-          @action="onAction"
+            :is="tabs_bind[index].template"
+            :ref="`tab${index}`"
+            v-bind="tabs_bind[index]"
+            :schema="schema"
+            :itemFull="itemFull"
+            :key-property="dataSource.keyProperty"
+            class="h-100"
+            @action="onAction"
         />
-      </v-tab-item>
-    </v-tabs>
-  </v-container>
+      </v-tabs-window-item>
+    </v-tabs-window>
+  </div>
 </template>
 
-<style lang="scss">
-  .form-toolbar {
-    .v-toolbar__content {
-      padding-left: 0;
-      padding-right: 0;
-      width: 100%;
-      justify-content: end;
-      /*border-bottom: thin solid #cccccc;*/
-    }
-  }
+<style scoped lang="scss">
+.tabs-grid-container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 2px 30px 36px 1fr; /* 4 строки для 4 элементов */
+  overflow: hidden;
+}
 
-  .h100 {
-    height: 100%;
+.form-toolbar {
+  .v-toolbar__content {
+    height: 30px !important;
+    min-height: 30px !important;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+    justify-content: end;
+    /*border-bottom: thin solid #cccccc;*/
   }
+}
 
-  .content {
-    height: calc(100vh - 68px);
-  }
+/* Распределяем элементы по строкам (необязательно, можно полагаться на порядок) */
+.progress-grid-area {
+  grid-row: 1;
+}
 
-  .v-tab {
-    text-transform: none !important;
-  }
+.toolbar-grid-area {
+  grid-row: 2;
+}
 
-  .Tab {
-    height: calc(100vh - 32px);
+.tabs-grid-area {
+  grid-row: 3;
+}
 
-    .v-tabs-bar {
-      border-bottom: thin solid #cccccc;
-    }
-  }
+.content-grid-area {
+  grid-row: 4;
+  overflow: auto;
+  min-height: 0;
+}
+
+
 </style>

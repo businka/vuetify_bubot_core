@@ -25,7 +25,9 @@ export default createVuetify({
           error: '#FF5252',
           info: '#2196F3',
           success: '#4CAF50',
-          warning: '#FFC107'
+          warning: '#FFC107',
+          'primary-btn': '#333333',
+          "toolbar-bg": '#F5F5F5'
         },
       },
       dark: {
@@ -37,7 +39,9 @@ export default createVuetify({
           error: '#FF5252',
           info: '#2196F3',
           success: '#4CAF50',
-          warning: '#FFC107'
+          warning: '#FFC107',
+          'primary-btn': '#FF5252',
+          "toolbar-bg": '#F5F5F5'
         }
       }
     },

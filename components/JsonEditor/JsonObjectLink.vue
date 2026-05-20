@@ -1,11 +1,13 @@
 <script>
-import {defineAsyncComponent} from "vue"
+import ActionMixin from '../../helpers/mixinTemplate/action'
+import FieldLink from '../Simple/FieldLink'
 
 export default {
   name: 'JsonObjectLink',
   components: {
-    FieldLink: defineAsyncComponent(() => import('../Simple/FieldLink')),
+    FieldLink,
   },
+  mixins: [ActionMixin],
   props: {
     schema: Object,
     elemValue: {
@@ -45,13 +47,10 @@ export default {
     }
   },
   mounted() {
-    if (this.schema && this.elemValue === undefined) {
-      this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, value: {}}})
-    }
+    // if (this.schema && this.elemValue === undefined) {
+    //   this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, value: {}}})
+    // }
   },
-  // beforeCreate: function () {
-  //   this.$options.components.JsonElem = require('./JsonElem.vue').default
-  // },
   methods: {
     onChange(value) {
       this.$emit('action', {name: 'UpdateProp', data: {action: 'change', path: this.path, value}})

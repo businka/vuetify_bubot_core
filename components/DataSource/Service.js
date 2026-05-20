@@ -67,13 +67,13 @@ export default class Service extends Source {
         }
     }
 
-    async update(payload) {
+    async update(data) {
         let url = `${this.get_obj_url()}/update`
-        return await this.buxios_post(url, payload.data)
+        return await this.buxios_post(url, data)
     }
 
-    async create(payload) {
-        let data = payload ? payload.data : {}
+    async create(data) {
+
         updateObject(data, this.props.filterConst)
         let url = `${this.get_obj_url()}/create`
         data = await this.buxios_post(url, data)
@@ -81,9 +81,9 @@ export default class Service extends Source {
         await this.fetchRow([data[this.props.keyProperty]])
     }
 
-    async call(payload) {
-        let url = `${this.get_obj_url()}/${payload.method}`
-        return await this.buxios_post(url, payload.data)
+    async call(method, data) {
+        let url = `${this.get_obj_url()}/${method}`
+        return await this.buxios_post(url, data)
     }
 
     async post(payload) {

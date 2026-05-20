@@ -26,6 +26,7 @@ export default {
     FormViewer: defineAsyncComponent(() => import('../FormViewer/FormViewer')),
   },
   mixins: [JsonEditorMixin, ActionMixin],
+
   props: {
     content: {
       type: Object,
@@ -156,8 +157,8 @@ export default {
         {{ tab.title }}
       </v-tab>
     </v-tabs>
-    <v-window v-model="tab">
-      <v-window-item
+    <v-tabs-window v-model="tab">
+      <v-tabs-window-item
         v-for="(tab, index) in tabs"
         :key="index"
         :value="tab"
@@ -168,14 +169,14 @@ export default {
           :ref="(el) => refsTab[index] = el"
           v-bind="tabs[index]"
           :schema="schema"
-          :item="itemFull"
+          :itemFull="itemFull"
           :key-property="dataSource.keyProperty"
           class=""
           @action="onAction"
         />
 
-      </v-window-item>
-    </v-window>
+      </v-tabs-window-item>
+    </v-tabs-window>
 
   </v-container>
 </template>

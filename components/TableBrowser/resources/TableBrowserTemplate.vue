@@ -24,7 +24,7 @@ export default {
   <div class="table-browser-grid">
     <v-data-table
         v-if="source"
-        v-model="internalSelected"
+        v-model:selected="internalSelected"
         density="compact"
         disable-sort
         :headers="columns"
